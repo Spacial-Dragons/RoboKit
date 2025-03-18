@@ -9,17 +9,17 @@ import Foundation
 import Network
 import SwiftUI
 
-@Observable final class FinalClient {
+public final class FinalClient {
     
-    var connection: NWConnection?
-    var latestReceivedMessage: String = ""
-    var log: [String] = []
+    public var connection: NWConnection?
+    public var latestReceivedMessage: String = ""
+    public var log: [String] = []
     
     init() {
         self.connection = NWConnection(host: Settings.host, port: Settings.port, using: .tcp)
     }
     
-    func startConnection(value: Data){
+    public func startConnection(value: Data){
 
         self.connection?.stateUpdateHandler = {state in
 
@@ -54,7 +54,7 @@ import SwiftUI
         self.connection?.start(queue: .main)
     }
     
-    func receiveMessage(){
+    public func receiveMessage(){
         
         self.connection?.receive(minimumIncompleteLength: 1, maximumLength: 65536, completion: { data, _, isComplete, error in
             if let data = data, !data.isEmpty{
@@ -73,12 +73,12 @@ import SwiftUI
         })
     }
     
-    func connectionEnded(){
+    public func connectionEnded(){
         self.log.append("Ending and closing the connection")
         self.connection?.cancel()
     }
     
-    func sendMessage(data: Data){
+    public func sendMessage(data: Data){
         self.log.append("tried to send, \(String(describing: self.connection?.state))")
         self.connection?.send(content: data, completion: .contentProcessed({ error in
             if let _ = error {
@@ -91,7 +91,7 @@ import SwiftUI
         }))
     }
     
-    func connectionFailed(){
+    public func connectionFailed(){
         self.log.append("connection failed")
         print("connection failed")
         self.connection?.stateUpdateHandler = nil

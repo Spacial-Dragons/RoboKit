@@ -46,7 +46,7 @@ Add the following entry in your `Info.plist` to request world-sensing permission
 #### 3. Define Tracking Images in Code
 Each reference image must include:
 - `imageName`: The name of the image in `xcassets`.
-- `rootOffset`: The offset (in meters) from the intended physical root point.
+- `rootOffset`: The offset (in meters) from the intended physical root point. The offset should be represented in RealityKit coordinate system.
 
 Example:
 
@@ -58,6 +58,9 @@ let trackingImages: [TrackingImage] = [
     TrackingImage(imageName: "TrackingImage-2", rootOffset: .init(x: 0.1135, y: 0, z: -0.175))
 ]
 ```
+
+<img src="Media/RealityKit-Coordinate-System.png" alt="RealityKit coordinate system">
+
 
 #### 4. Initialize `ImageTracker`
 After defining the reference images, initialize the `ImageTracker` class by providing the `arResourceGroupName` and the array of images:

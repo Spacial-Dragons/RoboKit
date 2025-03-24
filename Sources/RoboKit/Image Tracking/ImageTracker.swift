@@ -132,7 +132,7 @@ public class ImageTracker {
         
         // Aggregate estimated root positions from all tracked anchors.
         for anchorData in trackedAnchorsMap.values {
-            guard let trackingImage = refImagesMap[anchorData.imageName]?.0 else { continue }
+            guard let trackingImage = referenceImagesMap[anchorData.imageName]?.0 else { continue }
             let adjustedOffset = anchorData.transform.orientation.act(trackingImage.rootOffset)
             let estimatedRootPosition = anchorData.transform.position - adjustedOffset
             

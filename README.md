@@ -103,6 +103,10 @@ Basic usage:
 > All tracking images must share the **same physical orientation** (e.g., all upright or all rotated the same way).  
 > Inconsistent orientations can lead to incorrect spatial calculations and tracking issues.
 
+> [!IMPORTANT]  
+> On visionOS, ARKit currently supports tracking **only one image at a time**, even if multiple reference images are visible.  
+> This is **expected behavior** and should be considered when designing experiences that rely on simultaneous image tracking.
+
 > [!WARNING]  
 > Image tracking is **not supported** in the simulator. Both `rootTransform` and `trackedImagesTransform` will return emulated values.
 

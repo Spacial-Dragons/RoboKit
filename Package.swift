@@ -5,7 +5,6 @@ import PackageDescription
 
 let package = Package(
     name: "RoboKit",
-    
     platforms: [
         .visionOS(.v2)
     ],

@@ -40,7 +40,7 @@ Add the following entry in your `Info.plist` to request world-sensing permission
 #### 2. Create AR Reference Image Group
 - Open Xcode.
 - Add an **AR Resource Group** in `xcassets`.
-- Name the group (e.g., `"reference-images"`).
+- Name the group (e.g., `"AR Resources"`).
 - Add reference images for tracking and set their **physical size**.
 
 #### 3. Define Tracking Images in Code
@@ -97,10 +97,14 @@ Basic usage:
 
 > [!NOTE]  
 > If multiple images are provided, the framework **computes the center** using their `rootOffset` values.  
-> If only **one** image is used, set `rootOffset = .zero` to make it the reference point.
+> If only **one** image is used, set it's `rootOffset = .zero` to make it the reference point.
+
+> [!IMPORTANT]  
+> All tracking images must share the **same physical orientation** (e.g., all upright or all rotated the same way).  
+> Inconsistent orientations can lead to incorrect spatial calculations and tracking issues.
 
 > [!WARNING]  
-> Image tracking is **not supported** in the simulator. Both `rootTransform` and `trackedImagesTransform` will return default values.
+> Image tracking is **not supported** in the simulator. Both `rootTransform` and `trackedImagesTransform` will return emulated values.
 
 ---
 
@@ -117,7 +121,6 @@ let imageName: String
 ```
 - Name of the image in the asset catalog.
 - Must exactly match the name in `.xcassets`.
-- Used for detection and recognition.
 
 ##### `rootOffset`
 ```swift
@@ -172,7 +175,7 @@ public init(arResourceGroupName: String, images: [TrackingImage])
 Example:
 ```swift
 let tracker = ImageTracker(
-    arResourceGroupName: "ARImages",
+    arResourceGroupName: "AR Resources",
     images: [
         TrackingImage(imageName: "TrackingImage-1", rootOffset: SIMD3<Float>(0, 0, 0)),
         TrackingImage(imageName: "TrackingImage-2", rootOffset: SIMD3<Float>(0.1, 0, 0))
@@ -180,4 +183,7 @@ let tracker = ImageTracker(
 )
 ```
 
+---
+
+## Demo project
 For advanced usage examples, refer to the [Demo project](https://github.com/Spacial-Dragons/RoboKit-Demo) demonstrating the capabilities of the `ImageTracker` module.

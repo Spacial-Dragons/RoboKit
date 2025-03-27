@@ -62,6 +62,21 @@ let trackingImages: [TrackingImage] = [
 <img src="Media/RealityKit-Coordinate-System.png" alt="RealityKit coordinate system">
 
 
+> [!IMPORTANT]  
+> **Tracking image quality is critical.**  
+> - Avoid images with **heavy compression**, as it interferes with feature extraction.  
+> - Avoid images with **too many or too few geometric features** (e.g., barcodes, QR codes, logos, and line art), as they result in poor detection and tracking performance.  
+> - Avoid images with **repeating patterns**, as they can cause detection and tracking issues.
+
+> [!IMPORTANT]  
+> All tracking images must share the **same physical orientation** (e.g., all upright or all rotated the same way).  
+> Inconsistent orientations can lead to incorrect spatial calculations and tracking issues.  
+
+> [!NOTE]  
+> If multiple images are provided, the framework **computes the center** using their `rootOffset` values.  
+> If only **one** image is used, set its `rootOffset = .zero` to make it the reference point.  
+
+
 #### 4. Initialize `ImageTracker`
 After defining the reference images, initialize the `ImageTracker` class by providing the `arResourceGroupName` and the array of images:
 
@@ -96,19 +111,15 @@ Basic usage:
 ```
 
 > [!NOTE]  
-> If multiple images are provided, the framework **computes the center** using their `rootOffset` values.  
-> If only **one** image is used, set it's `rootOffset = .zero` to make it the reference point.
-
-> [!IMPORTANT]  
-> All tracking images must share the **same physical orientation** (e.g., all upright or all rotated the same way).  
-> Inconsistent orientations can lead to incorrect spatial calculations and tracking issues.
-
-> [!IMPORTANT]  
-> On visionOS, ARKit currently supports tracking **only one image at a time**, even if multiple reference images are visible.  
-> This is **expected behavior** and should be considered when designing experiences that rely on simultaneous image tracking.
+> `rootTransform` and `trackedImagesTransform` will be updated **only once in a while** (approximately every second) due to ARKit limitations.  
+> This behavior **cannot** be modified.
 
 > [!WARNING]  
 > Image tracking is **not supported** in the simulator. Both `rootTransform` and `trackedImagesTransform` will return emulated values.
+
+> [!IMPORTANT]  
+> On visionOS, ARKit currently supports tracking **only one image at a time**, even if multiple reference images are visible.  
+> This is **expected behavior** and should be considered when designing experiences that rely on simultaneous image tracking.  
 
 ---
 

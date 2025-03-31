@@ -37,13 +37,6 @@ public struct TrackingImage {
             • The name exactly matches the texture name.
             • The image is included in the app target.
             """)
-            logger.fault("""
-            TrackingImage init failed: Image '\(imageName, privacy: .public)' not found in asset catalog.
-            Possible causes:
-            - Missing from .xcassets
-            - Name mismatch
-            - Not included in target
-            """)
         }
         
         logger.info("✅ TrackingImage created for image '\(imageName, privacy: .public)' with root offset \(rootOffset.debugDescription, privacy: .public)")

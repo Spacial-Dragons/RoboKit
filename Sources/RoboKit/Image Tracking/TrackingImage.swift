@@ -4,6 +4,8 @@ import UIKit
 
 /// Represents a tracking image with its associated metadata.
 /// This structure is used to define a Data Matrix image's name and its physical offset relative to a reference point.
+
+@MainActor
 public struct TrackingImage {
 
     /// The name of the image in the asset catalog.
@@ -19,6 +21,9 @@ public struct TrackingImage {
     /// - Parameters:
     ///   - imageName: The exact name of the image in the asset catalog.
     ///   - rootOffset: The physical offset from the root point in meters.
+    
+    let logger = AppLogger.shared.logger(for: .tracking)
+    
     ///
     /// The initializer validates that the image exists in the asset catalog. If the image is not found,
     /// it triggers a fatal error with detailed instructions to resolve the issue.
@@ -32,7 +37,16 @@ public struct TrackingImage {
             • The name exactly matches the texture name.
             • The image is included in the app target.
             """)
+            logger.fault("""
+            TrackingImage init failed: Image '\(imageName, privacy: .public)' not found in asset catalog.
+            Possible causes:
+            - Missing from .xcassets
+            - Name mismatch
+            - Not included in target
+            """)
         }
+        
+        logger.info("✅ TrackingImage created for image '\(imageName, privacy: .public)' with root offset \(rootOffset.debugDescription, privacy: .public)")
         
         self.imageName = imageName
         self.rootOffset = rootOffset

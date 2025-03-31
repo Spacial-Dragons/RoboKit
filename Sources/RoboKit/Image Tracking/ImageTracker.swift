@@ -5,6 +5,12 @@ import SwiftUI
 /// A class responsible for tracking images using ARKit and providing corresponding transformation data.
 /// It handles the initialization of AR sessions, image tracking, and updates for tracked anchors.
 /// - Note: This class supports different platforms (simulator and visionOS) with platform-specific implementations.
+///
+
+enum TrackingError: Error {
+    case imageNotFound(imageName: String)
+}
+
 @MainActor
 @Observable
 public class ImageTracker {
@@ -29,6 +35,8 @@ public class ImageTracker {
     
     // Mapping of tracked anchor UUIDs to their corresponding AnchorData.
     private var trackedAnchorsMap: [UUID: AnchorData] = [:]
+    
+    private let logger = AppLogger.shared.logger(for: .tracking)
 
     /// Initializes a new `ImageTracker` with the specified AR resource group and tracking images.
     /// - Parameters:
@@ -50,17 +58,18 @@ public class ImageTracker {
     /// - Note: This method checks for platform support. In the simulator, image tracking is not supported.
     private func initializeImageTracking() {
         guard ImageTrackingProvider.isSupported else {
-            print("⚠️ Image tracking not supported in the simulator")
+            logger.warning("Image tracking not supported in this environment. Simulator: Return an identity matrix as a default.")
             return
         }
         
+        logger.info("Starting ARKit session with image tracking provider...")
         imageTracking = ImageTrackingProvider(referenceImages: referenceImages)
         Task {
             do {
                 try await arKitSession.run([imageTracking!])
                 monitorAnchorUpdates()
             } catch {
-                print("❌ Error starting AR session: \(error)")
+                logger.error("Failed to start ARKit session: \(error.localizedDescription, privacy: .public)")
             }
         }
     }
@@ -88,9 +97,11 @@ public class ImageTracker {
     /// Monitors anchor updates from the image tracking provider.
     /// - Note: This method listens for added, updated, and removed events and processes them accordingly.
     private func monitorAnchorUpdates() {
+        logger.debug("🔄 Monitoring anchor updates...")
         Task {
             guard let provider = imageTracking else { return }
             for await update in provider.anchorUpdates {
+                logger.info("Anchor \(update.anchor.id.uuidString, privacy: .public) \(String(describing: update.event), privacy: .public)")
                 switch update.event {
                 case .added, .updated:
                     updateOrCreateEntity(for: update.anchor)
@@ -104,6 +115,7 @@ public class ImageTracker {
     /// Removes a tracked anchor from the internal mapping.
     /// - Parameter anchor: The `ImageAnchor` to be removed.
     private func removeAnchor(_ anchor: ImageAnchor) {
+        logger.info("Removing anchor with ID: \(anchor.id.uuidString, privacy: .public)")
         trackedAnchorsMap.removeValue(forKey: anchor.id)
     }
     
@@ -111,6 +123,7 @@ public class ImageTracker {
     /// - Parameter anchor: The `ImageAnchor` containing updated tracking information.
     /// - Note: Only anchors that are currently tracked are processed.
     private func updateOrCreateEntity(for anchor: ImageAnchor) {
+        logger.debug("Updating tracked anchor for image: \(anchor.referenceImage.name ?? "N/A", privacy: .public)")
         if anchor.isTracked {
             trackedAnchorsMap[anchor.id] = AnchorData(
                 transform: anchor.originFromAnchorTransform,
@@ -124,29 +137,40 @@ public class ImageTracker {
     /// - Note: The computation adjusts each anchor's transform by its associated image offset.
     private func computeRootPosition() -> simd_float4x4? {
         #if targetEnvironment(simulator)
-        // Simulator: Return an identity matrix as a default.
+        logger.info("computeRootPosition: Running in simulator — returning identity matrix.")
         return matrix_identity_float4x4
+
         #elseif os(visionOS)
         var totalPosition = SIMD3<Float>(0, 0, 0)
         var count = 0
-        
-        // Aggregate estimated root positions from all tracked anchors.
+
+        logger.debug("computeRootPosition: Calculating from \(trackedAnchorsMap.count) tracked anchors.")
+
         for anchorData in trackedAnchorsMap.values {
-            guard let trackingImage = referenceImagesMap[anchorData.imageName]?.0 else { continue }
+            guard let trackingImage = referenceImagesMap[anchorData.imageName]?.0 else {
+                logger.warning("computeRootPosition: No tracking image found for anchor named \(anchorData.imageName, privacy: .public)")
+                continue
+            }
+
             let adjustedOffset = anchorData.transform.orientation.act(trackingImage.rootOffset)
             let estimatedRootPosition = anchorData.transform.position - adjustedOffset
-            
+
+            logger.debug("Anchor '\(anchorData.imageName, privacy: .public)': estimated root position = \(estimatedRootPosition.debugDescription, privacy: .public)")
+
             totalPosition += estimatedRootPosition
             count += 1
         }
-        
-        // Compute the average position if at least one anchor is tracked.
+
         if count > 0 {
             let averagePosition = totalPosition / Float(count)
             var rootTransform = matrix_identity_float4x4
             rootTransform.columns.3 = SIMD4<Float>(averagePosition, 1)
+
+            logger.info("omputeRootPosition: Computed average position from \(count) anchors: \(averagePosition.debugDescription, privacy: .public)")
             return rootTransform
         }
+
+        logger.info("computeRootPosition: No valid tracked anchors. Returning nil.")
         return nil
         #endif
     }

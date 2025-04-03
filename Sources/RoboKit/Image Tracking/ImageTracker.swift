@@ -175,7 +175,7 @@ public class ImageTracker {
             var rootTransform = matrix_identity_float4x4
             rootTransform.columns.3 = SIMD4<Float>(averagePosition, 1)
 
-            logger.info("omputeRootPosition: Computed average position from \(count) anchors: \(averagePosition.debugDescription, privacy: .public)")
+            logger.info("computeRootPosition: Computed average position from \(count) anchors: \(averagePosition.debugDescription, privacy: .public)")
             return rootTransform
         }
 

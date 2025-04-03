@@ -48,6 +48,15 @@ public class ImageTracker {
         self.referenceImagesMap = images.reduce(into: [:]) { map, image in
             guard let refImage = self.referenceImages.first(where: { $0.name == image.imageName }) else {
                 fatalError("❌ Reference image \(image.imageName) not found")
+                logger.fault("❌ Reference image '\(image.imageName, privacy: .public)' not found in asset group '\(arResourceGroupName, privacy: .public)'")
+
+                /// TODO: Replace fatalError with a proper error propagation mechanism.
+                /// The current RoboKit Demo app does not support handling throwing initializers directly
+                /// To improve resilience, implement a way
+                /// to pass errors from ImageTracker initialization (missing reference images)
+                /// back to the app.
+                
+                /// throw TrackingError.imageNotFound(imageName: image.imageName)
             }
             map[image.imageName] = (image, refImage)
         }

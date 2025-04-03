@@ -37,9 +37,25 @@ public struct TrackingImage {
             • The name exactly matches the texture name.
             • The image is included in the app target.
             """)
+            
+            logger.fault("""
+                    ❌ TrackingImage init failed: Image '\(imageName, privacy: .public)' not found in asset catalog.
+                    Possible causes:
+                    - Missing from .xcassets
+                    - Name mismatch
+                    - Not included in target
+                    """)
+            
+            /// TODO: Replace fatalError with a proper error propagation mechanism.
+            /// The current RoboKit Demo app does not support handling throwing initializers directly
+            /// To improve resilience, implement a way
+            /// to pass errors from TrackingImage initialization (missing reference images)
+            /// back to the app.
+            
+            /// throw TrackingError.imageNotFound(imageName: image.imageName)
         }
         
-        logger.info("✅ TrackingImage created for image '\(imageName, privacy: .public)' with root offset \(rootOffset.debugDescription, privacy: .public)")
+        logger.info("TrackingImage created for image '\(imageName, privacy: .public)' with root offset \(rootOffset.debugDescription, privacy: .public)")
         
         self.imageName = imageName
         self.rootOffset = rootOffset

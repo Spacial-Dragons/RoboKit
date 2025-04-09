@@ -15,7 +15,7 @@ enum LogCategory: String {
 final class AppLogger {
     @MainActor static let shared = AppLogger()
     
-    private let defaultSubsystem = Bundle.main.bundleIdentifier ?? "dev.novoselov.Data-Matrix"
+    private let defaultSubsystem = Bundle.main.bundleIdentifier ?? "com.SpacialDragons.RoboKit"
     
     private init() {}
 

@@ -9,62 +9,54 @@ import Foundation
 import Network
 import SwiftUI
 
+@ObservableObject
 public final class TCPClient {
     
     public var connection: NWConnection?
-    public var latestReceivedMessage: String = ""
-    public var log: [String] = []
+    //    public var latestReceivedMessage: String = ""
+    @Published public var log: [String] = []
     public var host: NWEndpoint.Host
     public var port: NWEndpoint.Port
+
     
-    
-    init() {
-        //Initializes the connection with the given host and port. Connection is not running yet
-        self.connection = NWConnection(host: host, port: port, using: .tcp)
-    }
-    
-    init(host: NWEndpoint.Host?, port: NWEndpoint.Port?) {
-        if let host = host{
-            self.host = host
-        }
+    init(host: NWEndpoint.Host, port: NWEndpoint.Port) {
         
-        if let port = port{
-            self.port = port
-        }
-        
+        self.host = host
+        self.port = port
         self.connection = NWConnection(host: host, port: port, using: .tcp)
     }
     
     public func startConnection(value: Data){
-
+        
         self.connection?.stateUpdateHandler = {state in
-
+            
             self.log.append("Client will start connection...Current state: \(state)")
+            
             switch state{
             case .setup:
-                self.log.append("Setup")
                 self.setUpConnection()
                 break
             case .waiting(_):
-                self.log.append("Waiting")
                 self.connectionWaiting()
-//                self.connectionFailed()
+                
             case .preparing:
-                self.log.append("Preparing")
                 self.connectionPreparing()
                 break
+                
             case .ready:
                 self.log.append("Ready")
+                self.connectionReady()
             case .failed(_):
-//                self.log.append("Connection failed")
-                self.connectionFailed
-//                self.connection?.cancel()
+                //                self.log.append("Connection failed")
+                self.connectionFailed()
+                //                self.connection?.cancel()
+                
             case .cancelled:
-                self.log.append("Connection cancelled")
+                self.connectionCanceled()
                 break
             default:
                 break
-            
+                
             }
         }
         
@@ -83,7 +75,7 @@ public final class TCPClient {
             
             if isComplete {
                 self.connectionEnded()
-               
+                
             } else if let error = error{
                 self.log.append("Error \(error) when receiving message")
             } else {
@@ -120,7 +112,10 @@ public final class TCPClient {
     //MARK: - Maybe these should be computed variables that only have 'set'
     
     //Determines what should be executed during the setup of the connection
-    public func setUpConnection(_ setup: (() -> Void)?){
+    public func setUpConnection(logMessage: String?, _ setup: (() -> Void)?){
+        if let message = logMessage {
+            self.log.append(message)
+        }
         if let setup = setup{
             setup()
         }
@@ -128,16 +123,38 @@ public final class TCPClient {
     
     //For the waiting stage. So far it seems that its best to cancel the connection here. The "connectionFailed" function was being used in
     //the waiting stage originally
-    public func connectionWaiting(_ waiting: (() -> Void)?){
+    public func connectionWaiting(logMessage: String?, _ waiting: (() -> Void)?){
+        
+        if let message = logMessage {
+            self.log.append(message)
+        }
         if let waiting = waiting{
             waiting()
         }
     }
     
-    public func connectionPreparing(_ preparing: (() -> Void)?){
+    public func connectionPreparing(logMessage: String?, _ preparing: (() -> Void)?){
+        if let message = logMessage {
+            self.log.append(message)
+        }
         if let preparing = preparing{
             preparing()
         }
+    }
+    
+    public func connectionReady(_ ready: (() -> Void)?) {
+        
+        //Do I really need this here? It's already in the start Connection
+        self.receiveMessage()
+        self.sendMessage(data: value)
+        self.connection?.start(queue: .main)
+    }
+    
+    public func connectionCanceled(logMessages: String?, _ canceled(() -> Void)?) {
+        if let message = logMessage {
+            self.log.append(message)
+        }
+        
     }
     
 }

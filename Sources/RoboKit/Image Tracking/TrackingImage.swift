@@ -22,8 +22,6 @@ public struct TrackingImage {
     ///   - imageName: The exact name of the image in the asset catalog.
     ///   - rootOffset: The physical offset from the root point in meters.
     
-    let logger = AppLogger.shared.logger(for: .tracking)
-    
     ///
     /// The initializer validates that the image exists in the asset catalog. If the image is not found,
     /// it triggers a fatal error with detailed instructions to resolve the issue.
@@ -38,14 +36,13 @@ public struct TrackingImage {
             • The image is included in the app target.
             """)
             
-            logger.fault("""
-                    ❌ TrackingImage init failed: Image '\(imageName, privacy: .public)' not found in asset catalog.
+            AppLogger.shared.fault("""
+                    ❌ TrackingImage init failed: Image '\(imageName)' not found in asset catalog.
                     Possible causes:
                     - Missing from .xcassets
                     - Name mismatch
                     - Not included in target
-                    """)
-            
+                    """, category: .tracking)
             /// TODO: Replace fatalError with a proper error propagation mechanism.
             /// The current RoboKit Demo app does not support handling throwing initializers directly
             /// To improve resilience, implement a way
@@ -55,7 +52,7 @@ public struct TrackingImage {
             /// throw TrackingError.imageNotFound(imageName: image.imageName)
         }
         
-        logger.info("TrackingImage created for image '\(imageName, privacy: .public)' with root offset \(rootOffset.debugDescription, privacy: .public)")
+        AppLogger.shared.info("TrackingImage created for image '\(imageName)' with root offset \(rootOffset.debugDescription)", category: .tracking)
         
         self.imageName = imageName
         self.rootOffset = rootOffset

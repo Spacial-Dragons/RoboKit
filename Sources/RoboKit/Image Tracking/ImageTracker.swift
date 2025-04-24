@@ -36,8 +36,11 @@ public class ImageTracker {
     ///   - images: An array of `TrackingImage` instances with their associated offsets.
     /// - Note: If a reference image is not found, the initializer will trigger a fatal error.
     public init(arResourceGroupName: String, images: [TrackingImage]) {
-        #warning("Is module working in standard case scenario?")
-        self.referenceImages = ARKit.ReferenceImage.loadReferenceImages(inGroupNamed: arResourceGroupName, bundle: .module)
+        // Load images from both main bundle and from the module bundle
+        let mainSet = ARKit.ReferenceImage.loadReferenceImages(inGroupNamed: arResourceGroupName, bundle: .main)
+        let moduleSet = ARKit.ReferenceImage.loadReferenceImages(inGroupNamed: arResourceGroupName, bundle: .module)
+        self.referenceImages = mainSet + moduleSet
+        
         self.referenceImagesMap = images.reduce(into: [:]) { map, image in
             guard let refImage = self.referenceImages.first(where: { $0.name == image.imageName }) else {
                 fatalError("❌ Reference image \(image.imageName) not found")

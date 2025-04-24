@@ -23,9 +23,11 @@ public struct TrackingImage {
     /// The initializer validates that the image exists in the asset catalog. If the image is not found,
     /// it triggers a fatal error with detailed instructions to resolve the issue.
     public init(imageName: String, rootOffset: SIMD3<Float>) {
-        // Validate that the image exists in the asset catalog.
-        #warning("Is module working in standard case scenario?")
-        guard UIImage(named: imageName, in: .module, with: .none) != nil else {
+        // Try .main Bundle first, then .module Bundle
+        let foundImage = UIImage(named: imageName, in: .main, with: .none)
+            ?? UIImage(named: imageName, in: .module, with: .none)
+        
+        guard foundImage != nil else {
             fatalError("""
             ❌ Tracking image '\(imageName)' not found in the Assets catalog.
             Please ensure that:

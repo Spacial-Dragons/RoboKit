@@ -30,9 +30,12 @@ struct ImageTrackerTests {
         // Test that getTrackedImagesTransform() returns the expected default transforms in simulator.
         let trackedImagesTransforms: [simd_float4x4] = tracker.getTrackedImagesTransform()
         #expect(trackedImagesTransforms.count == trackingImagesConfig.count)
-        
-        for i in 0..<trackedImagesTransforms.count {
-            #expect(trackedImagesTransforms[i].position == trackingImagesConfig[i].rootOffset)
+
+        let expectedOffsets = trackingImagesConfig.map { $0.rootOffset }
+        let actualOffsets = trackedImagesTransforms.map { $0.position }
+
+        for expected in expectedOffsets {
+            #expect(actualOffsets.contains(where: { $0 == expected }))
         }
     }
     

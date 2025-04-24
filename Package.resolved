@@ -1,0 +1,15 @@
+{
+  "originHash" : "f11ee6ee7d6f01ce2db3c1cab19e01239e1a0db0a0c7e15a9a08ee88ed10a6ba",
+  "pins" : [
+    {
+      "identity" : "swiftlintplugins",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SimplyDanny/SwiftLintPlugins",
+      "state" : {
+        "revision" : "8545ddf4de043e6f2051c5cf204f39ef778ebf6b",
+        "version" : "0.59.1"
+      }
+    }
+  ],
+  "version" : 3
+}

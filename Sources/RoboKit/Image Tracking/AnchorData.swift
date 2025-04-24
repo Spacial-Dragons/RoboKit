@@ -5,7 +5,7 @@ import simd
 struct AnchorData: Equatable {
     /// The transformation matrix representing the anchor's position, orientation, and scale.
     let transform: simd_float4x4
-    
+
     /// The name of the image associated with the anchor.
     let imageName: String
 

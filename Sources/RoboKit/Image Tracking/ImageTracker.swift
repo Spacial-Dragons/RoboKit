@@ -8,25 +8,25 @@ import SwiftUI
 @MainActor
 @Observable
 public class ImageTracker {
-    
+
     /// The publicly available computed root transformation matrix of the tracked image set.
     public var rootTransform: simd_float4x4? { computeRootPosition() }
-    
+
     /// A publicly available array of transformation matrices for each tracked image.
     public var trackedImagesTransform: [simd_float4x4] { getTrackedImagesTransform() }
-    
+
     // Mapping of reference image names to their corresponding tracking image and AR reference image.
     private var referenceImagesMap: [String: (TrackingImage, ARKit.ReferenceImage)] = [:]
-    
+
     // Array of AR reference images loaded from the specified asset group.
     private var referenceImages: [ARKit.ReferenceImage]
-    
+
     // ARKit session manager.
     private var arKitSession = ARKitSession()
-    
+
     // Provider responsible for handling image tracking.
     private var imageTracking: ImageTrackingProvider?
-    
+
     // Mapping of tracked anchor UUIDs to their corresponding AnchorData.
     private var trackedAnchorsMap: [UUID: AnchorData] = [:]
 
@@ -45,7 +45,7 @@ public class ImageTracker {
         }
         initializeImageTracking()
     }
-    
+
     /// Initializes the image tracking provider and starts the AR session.
     /// - Note: This method checks for platform support. In the simulator, image tracking is not supported.
     private func initializeImageTracking() {
@@ -53,7 +53,7 @@ public class ImageTracker {
             print("⚠️ Image tracking not supported in the simulator")
             return
         }
-        
+
         imageTracking = ImageTrackingProvider(referenceImages: referenceImages)
         Task {
             do {
@@ -64,7 +64,7 @@ public class ImageTracker {
             }
         }
     }
-    
+
     /// Retrieves the transformation matrices for the currently tracked images.
     /// - Returns: An array of `simd_float4x4` representing the tracked images' transforms.
     /// - Note: The implementation differs based on the target environment.
@@ -84,7 +84,7 @@ public class ImageTracker {
         return []
         #endif
     }
-    
+
     /// Monitors anchor updates from the image tracking provider.
     /// - Note: This method listens for added, updated, and removed events and processes them accordingly.
     private func monitorAnchorUpdates() {
@@ -100,13 +100,13 @@ public class ImageTracker {
             }
         }
     }
-    
+
     /// Removes a tracked anchor from the internal mapping.
     /// - Parameter anchor: The `ImageAnchor` to be removed.
     private func removeAnchor(_ anchor: ImageAnchor) {
         trackedAnchorsMap.removeValue(forKey: anchor.id)
     }
-    
+
     /// Updates an existing anchor entity or creates a new one based on the provided image anchor.
     /// - Parameter anchor: The `ImageAnchor` containing updated tracking information.
     /// - Note: Only anchors that are currently tracked are processed.
@@ -118,7 +118,7 @@ public class ImageTracker {
             )
         }
     }
-    
+
     /// Computes the estimated root transformation matrix based on the tracked anchors.
     /// - Returns: A `simd_float4x4` representing the averaged root transform, or `nil` if no anchors are tracked.
     /// - Note: The computation adjusts each anchor's transform by its associated image offset.
@@ -129,17 +129,17 @@ public class ImageTracker {
         #elseif os(visionOS)
         var totalPosition = SIMD3<Float>(0, 0, 0)
         var count = 0
-        
+
         // Aggregate estimated root positions from all tracked anchors.
         for anchorData in trackedAnchorsMap.values {
             guard let trackingImage = referenceImagesMap[anchorData.imageName]?.0 else { continue }
             let adjustedOffset = anchorData.transform.orientation.act(trackingImage.rootOffset)
             let estimatedRootPosition = anchorData.transform.position - adjustedOffset
-            
+
             totalPosition += estimatedRootPosition
             count += 1
         }
-        
+
         // Compute the average position if at least one anchor is tracked.
         if count > 0 {
             let averagePosition = totalPosition / Float(count)

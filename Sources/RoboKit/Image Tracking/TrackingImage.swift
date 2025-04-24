@@ -9,12 +9,12 @@ public struct TrackingImage {
     /// The name of the image in the asset catalog.
     /// Must match the image's name exactly as it appears in the Assets catalog.
     let imageName: String
-    
+
     /// The physical offset from the root point, expressed in meters.
     /// Use the RealityKit coordinate system for measurements.
     /// For example, 12.5 / 100 represents an offset of 12.5 centimeters.
     let rootOffset: SIMD3<Float>
-    
+
     /// Initializes a new TrackingImage instance.
     /// - Parameters:
     ///   - imageName: The exact name of the image in the asset catalog.
@@ -33,7 +33,7 @@ public struct TrackingImage {
             • The image is included in the app target.
             """)
         }
-        
+
         self.imageName = imageName
         self.rootOffset = rootOffset
     }

@@ -44,6 +44,12 @@ struct SimdFloat4x4ExtensionTests {
         #expect(transformMatrix.position.z == 3.0)
     }
     
+    @Test("Position getter on identity matrix")
+    func positionGetterIdentityTest() {
+        let identity = matrix_identity_float4x4
+        #expect(identity.position == SIMD3<Float>(0, 0, 0))
+    }
+    
     @Test("Position setter")
     func positionSetterTest() {
         // Verify that setting position updates the fourth column correctly without altering the component.
@@ -54,6 +60,34 @@ struct SimdFloat4x4ExtensionTests {
         #expect(matrix.position.x == 4.0)
         #expect(matrix.position.y == 5.0)
         #expect(matrix.position.z == 6.0)
+    }
+
+    @Test("Position setter on identity matrix")
+    func positionSetterIdentityTest() {
+        var identity = matrix_identity_float4x4
+        identity.position = SIMD3<Float>(7, 8, 9)
+        #expect(identity.position == SIMD3<Float>(7, 8, 9))
+        #expect(identity.columns.3.w == 1.0)
+    }
+
+    @Test("Position setter preserves orientation")
+    func positionSetterPreservesOrientationTest() {
+        var matrix = transformMatrix
+        let originalOrientation = matrix.orientation.normalized
+        matrix.position = SIMD3<Float>(10, 11, 12)
+        let newOrientation = matrix.orientation.normalized
+        #expect(abs(newOrientation.angle - originalOrientation.angle) < 1e-6)
+        #expect(abs(dot(newOrientation.axis, originalOrientation.axis)) > 0.9999)
+    }
+
+    @Test("Position setter doesn't affect other rows")
+    func positionSetterDoesNotAffectOtherRowsTest() {
+        var matrix = transformMatrix
+        let originalCols = (matrix.columns.0, matrix.columns.1, matrix.columns.2)
+        matrix.position = SIMD3<Float>(0, 0, 0)
+        #expect(matrix.columns.0 == originalCols.0)
+        #expect(matrix.columns.1 == originalCols.1)
+        #expect(matrix.columns.2 == originalCols.2)
     }
     
     @Test("Orientation getter")

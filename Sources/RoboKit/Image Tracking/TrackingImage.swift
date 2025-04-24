@@ -3,7 +3,7 @@ import ARKit
 import UIKit
 
 /// Represents a tracking image with its associated metadata.
-/// This structure is used to define a Data Matrix image's name and its physical offset relative to a reference point.
+/// This structure is used to define a Tracking image's name and its physical offset relative to a reference point.
 public struct TrackingImage {
 
     /// The name of the image in the asset catalog.
@@ -24,9 +24,10 @@ public struct TrackingImage {
     /// it triggers a fatal error with detailed instructions to resolve the issue.
     public init(imageName: String, rootOffset: SIMD3<Float>) {
         // Validate that the image exists in the asset catalog.
-        guard UIImage(named: imageName) != nil else {
+        #warning("Is module working in standard case scenario?")
+        guard UIImage(named: imageName, in: .module, with: .none) != nil else {
             fatalError("""
-            ❌ Data Matrix image '\(imageName)' not found in the Assets catalog.
+            ❌ Tracking image '\(imageName)' not found in the Assets catalog.
             Please ensure that:
             • The image exists in the .xcassets catalog in the reference folder.
             • The name exactly matches the texture name.

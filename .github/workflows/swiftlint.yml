@@ -5,11 +5,14 @@ on:
   pull_request: { branches: [ feat/SwiftLint ] }
 
 jobs:
-  lint:
-    runs-on: macos-latest
+  SwiftLint:
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: GitHub Action for SwiftLint
+      - name: GitHub Action for SwiftLint with --strict
         uses: norio-nomura/action-swiftlint@3.2.1
+        with:
+          args: --strict
+          

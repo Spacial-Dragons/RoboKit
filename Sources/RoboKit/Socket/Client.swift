@@ -140,9 +140,6 @@ import SwiftUI
     //For the waiting stage. So far it seems that its best to cancel the connection here. The "connectionFailed" function was being used in
     //the waiting stage originally
     /// Determines the logic that should be implemented when the State Handler is in `waiting`
-    /// - Parameters:
-    ///   - logMessage: the message that will be added to the client's log when this function is called
-    ///   - waiting: the logic whar should be applied when this function is called
     public func connectionWaiting(){
         if let waiting = waitingConnection{
             waiting()
@@ -151,11 +148,7 @@ import SwiftUI
     
     
     /// Determines the logic that should be implemented when the State Handler is in `preparing`
-    /// - Parameters:
-    ///   - logMessage: the message that will be added to the client's log when this function is called
-    ///   - preparing: the logic whar should be applied when this function is called
     public func connectionPreparing(){
-        
         if let preparing = preparingConnection{
             preparing()
         }
@@ -164,8 +157,7 @@ import SwiftUI
     
     /// Determines the logic that should be implemented when the State Handler is in `ready`. This is where the main connection logic should be implemented
     /// - Parameters:
-    ///   - logMessage: the message that will be added to the client's log when this function is called
-    ///   - preparing: the logic whar should be applied when this function is called
+    ///   - value: the value that will be sent to the server as soon as the connection starts
     public func connectionReady(value: Data) {
         if let ready = readyConnection{
             ready()
@@ -177,9 +169,6 @@ import SwiftUI
     
     
     /// Determines the logic that should be implemented when the State Handler is in `cancelled`
-    /// - Parameters:
-    ///   - logMessage: the message that will be added to the client's log when this function is called
-    ///   - preparing: the logic whar should be applied when this function is called
     public func connectionCanceled() {
         if let canceled = cancelledConnection {
             canceled()

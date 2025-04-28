@@ -45,7 +45,6 @@ import SwiftUI
         self.listener.start(queue: .main)
     }
 
-    // MARK: - FUCKING FIX THIS OH MY GOD
     /// The state handler for the server.
     private func stateDidChange(to newState: NWListener.State) {
         switch newState {
@@ -102,7 +101,7 @@ import SwiftUI
         self.listener.cancel()
         for connection in self.connectionsByID.values {
             connection.didStopCallback = nil
-            connection.stop()
+            //Server.log.append("Connection \(self.id) has stopped")
         }
         self.connectionsByID.removeAll()
     }
@@ -122,6 +121,7 @@ import SwiftUI
     
     var didStopCallback: ((Error?) -> Void)? = nil
     
+    /// Closures for customization of connection behavior depending on its state.
     var setupConnection: (() -> Void)? = nil
     var waitingConnection: (() -> Void)? = nil
     var preparingConnection: (() -> Void)? = nil
@@ -129,6 +129,7 @@ import SwiftUI
     var failedConnection: (() -> Void)? = nil
     var cancelledConnection: (() -> Void)? = nil
 
+    ///Initializes the Connection instance, assigning it an Integer ID
     init(nwConnection: NWConnection) {
         self.nwConnection = nwConnection
         self.id = Connection.nextID
@@ -136,6 +137,7 @@ import SwiftUI
         
     }
 
+    /// Starts the Connection between the Client and Server
     func start(values: [Int]?) {
         self.nwConnection.stateUpdateHandler = { [weak self] newState in
             guard let self = self else { return }
@@ -151,6 +153,9 @@ import SwiftUI
     }
 
 
+    /// Sends data from the server to the client
+    /// - Parameters:
+    ///  - data: The data that should be sent
     func send(data: Data) {
         self.nwConnection.send(content: data, completion: .contentProcessed( { error in
             if let error = error {
@@ -162,11 +167,7 @@ import SwiftUI
         }))
     }
 
-    func stop() {
-//        Server.log.append("Connection \(self.id) has stopped")
-        
-    }
-
+    /// Function to handle the connections states. The state update handler administers the possible NWConnection statuses and calls helper methods accordingly
     private func stateDidChange(to state: NWConnection.State) {
         switch state {
         case .setup:
@@ -201,6 +202,9 @@ import SwiftUI
         }
     }
 
+    /// Method that cancels the connection once it fails.
+    /// - Parameters:
+    ///  - error: the error that occurred to cause the failure
     private func connectionDidFail(error: Error) {
         if let failedConnection = failedConnection {
             failedConnection()
@@ -208,13 +212,16 @@ import SwiftUI
 //        Server.log.append("Connection \(self.id) failed with error: \(error)")
         self.stop(error: error)
     }
-
+    /// Method that cancels the connection once it is ended.
     private func connectionDidEnd() {
         
 //        Server.log.append("Connection \(self.id) did end")
         self.stop(error: nil)
     }
 
+    /// Method responsible for cleaning up the Connections stateUpdateHandler and CallBack once it is ended or fails.
+    /// - Parameters:
+    ///  - error: In case of failure, this is the error that caused it
     private func stop(error: Error?) {
         self.nwConnection.stateUpdateHandler = nil
         self.nwConnection.cancel()
@@ -224,7 +231,8 @@ import SwiftUI
         }
     }
 
-    private func setupReceive() {
+    /// Method resposible for receiving and decoding messages from clients.
+    public func setupReceive() {
         self.nwConnection.receive(minimumIncompleteLength: 1, maximumLength: 65536) { (data, _, isComplete, error) in
             
             guard let data = data else { return }

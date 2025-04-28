@@ -46,13 +46,16 @@ public class ImageTracker {
         self.referenceImagesMap = images.reduce(into: [:]) { map, image in
             guard let refImage = self.referenceImages.first(where: { $0.name == image.imageName }) else {
                 fatalError("❌ Reference image \(image.imageName) not found")
-                AppLogger.shared.fault("❌ Reference image '\(image.imageName)' not found in asset group '\(arResourceGroupName)'", category: .tracking)
+                AppLogger.shared.fault(
+                    "❌ Reference image '\(image.imageName)' not found in asset group '\(arResourceGroupName)'",
+                    category: .tracking
+                )
                 /// TODO: Replace fatalError with a proper error propagation mechanism.
                 /// The current RoboKit Demo app does not support handling throwing initializers directly
                 /// To improve resilience, implement a way
                 /// to pass errors from ImageTracker initialization (missing reference images)
                 /// back to the app.
-                
+
                 /// throw TrackingError.imageNotFound(imageName: image.imageName)
             }
             map[image.imageName] = (image, refImage)
@@ -64,19 +67,25 @@ public class ImageTracker {
     /// - Note: This method checks for platform support. In the simulator, image tracking is not supported.
     private func initializeImageTracking() {
         guard ImageTrackingProvider.isSupported else {
-            AppLogger.shared.warning("Image tracking not supported in this environment. Simulator: Return an identity matrix as a default.", category: .tracking)
+            AppLogger.shared.warning(
+                "Image tracking not supported in this environment. Simulator: Return an identity matrix as a default.",
+                category: .tracking
+            )
             return
         }
-        
+
         AppLogger.shared.info("Starting ARKit session with image tracking provider...", category: .tracking)
-      
+
         imageTracking = ImageTrackingProvider(referenceImages: referenceImages)
         Task {
             do {
                 try await arKitSession.run([imageTracking!])
                 monitorAnchorUpdates()
             } catch {
-                AppLogger.shared.error("Failed to start ARKit session: \(error.localizedDescription)", category: .tracking)
+                AppLogger.shared.error(
+                    "Failed to start ARKit session: \(error.localizedDescription)",
+                    category: .tracking
+                )
             }
         }
     }
@@ -108,7 +117,10 @@ public class ImageTracker {
         Task {
             guard let provider = imageTracking else { return }
             for await update in provider.anchorUpdates {
-                AppLogger.shared.info("Anchor \(update.anchor.id.uuidString) \(String(describing: update.event))", category: .tracking)
+                AppLogger.shared.info(
+                    "Anchor \(update.anchor.id.uuidString) \(String(describing: update.event))",
+                    category: .tracking
+                )
                 switch update.event {
                 case .added, .updated:
                     updateOrCreateEntity(for: update.anchor)
@@ -130,7 +142,10 @@ public class ImageTracker {
     /// - Parameter anchor: The `ImageAnchor` containing updated tracking information.
     /// - Note: Only anchors that are currently tracked are processed.
     private func updateOrCreateEntity(for anchor: ImageAnchor) {
-        AppLogger.shared.debug("Updating tracked anchor for image: \(anchor.referenceImage.name ?? "N/A")", category: .tracking)
+        AppLogger.shared.debug(
+            "Updating tracked anchor for image: \(anchor.referenceImage.name ?? "N/A")",
+            category: .tracking
+        )
         if anchor.isTracked {
             trackedAnchorsMap[anchor.id] = AnchorData(
                 transform: anchor.originFromAnchorTransform,
@@ -150,19 +165,25 @@ public class ImageTracker {
         #elseif os(visionOS)
         var totalPosition = SIMD3<Float>(0, 0, 0)
         var count = 0
-        
+
         // Aggregate estimated root positions from all tracked anchors.
         AppLogger.shared.debug("Calculating from \(trackedAnchorsMap.count) tracked anchors.", category: .tracking)
         for anchorData in trackedAnchorsMap.values {
             guard let trackingImage = referenceImagesMap[anchorData.imageName]?.0 else {
-                AppLogger.shared.warning("No tracking image found for anchor named \(anchorData.imageName)", category: .tracking)
+                AppLogger.shared.warning(
+                    "No tracking image found for anchor named \(anchorData.imageName)",
+                    category: .tracking
+                )
                 continue
             }
 
             let adjustedOffset = anchorData.transform.orientation.act(trackingImage.rootOffset)
             let estimatedRootPosition = anchorData.transform.position - adjustedOffset
-            
-            AppLogger.shared.debug("Anchor '\(anchorData.imageName)': estimated root position , category: .tracking= \(estimatedRootPosition.debugDescription)")
+
+            AppLogger.shared.debug(
+                "Anchor '\(anchorData.imageName)': estimated root position",
+                category: .tracking = \(estimatedRootPosition.debugDescription)
+            )
             totalPosition += estimatedRootPosition
             count += 1
         }
@@ -173,7 +194,10 @@ public class ImageTracker {
             var rootTransform = matrix_identity_float4x4
             rootTransform.columns.3 = SIMD4<Float>(averagePosition, 1)
 
-            AppLogger.shared.info("Computed average position from \(count) anchors: \(averagePosition.debugDescription)", category: .tracking)
+            AppLogger.shared.info(
+                "Computed average position from \(count) anchors: \(averagePosition.debugDescription)",
+                category: .tracking
+            )
             return rootTransform
         }
 

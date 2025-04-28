@@ -21,7 +21,7 @@ public struct TrackingImage {
     /// - Parameters:
     ///   - imageName: The exact name of the image in the asset catalog.
     ///   - rootOffset: The physical offset from the root point in meters.
-    
+
     ///
     /// The initializer validates that the image exists in the asset catalog. If the image is not found,
     /// it triggers a fatal error with detailed instructions to resolve the issue.
@@ -35,7 +35,7 @@ public struct TrackingImage {
             • The name exactly matches the texture name.
             • The image is included in the app target.
             """)
-            
+
             AppLogger.shared.fault("""
                     ❌ TrackingImage init failed: Image '\(imageName)' not found in asset catalog.
                     Possible causes:
@@ -48,11 +48,14 @@ public struct TrackingImage {
             /// To improve resilience, implement a way
             /// to pass errors from TrackingImage initialization (missing reference images)
             /// back to the app.
-            
+
             /// throw TrackingError.imageNotFound(imageName: image.imageName)
         }
-        
-        AppLogger.shared.info("TrackingImage created for image '\(imageName)' with root offset \(rootOffset.debugDescription)", category: .tracking)
+
+        AppLogger.shared.info(
+            "TrackingImage created for image '\(imageName)' with root offset \(rootOffset.debugDescription)",
+            category: .tracking
+        )
         self.imageName = imageName
         self.rootOffset = rootOffset
     }

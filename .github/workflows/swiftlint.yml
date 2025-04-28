@@ -1,8 +1,8 @@
 name: SwiftLint
 
 on:
-  push:        { branches: [ feat/SwiftLint ] }
-  pull_request: { branches: [ feat/SwiftLint ] }
+  push:        { branches: [ main ] }
+  pull_request: { branches: [ main ] }
 
 jobs:
   SwiftLint:

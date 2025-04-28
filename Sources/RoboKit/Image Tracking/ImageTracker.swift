@@ -161,7 +161,7 @@ public class ImageTracker {
             let adjustedOffset = anchorData.transform.orientation.act(trackingImage.rootOffset)
             let estimatedRootPosition = anchorData.transform.position - adjustedOffset
 
-            AppLogger.shared.debug("Anchor '\(anchorData.imageName)': estimated root position , category: .tracking= \(estimatedRootPosition.debugDescription)")
+            AppLogger.shared.debug("Anchor '\(anchorData.imageName)': estimated root position = \(estimatedRootPosition.debugDescription)", category: .tracking)
 
             totalPosition += estimatedRootPosition
             count += 1

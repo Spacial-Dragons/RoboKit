@@ -15,13 +15,13 @@ enum JSONErrors: Error {
 }
 
 /// Model for the message that the`TCPClient` can send to the `Server`
-struct JSONMessageModel: Codable {
+public struct JSONMessageModel: Codable {
     let clawControl: Bool
     let positionAndRotation: [Float]
 }
 
 /// Manager for the encoding and decoding of the JSON messages
-struct JSONManager {
+public struct JSONManager {
     
     /// Encodes JSON messages before sending them
     static func encodeToJSON(data: JSONMessageModel) -> Data {

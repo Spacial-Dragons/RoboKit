@@ -125,12 +125,8 @@ import SwiftUI
         self.connection?.cancel()
     }
     
-    //MARK: - Maybe these should be computed variables that only have 'set'
     
     /// Determines what should be executed during the setup of the connection.
-    /// - Parameters:
-    ///  - logMessage: the message that will be added to the client's log
-    ///  - setup: the setup configuration needed for your application
     public func setUpConnection(){
         if let setup = setupConnection{
             setup()

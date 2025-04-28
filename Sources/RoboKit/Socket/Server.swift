@@ -10,7 +10,7 @@ import Network
 import SwiftUI
 
 
-@Observable public class Server {
+@Observable public final class Server: @unchecked Sendable {
     /// A static log to record server/connection events.
 //    static var log: [String] = []
     
@@ -110,7 +110,7 @@ import SwiftUI
 }
 
 /// The `Connection` class is responsible for representing each client connection to the server. It handles the logic for said connections and allows for RoboKit's server to receive multiple clients simultaniously.
-@Observable class Connection {
+@Observable class Connection: @unchecked Sendable {
     
     /// Static ID necessary for the differentiation of each connection's identification  in the server's `connectionsByID` dictionary.
     nonisolated(unsafe) private static var nextID: Int = 0
@@ -137,16 +137,19 @@ import SwiftUI
     }
 
     func start(values: [Int]?) {
-//        Server.log.append("Connection \(self.id) will start")
-        self.nwConnection.stateUpdateHandler = self.stateDidChange(to:)
+        self.nwConnection.stateUpdateHandler = { [weak self] newState in
+            guard let self = self else { return }
+            self.stateDidChange(to: newState)
+        }
         self.setupReceive()
-        if let values = values{
+        if let values = values {
             let data: [Int] = values
             let convertedData = Data(data.description.utf8)
             self.send(data: convertedData)
         }
         self.nwConnection.start(queue: .main)
     }
+
 
     func send(data: Data) {
         self.nwConnection.send(content: data, completion: .contentProcessed( { error in

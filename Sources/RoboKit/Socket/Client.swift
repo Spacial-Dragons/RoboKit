@@ -10,12 +10,10 @@ import Network
 import SwiftUI
 
 ///The TCP Client class holds the logic for the client of our TCP connection.
-@Observable public class TCPClient {
+@Observable public class TCPClient: @unchecked Sendable {
     
     /// The connection to the server
     public var connection: NWConnection?
-    /// Log where the state handler and its helper methods add String updates
-    @Published public var log: [String] = []
     
     /// Host and Port of the server the client should connect to
     public var host: NWEndpoint.Host
@@ -41,11 +39,11 @@ import SwiftUI
         
         self.connection?.stateUpdateHandler = {state in
             
-            self.log.append("Client will start connection...Current state: \(state)")
+//            self.clientLog.append("Client will start connection...Current state: \(state)")
             
             switch state{
             case .setup:
-                self.setUpConnection(logMessage: nil, <#T##setup: (() -> Void)?##(() -> Void)?##() -> Void#>)
+                self.setUpConnection()
                 break
             case .waiting(_):
                 self.connectionWaiting()
@@ -55,8 +53,8 @@ import SwiftUI
                 break
                 
             case .ready:
-                self.log.append("Ready")
-                self.connectionReady()
+//                self.clientLog.append("Ready")
+                self.connectionReady(value: value)
             case .failed(_):
                 
                 self.connectionFailed()
@@ -85,14 +83,14 @@ import SwiftUI
         self.connection?.receive(minimumIncompleteLength: min, maximumLength: max, completion: { data, _, isComplete, error in
             if let data = data, !data.isEmpty{
                 
-                self.log.append("---------------------------\nClient sent data: \n\(String(data: data, encoding: .utf8) ?? "error")")
+//                self.clientLog.append("---------------------------\nClient sent data: \n\(String(data: data, encoding: .utf8) ?? "error")")
             }
             
             if isComplete {
                 self.connectionEnded()
                 
             } else if let error = error{
-                self.log.append("Error \(error) when receiving message")
+//                self.clientLog.append("Error \(error) when receiving message")
             } else {
                 self.receiveMessage()
             }
@@ -101,7 +99,7 @@ import SwiftUI
     
     /// Ends the connection to the server
     public func connectionEnded(){
-        self.log.append("Ending and closing the connection")
+//        self.clientLog.append("Ending and closing the connection")
         self.connection?.cancel()
     }
     
@@ -109,21 +107,20 @@ import SwiftUI
     /// - Parameters:
     ///    - data: the data that should be sent to the server
     public func sendMessage(data: Data){
-        self.log.append("tried to send, \(String(describing: self.connection?.state))")
+//        self.clientLog.append("tried to send, \(String(describing: self.connection?.state))")
         self.connection?.send(content: data, completion: .contentProcessed({ error in
             if let _ = error {
-                self.log.append("sending failed")
+//                self.clientLog.append("sending failed")
                 self.connectionFailed()
                 
                 return
             }
-            self.log.append("---------------------------\nClient sent data: \n\(String(data: data, encoding: .utf8) ?? "error")")
+//            self.clientLog.append("---------------------------\nClient sent data: \n\(String(data: data, encoding: .utf8) ?? "error")")
         }))
     }
     /// Adds message to the server log, equates the `stateUpdateHandler` to nil and cancels the NWConnection. Called when the State Handler is on "cancelled"
     public func connectionFailed(){
-        self.log.append("connection failed")
-        print("connection failed")
+//        self.clientLog.append("connection failed")
         self.connection?.stateUpdateHandler = nil
         self.connection?.cancel()
     }
@@ -134,10 +131,7 @@ import SwiftUI
     /// - Parameters:
     ///  - logMessage: the message that will be added to the client's log
     ///  - setup: the setup configuration needed for your application
-    public func setUpConnection(logMessage: String?){
-        if let message = logMessage {
-            self.log.append(message)
-        }
+    public func setUpConnection(){
         if let setup = setupConnection{
             setup()
         }
@@ -149,12 +143,8 @@ import SwiftUI
     /// - Parameters:
     ///   - logMessage: the message that will be added to the client's log when this function is called
     ///   - waiting: the logic whar should be applied when this function is called
-    public func connectionWaiting(logMessage: String?, _ waiting: (() -> Void)?){
-        
-        if let message = logMessage {
-            self.log.append(message)
-        }
-        if let waiting = waiting{
+    public func connectionWaiting(){
+        if let waiting = waitingConnection{
             waiting()
         }
     }
@@ -164,11 +154,9 @@ import SwiftUI
     /// - Parameters:
     ///   - logMessage: the message that will be added to the client's log when this function is called
     ///   - preparing: the logic whar should be applied when this function is called
-    public func connectionPreparing(logMessage: String?, _ preparing: (() -> Void)?){
-        if let message = logMessage {
-            self.log.append(message)
-        }
-        if let preparing = preparing{
+    public func connectionPreparing(){
+        
+        if let preparing = preparingConnection{
             preparing()
         }
     }
@@ -178,9 +166,10 @@ import SwiftUI
     /// - Parameters:
     ///   - logMessage: the message that will be added to the client's log when this function is called
     ///   - preparing: the logic whar should be applied when this function is called
-    public func connectionReady(_ ready: (() -> Void)?) {
-        
-        //Do I really need this here? It's already in the start Connection
+    public func connectionReady(value: Data) {
+        if let ready = readyConnection{
+            ready()
+        }
         self.receiveMessage()
         self.sendMessage(data: value)
         self.connection?.start(queue: .main)
@@ -191,12 +180,8 @@ import SwiftUI
     /// - Parameters:
     ///   - logMessage: the message that will be added to the client's log when this function is called
     ///   - preparing: the logic whar should be applied when this function is called
-    public func connectionCanceled(logMessages: String?, _ canceled(() -> Void)?) {
-        if let message = logMessage {
-            self.log.append(message)
-        }
-        
-        if let canceled = canceled {
+    public func connectionCanceled() {
+        if let canceled = cancelledConnection {
             canceled()
         }
         

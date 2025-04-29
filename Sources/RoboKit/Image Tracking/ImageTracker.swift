@@ -71,11 +71,12 @@ public class ImageTracker {
             )
             return
         }
-        
+
         AppLogger.shared.info(
           "Starting ARKit session with image tracking provider...",
           category: .tracking
         )
+
         imageTracking = ImageTrackingProvider(referenceImages: referenceImages)
         Task {
             do {

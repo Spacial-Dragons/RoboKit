@@ -3,7 +3,7 @@ import ARKit
 import UIKit
 
 /// Represents a tracking image with its associated metadata.
-/// This structure is used to define a Data Matrix image's name and its physical offset relative to a reference point.
+/// This structure is used to define a Tracking image's name and its physical offset relative to a reference point.
 
 @MainActor
 public struct TrackingImage {

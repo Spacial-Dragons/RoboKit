@@ -3,7 +3,7 @@ import simd
 /// An extension to `simd_float4x4` providing convenient computed properties for position and orientation.
 /// These properties facilitate easier access and modification of transformation components.
 extension simd_float4x4 {
-    
+
     /// The position component of the transformation matrix represented as a `SIMD3<Float>`.
     /// - Note: The position is stored in the fourth column of the matrix.
     var position: SIMD3<Float> {
@@ -15,7 +15,7 @@ extension simd_float4x4 {
             columns.3 = SIMD4<Float>(newValue.x, newValue.y, newValue.z, columns.3.w)
         }
     }
-    
+
     /// The orientation component of the transformation matrix represented as a quaternion (`simd_quatf`).
     /// - Note: The orientation is derived from the upper-left 3x3 rotation matrix portion of the transform.
     var orientation: simd_quatf {

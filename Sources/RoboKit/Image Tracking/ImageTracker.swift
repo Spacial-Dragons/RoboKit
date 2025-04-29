@@ -42,7 +42,11 @@ public class ImageTracker {
     ///   - images: An array of `TrackingImage` instances with their associated offsets.
     /// - Note: If a reference image is not found, the initializer will trigger a fatal error.
     public init(arResourceGroupName: String, images: [TrackingImage]) {
-        self.referenceImages = ARKit.ReferenceImage.loadReferenceImages(inGroupNamed: arResourceGroupName)
+        // Load images from both main bundle and from the module bundle
+        let mainSet = ARKit.ReferenceImage.loadReferenceImages(inGroupNamed: arResourceGroupName, bundle: .main)
+        let moduleSet = ARKit.ReferenceImage.loadReferenceImages(inGroupNamed: arResourceGroupName, bundle: .module)
+        self.referenceImages = mainSet + moduleSet
+        
         self.referenceImagesMap = images.reduce(into: [:]) { map, image in
             guard let refImage = self.referenceImages.first(where: { $0.name == image.imageName }) else {
                 fatalError("❌ Reference image \(image.imageName) not found")
@@ -62,7 +66,7 @@ public class ImageTracker {
     
     /// Initializes the image tracking provider and starts the AR session.
     /// - Note: This method checks for platform support. In the simulator, image tracking is not supported.
-    private func initializeImageTracking() {
+    internal func initializeImageTracking() {
         guard ImageTrackingProvider.isSupported else {
             AppLogger.shared.warning("Image tracking not supported in this environment. Simulator: Return an identity matrix as a default.", category: .tracking)
             return
@@ -83,7 +87,7 @@ public class ImageTracker {
     /// Retrieves the transformation matrices for the currently tracked images.
     /// - Returns: An array of `simd_float4x4` representing the tracked images' transforms.
     /// - Note: The implementation differs based on the target environment.
-    private func getTrackedImagesTransform() -> [simd_float4x4] {
+    internal func getTrackedImagesTransform() -> [simd_float4x4] {
         #if targetEnvironment(simulator)
         // Simulator: Return a default transform for each reference image.
         return referenceImagesMap.values.compactMap { trackingImage, _ in
@@ -102,7 +106,7 @@ public class ImageTracker {
     
     /// Monitors anchor updates from the image tracking provider.
     /// - Note: This method listens for added, updated, and removed events and processes them accordingly.
-    private func monitorAnchorUpdates() {
+    internal func monitorAnchorUpdates() {
         AppLogger.shared.debug("🔄 Monitoring anchor updates...", category: .tracking)
         Task {
             guard let provider = imageTracking else { return }
@@ -120,7 +124,7 @@ public class ImageTracker {
     
     /// Removes a tracked anchor from the internal mapping.
     /// - Parameter anchor: The `ImageAnchor` to be removed.
-    private func removeAnchor(_ anchor: ImageAnchor) {
+    internal func removeAnchor(_ anchor: ImageAnchor) {
         AppLogger.shared.info("Removing anchor with ID: \(anchor.id.uuidString)", category: .tracking)
         trackedAnchorsMap.removeValue(forKey: anchor.id)
     }
@@ -128,7 +132,7 @@ public class ImageTracker {
     /// Updates an existing anchor entity or creates a new one based on the provided image anchor.
     /// - Parameter anchor: The `ImageAnchor` containing updated tracking information.
     /// - Note: Only anchors that are currently tracked are processed.
-    private func updateOrCreateEntity(for anchor: ImageAnchor) {
+    internal func updateOrCreateEntity(for anchor: ImageAnchor) {
         AppLogger.shared.debug("Updating tracked anchor for image: \(anchor.referenceImage.name ?? "N/A")", category: .tracking)
         if anchor.isTracked {
             trackedAnchorsMap[anchor.id] = AnchorData(
@@ -141,7 +145,7 @@ public class ImageTracker {
     /// Computes the estimated root transformation matrix based on the tracked anchors.
     /// - Returns: A `simd_float4x4` representing the averaged root transform, or `nil` if no anchors are tracked.
     /// - Note: The computation adjusts each anchor's transform by its associated image offset.
-    private func computeRootPosition() -> simd_float4x4? {
+    internal func computeRootPosition() -> simd_float4x4? {
         #if targetEnvironment(simulator)
         AppLogger.shared.info("Running in simulator — returning identity matrix.", category: .tracking)
         return matrix_identity_float4x4

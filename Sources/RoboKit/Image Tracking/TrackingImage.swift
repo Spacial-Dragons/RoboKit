@@ -2,8 +2,7 @@ import RealityKit
 import ARKit
 import UIKit
 
-/// Represents a tracking image with its associated metadata.
-/// This structure is used to define a Data Matrix image's name and its physical offset relative to a reference point.
+/// This structure is used to define a Tracking image's name and its physical offset relative to a reference point.
 
 @MainActor
 public struct TrackingImage {
@@ -26,10 +25,13 @@ public struct TrackingImage {
     /// The initializer validates that the image exists in the asset catalog. If the image is not found,
     /// it triggers a fatal error with detailed instructions to resolve the issue.
     public init(imageName: String, rootOffset: SIMD3<Float>) {
-        // Validate that the image exists in the asset catalog.
-        guard UIImage(named: imageName) != nil else {
+        // Try .main Bundle first, then .module Bundle
+        let foundImage = UIImage(named: imageName, in: .main, with: .none)
+            ?? UIImage(named: imageName, in: .module, with: .none)
+        
+        guard foundImage != nil else {
             fatalError("""
-            ❌ Data Matrix image '\(imageName)' not found in the Assets catalog.
+            ❌ Tracking image '\(imageName)' not found in the Assets catalog.
             Please ensure that:
             • The image exists in the .xcassets catalog in the reference folder.
             • The name exactly matches the texture name.

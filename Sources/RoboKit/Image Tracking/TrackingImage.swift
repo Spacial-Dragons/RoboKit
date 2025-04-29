@@ -26,8 +26,11 @@ public struct TrackingImage {
     /// The initializer validates that the image exists in the asset catalog. If the image is not found,
     /// it triggers a fatal error with detailed instructions to resolve the issue.
     public init(imageName: String, rootOffset: SIMD3<Float>) throws {
-        // Validate that the image exists in the asset catalog.
-        guard UIImage(named: imageName) != nil else {
+        // Try .main Bundle first, then .module Bundle
+        let foundImage = UIImage(named: imageName, in: .main, with: .none)
+            ?? UIImage(named: imageName, in: .module, with: .none)
+
+        guard foundImage != nil else {
             AppLogger.shared.fault("""
                 ❌ TrackingImage init failed: Image '\(imageName)' not found in asset catalog.
                 Possible causes:

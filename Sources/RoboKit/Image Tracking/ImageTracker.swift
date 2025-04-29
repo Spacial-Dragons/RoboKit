@@ -46,7 +46,7 @@ public class ImageTracker {
         let mainSet = ARKit.ReferenceImage.loadReferenceImages(inGroupNamed: arResourceGroupName, bundle: .main)
         let moduleSet = ARKit.ReferenceImage.loadReferenceImages(inGroupNamed: arResourceGroupName, bundle: .module)
         self.referenceImages = mainSet + moduleSet
-        
+
         self.referenceImagesMap = images.reduce(into: [:]) { map, image in
             guard let refImage = self.referenceImages.first(where: { $0.name == image.imageName }) else {
                 fatalError("❌ Reference image \(image.imageName) not found")

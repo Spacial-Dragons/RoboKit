@@ -28,7 +28,7 @@ public struct TrackingImage {
         // Try .main Bundle first, then .module Bundle
         let foundImage = UIImage(named: imageName, in: .main, with: .none)
             ?? UIImage(named: imageName, in: .module, with: .none)
-        
+
         guard foundImage != nil else {
             fatalError("""
             ❌ Tracking image '\(imageName)' not found in the Assets catalog.

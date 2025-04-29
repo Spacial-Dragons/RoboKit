@@ -41,22 +41,21 @@ public class ImageTracker {
     ///   - arResourceGroupName: The name of the asset catalog group containing the AR reference images.
     ///   - images: An array of `TrackingImage` instances with their associated offsets.
     /// - Note: If a reference image is not found, the initializer will trigger a fatal error.
-    public init(arResourceGroupName: String, images: [TrackingImage]) {
+    public init(arResourceGroupName: String, images: [TrackingImage]) throws {
         self.referenceImages = ARKit.ReferenceImage.loadReferenceImages(inGroupNamed: arResourceGroupName)
-        self.referenceImagesMap = images.reduce(into: [:]) { map, image in
+        
+        self.referenceImagesMap = try images.reduce(into: [:]) { map, image in
             guard let refImage = self.referenceImages.first(where: { $0.name == image.imageName }) else {
-                fatalError("❌ Reference image \(image.imageName) not found")
-                AppLogger.shared.fault("❌ Reference image '\(image.imageName)' not found in asset group '\(arResourceGroupName)'", category: .tracking)
-                /// TODO: Replace fatalError with a proper error propagation mechanism.
-                /// The current RoboKit Demo app does not support handling throwing initializers directly
-                /// To improve resilience, implement a way
-                /// to pass errors from ImageTracker initialization (missing reference images)
-                /// back to the app.
+                AppLogger.shared.fault(
+                    "❌ Reference image '\(image.imageName)' not found in asset group '\(arResourceGroupName)'",
+                    category: .tracking
+                )
                 
-                /// throw TrackingError.imageNotFound(imageName: image.imageName)
+                throw TrackingError.imageNotFound(imageName: image.imageName)
             }
             map[image.imageName] = (image, refImage)
         }
+        
         initializeImageTracking()
     }
     

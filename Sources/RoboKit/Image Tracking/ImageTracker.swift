@@ -185,8 +185,8 @@ public class ImageTracker {
             let estimatedRootPosition = anchorData.transform.position - adjustedOffset
 
             AppLogger.shared.debug(
-                "Anchor '\(anchorData.imageName)': estimated root position",
-                category: .tracking = \(estimatedRootPosition.debugDescription)
+                "Anchor '\(anchorData.imageName)': estimated root position = \(estimatedRootPosition.debugDescription)",
+                category: .tracking
             )
             totalPosition += estimatedRootPosition
             count += 1

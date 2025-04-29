@@ -27,7 +27,8 @@ let package = Package(
         ),
         .testTarget(
             name: "RoboKitTests",
-            dependencies: ["RoboKit"]
+            dependencies: ["RoboKit"],
+            plugins: [.plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins")]
         )
     ]
 )

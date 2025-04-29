@@ -11,9 +11,9 @@ struct ImageTrackerTests {
 
     init() throws {
         self.trackingImagesConfig = [
-            try TrackingImage(imageName: "img_1", rootOffset: .init(x: 1.1, y: 2.2, z: 3.0)),
-            try TrackingImage(imageName: "img_2", rootOffset: .init(x: -1.0, y: -3.5, z: 0.0)),
-            try TrackingImage(imageName: "img_3", rootOffset: .init(x: 10.2, y: -10.2, z: -3.0))
+            try TrackingImage(imageName: "internal_img_1", rootOffset: .init(x: 1.1, y: 2.2, z: 3.0)),
+            try TrackingImage(imageName: "internal_img_2", rootOffset: .init(x: -1.0, y: -3.5, z: 0.0)),
+            try TrackingImage(imageName: "internal_img_3", rootOffset: .init(x: 10.2, y: -10.2, z: -3.0))
         ]
 
         self.tracker = try .init(

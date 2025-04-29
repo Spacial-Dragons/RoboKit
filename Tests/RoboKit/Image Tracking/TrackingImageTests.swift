@@ -7,7 +7,7 @@ struct TrackingImageTests {
 
     @Test("TrackingImage init succeeds when image exists in asset catalog")
     func trackingImageInitSuccess() throws {
-        let name = "img_1"
+        let name = "internal_img_1"
         let offset: SIMD3<Float> = .zero
 
         #expect(throws: Never.self) {

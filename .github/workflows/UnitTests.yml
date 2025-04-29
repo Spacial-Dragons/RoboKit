@@ -24,4 +24,6 @@ jobs:
           xcodebuild test \
             -scheme RoboKit \
             -destination 'platform=visionOS Simulator,name=Apple Vision Pro,OS=2.2' \
-            -enableCodeCoverage YES
+            -enableCodeCoverage YES \
+            -skipPackagePluginValidation \
+            -skipMacroValidation

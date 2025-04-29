@@ -9,7 +9,6 @@ import Foundation
 import Network
 import SwiftUI
 
-
 class ServerLog {}
 
 public class Server {}

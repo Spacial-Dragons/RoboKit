@@ -4,15 +4,15 @@ import simd
 
 @Suite("simd_float4x4 Extension")
 struct SimdFloat4x4ExtensionTests {
-    
+
     // Transform matrix rotated 90 degrees along the Y-axis with coordinate position (1, 2, 3)
     let transformMatrix: simd_float4x4 = simd_float4x4(
-        SIMD4<Float>(  0,  0,  1, 0),
-        SIMD4<Float>(  0,  1,  0, 0),
-        SIMD4<Float>( -1,  0,  0, 0),
-        SIMD4<Float>(  1,  2,  3, 1)
+        SIMD4<Float>(  0, 0, 1, 0),
+        SIMD4<Float>(  0, 1, 0, 0),
+        SIMD4<Float>( -1, 0, 0, 0),
+        SIMD4<Float>(  1, 2, 3, 1)
     )
-    
+
     /// simd_float4x4 transformation matrix layout:
     ///
     /// | m00 m01 m02 m03 |   // X  Y  Z  Perspective X
@@ -34,7 +34,7 @@ struct SimdFloat4x4ExtensionTests {
     /// | 0.0  1.0  0.0  0.0 |
     /// | 0.0  0.0  1.0  0.0 |
     /// | 1.0  2.0  3.0  1.0 |
-    
+
     @Test("Position getter")
     func positionGetterTest() {
         // Test that the position getter returns the correct vector from the fourth row.
@@ -43,13 +43,13 @@ struct SimdFloat4x4ExtensionTests {
         #expect(transformMatrix.position.y == 2.0)
         #expect(transformMatrix.position.z == 3.0)
     }
-    
+
     @Test("Position getter on identity matrix")
     func positionGetterIdentityTest() {
         let identity = matrix_identity_float4x4
         #expect(identity.position == SIMD3<Float>(0, 0, 0))
     }
-    
+
     @Test("Position setter")
     func positionSetterTest() {
         // Verify that setting position updates the fourth column correctly without altering the component.
@@ -89,7 +89,7 @@ struct SimdFloat4x4ExtensionTests {
         #expect(matrix.columns.1 == originalCols.1)
         #expect(matrix.columns.2 == originalCols.2)
     }
-    
+
     @Test("Orientation getter")
     func orientationGetterTest() {
         // Check that the orientation getter correctly extracts the rotation matrix and converts it into a quaternion.
@@ -102,7 +102,7 @@ struct SimdFloat4x4ExtensionTests {
         #expect(angleDiff < 0.0001)
         #expect(abs(axisDot) > 0.9999)
     }
-    
+
     @Test("Orientation setter 180° around X")
     func orientationSetter180XTest() {
         var matrix = transformMatrix
@@ -138,5 +138,5 @@ struct SimdFloat4x4ExtensionTests {
         matrix.orientation = rotationQuat
         #expect(matrix.columns.3 == transformMatrix.columns.3)
     }
-    
+
 }

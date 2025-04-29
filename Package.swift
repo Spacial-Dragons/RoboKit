@@ -12,18 +12,23 @@ let package = Package(
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
             name: "RoboKit",
-            targets: ["RoboKit"]),
+            targets: ["RoboKit"])
+    ],
+    dependencies: [
+        .package(url: "https://github.com/SimplyDanny/SwiftLintPlugins", from: "0.59.0")
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
             name: "RoboKit",
-            resources: [.process("Test Assets.xcassets")]
+            resources: [.process("Test Assets.xcassets")],
+            plugins: [.plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins")]
         ),
         .testTarget(
             name: "RoboKitTests",
-            dependencies: ["RoboKit"]
-        ),
+            dependencies: ["RoboKit"],
+            plugins: [.plugin(name: "SwiftLintBuildToolPlugin", package: "SwiftLintPlugins")]
+        )
     ]
 )

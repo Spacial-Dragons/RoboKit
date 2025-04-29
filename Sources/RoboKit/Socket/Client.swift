@@ -9,9 +9,6 @@ import Foundation
 import Network
 import SwiftUI
 
-
 struct FinalClient {
-    
-    
-    
+
 }

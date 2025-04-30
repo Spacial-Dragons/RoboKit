@@ -9,6 +9,7 @@ import Foundation
 import Network
 import SwiftUI
 
+
 ///The TCP Client class holds the logic for the client of our TCP connection.
 @Observable public final class TCPClient: @unchecked Sendable {
     
@@ -52,7 +53,7 @@ import SwiftUI
         
         self.connection?.stateUpdateHandler = {state in
             
-//            self.clientLog.append("Client will start connection...Current state: \(state)")
+            //            self.clientLog.append("Client will start connection...Current state: \(state)")
             
             switch state{
             case .setup:
@@ -66,12 +67,12 @@ import SwiftUI
                 break
                 
             case .ready:
-//                self.clientLog.append("Ready")
+                //                self.clientLog.append("Ready")
                 self.connectionReady(value: value)
             case .failed(_):
                 
                 self.connectionFailed()
-//                                self.connection?.cancel()
+                //                                self.connection?.cancel()
                 
             case .cancelled:
                 self.connectionCanceled()
@@ -96,14 +97,14 @@ import SwiftUI
         self.connection?.receive(minimumIncompleteLength: min, maximumLength: max, completion: { data, _, isComplete, error in
             if let data = data, !data.isEmpty{
                 
-//                self.clientLog.append("---------------------------\nClient sent data: \n\(String(data: data, encoding: .utf8) ?? "error")")
+                //                self.clientLog.append("---------------------------\nClient sent data: \n\(String(data: data, encoding: .utf8) ?? "error")")
             }
             
             if isComplete {
                 self.connectionEnded()
                 
             } else if let error = error{
-//                self.clientLog.append("Error \(error) when receiving message")
+                //                self.clientLog.append("Error \(error) when receiving message")
             } else {
                 self.receiveMessage()
             }
@@ -112,7 +113,7 @@ import SwiftUI
     
     /// Ends the connection to the server
     public func connectionEnded(){
-//        self.clientLog.append("Ending and closing the connection")
+        //        self.clientLog.append("Ending and closing the connection")
         self.connection?.cancel()
     }
     
@@ -120,20 +121,20 @@ import SwiftUI
     /// - Parameters:
     ///    - data: the data that should be sent to the server
     public func sendMessage(data: Data){
-//        self.clientLog.append("tried to send, \(String(describing: self.connection?.state))")
+        //        self.clientLog.append("tried to send, \(String(describing: self.connection?.state))")
         self.connection?.send(content: data, completion: .contentProcessed({ error in
             if let _ = error {
-//                self.clientLog.append("sending failed")
+                //                self.clientLog.append("sending failed")
                 self.connectionFailed()
                 
                 return
             }
-//            self.clientLog.append("---------------------------\nClient sent data: \n\(String(data: data, encoding: .utf8) ?? "error")")
+            //            self.clientLog.append("---------------------------\nClient sent data: \n\(String(data: data, encoding: .utf8) ?? "error")")
         }))
     }
     /// Adds message to the server log, equates the `stateUpdateHandler` to nil and cancels the NWConnection. Called when the State Handler is on "cancelled"
     public func connectionFailed(){
-//        self.clientLog.append("connection failed")
+        //        self.clientLog.append("connection failed")
         self.connection?.stateUpdateHandler = nil
         self.connection?.cancel()
     }
@@ -184,5 +185,4 @@ import SwiftUI
         }
         
     }
-    
 }

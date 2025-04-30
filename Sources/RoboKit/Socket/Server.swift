@@ -9,7 +9,6 @@ import Foundation
 import Network
 import SwiftUI
 
-
 @Observable public final class Server: @unchecked Sendable {
     /// A static log to record server/connection events.
 //    static var log: [String] = []

@@ -10,20 +10,33 @@ import Network
 import SwiftUI
 
 ///The TCP Client class holds the logic for the client of our TCP connection.
-@Observable public class TCPClient: @unchecked Sendable {
+@Observable public final class TCPClient: @unchecked Sendable {
     
     /// The connection to the server
     public var connection: NWConnection?
     
-    /// Host and Port of the server the client should connect to
+    /// Host of the server the client should connect to
     public var host: NWEndpoint.Host
+    
+    /// Port of the server the client should connect to
     public var port: NWEndpoint.Port
     
+    /// Custom logic for when the connection to the server is on `setup` state
     public var setupConnection: (() -> Void)? = nil
+    
+    /// Custom logic for when the connection to the server is on `waiting` state
     public var waitingConnection: (() -> Void)? = nil
+    
+    /// Custom logic for when the connection to the server is on `preparing` state
     public var preparingConnection: (() -> Void)? = nil
+    
+    /// Custom logic for when the connection to the server is on `ready` state
     public var readyConnection: (() -> Void)? = nil
+    
+    /// Custom logic for when the connection to the server is on `failed` state
     public var failedConnection: (() -> Void)? = nil
+    
+    /// Custom logic for when the connection to the server is on `cancelled` state
     public var cancelledConnection: (() -> Void)? = nil
     
     

@@ -20,11 +20,22 @@ import SwiftUI
     /// This array and the existence of the `Connection` class allow for the connection of multiple clients to this server at once.
     private var connectionsByID: [Int: Connection] = [:]
     
+    /// Custom logic for when the connection to the client is on `setup` state
     public var setupConnection: (() -> Void)? = nil
+    
+    /// Custom logic for when the connection to the client is on `waiting` state
     public var waitingConnection: (() -> Void)? = nil
+    
+    /// Custom logic for when the connection to the client is on `preparing` state
     public var preparingConnection: (() -> Void)? = nil
+    
+    /// Custom logic for when the connection to the client is on `ready` state
     public var readyConnection: (() -> Void)? = nil
+    
+    /// Custom logic for when the connection to the client is on `failed` state
     public var failedConnection: (() -> Void)? = nil
+    
+    /// Custom logic for when the connection to the client is on `cancelled` state
     public var cancelledConnection: (() -> Void)? = nil
     
     /// Initializes the server's listener. Server is NOT yet ready for connections.
@@ -121,13 +132,23 @@ import SwiftUI
     
     var didStopCallback: ((Error?) -> Void)? = nil
     
-    /// Closures for customization of connection behavior depending on its state.
-    var setupConnection: (() -> Void)? = nil
-    var waitingConnection: (() -> Void)? = nil
-    var preparingConnection: (() -> Void)? = nil
-    var readyConnection: (() -> Void)? = nil
-    var failedConnection: (() -> Void)? = nil
-    var cancelledConnection: (() -> Void)? = nil
+    /// Custom logic for when the connection to the client is on `setup` state
+    public var setupConnection: (() -> Void)? = nil
+    
+    /// Custom logic for when the connection to the client is on `waiting` state
+    public var waitingConnection: (() -> Void)? = nil
+    
+    /// Custom logic for when the connection to the client is on `preparing` state
+    public var preparingConnection: (() -> Void)? = nil
+    
+    /// Custom logic for when the connection to the client is on `ready` state
+    public var readyConnection: (() -> Void)? = nil
+    
+    /// Custom logic for when the connection to the client is on `failed` state
+    public var failedConnection: (() -> Void)? = nil
+    
+    /// Custom logic for when the connection to the client is on `cancelled` state
+    public var cancelledConnection: (() -> Void)? = nil
 
     ///Initializes the Connection instance, assigning it an Integer ID
     init(nwConnection: NWConnection) {

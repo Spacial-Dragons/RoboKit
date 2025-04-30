@@ -41,29 +41,23 @@ public class ImageTracker {
     ///   - arResourceGroupName: The name of the asset catalog group containing the AR reference images.
     ///   - images: An array of `TrackingImage` instances with their associated offsets.
     /// - Note: If a reference image is not found, the initializer will trigger a fatal error.
-    public init(arResourceGroupName: String, images: [TrackingImage]) {
+    public init(arResourceGroupName: String, images: [TrackingImage]) throws {
         // Load images from both main bundle and from the module bundle
         let mainSet = ARKit.ReferenceImage.loadReferenceImages(inGroupNamed: arResourceGroupName, bundle: .main)
         let moduleSet = ARKit.ReferenceImage.loadReferenceImages(inGroupNamed: arResourceGroupName, bundle: .module)
         self.referenceImages = mainSet + moduleSet
 
-        self.referenceImagesMap = images.reduce(into: [:]) { map, image in
+        self.referenceImagesMap = try images.reduce(into: [:]) { map, image in
             guard let refImage = self.referenceImages.first(where: { $0.name == image.imageName }) else {
-                fatalError("❌ Reference image \(image.imageName) not found")
                 AppLogger.shared.fault(
                     "❌ Reference image '\(image.imageName)' not found in asset group '\(arResourceGroupName)'",
                     category: .tracking
                 )
-                /// TODO: Replace fatalError with a proper error propagation mechanism.
-                /// The current RoboKit Demo app does not support handling throwing initializers directly
-                /// To improve resilience, implement a way
-                /// to pass errors from ImageTracker initialization (missing reference images)
-                /// back to the app.
-
-                /// throw TrackingError.imageNotFound(imageName: image.imageName)
+                throw TrackingError.imageNotFound(imageName: image.imageName)
             }
             map[image.imageName] = (image, refImage)
         }
+
         initializeImageTracking()
     }
 
@@ -72,13 +66,16 @@ public class ImageTracker {
     internal func initializeImageTracking() {
         guard ImageTrackingProvider.isSupported else {
             AppLogger.shared.warning(
-                "Image tracking not supported in this environment. Simulator: Return an identity matrix as a default.",
-                category: .tracking
+              "Image tracking not supported in this environment. Simulator: Return an identity matrix as a default.",
+              category: .tracking
             )
             return
         }
 
-        AppLogger.shared.info("Starting ARKit session with image tracking provider...", category: .tracking)
+        AppLogger.shared.info(
+          "Starting ARKit session with image tracking provider...",
+          category: .tracking
+        )
 
         imageTracking = ImageTrackingProvider(referenceImages: referenceImages)
         Task {
@@ -188,6 +185,7 @@ public class ImageTracker {
                 "Anchor '\(anchorData.imageName)': estimated root position = \(estimatedRootPosition.debugDescription)",
                 category: .tracking
             )
+
             totalPosition += estimatedRootPosition
             count += 1
         }

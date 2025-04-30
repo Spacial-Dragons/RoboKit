@@ -9,16 +9,14 @@ struct ImageTrackerTests {
     private let trackingImagesConfig: [TrackingImage]
     private var tracker: ImageTracker
 
-    init() {
-        // Initialize tracking images defined in Test Assets.xcassets
+    init() throws {
         self.trackingImagesConfig = [
-            TrackingImage(imageName: "img_1", rootOffset: .init(x: 1.1, y: 2.2, z: 3.0)),
-            TrackingImage(imageName: "img_2", rootOffset: .init(x: -1.0, y: -3.5, z: 0.0)),
-            TrackingImage(imageName: "img_3", rootOffset: .init(x: 10.2, y: -10.2, z: -3.0))
+            try TrackingImage(imageName: "internal_img_1", rootOffset: .init(x: 1.1, y: 2.2, z: 3.0)),
+            try TrackingImage(imageName: "internal_img_2", rootOffset: .init(x: -1.0, y: -3.5, z: 0.0)),
+            try TrackingImage(imageName: "internal_img_3", rootOffset: .init(x: 10.2, y: -10.2, z: -3.0))
         ]
 
-        // Initialize ImageTracker with ARResourceGroup from Test Assets.xcassets
-        self.tracker = .init(
+        self.tracker = try .init(
             arResourceGroupName: "RoboKitTestsArResourceGroup",
             images: trackingImagesConfig
         )

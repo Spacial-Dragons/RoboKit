@@ -5,13 +5,13 @@
   },
   "resources" : [
     {
-      "filename" : "img_1.arreferenceimage"
+      "filename" : "internal_img_1.arreferenceimage"
     },
     {
-      "filename" : "img_2.arreferenceimage"
+      "filename" : "internal_img_2.arreferenceimage"
     },
     {
-      "filename" : "img_3.arreferenceimage"
+      "filename" : "internal_img_3.arreferenceimage"
     }
   ]
 }

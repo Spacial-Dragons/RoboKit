@@ -13,7 +13,6 @@ enum LogLevel: Int {
     case error = 3
     /// Fault level logs - used for critical errors that should be investigated immediately
     case fault = 4
-
     /// Maps the LogLevel to the corresponding OSLogType
     var osLogType: OSLogType {
         switch self {
@@ -24,7 +23,6 @@ enum LogLevel: Int {
         case .fault: return .fault
         }
     }
-
     /// Returns a string representation of the log level
     var stringValue: String {
         switch self {

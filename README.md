@@ -1,6 +1,10 @@
-# RoboKit Documentation
+<p align="center">
+  <img src="Media/RoboKitLogo-light.png#gh-light-mode-only" width="110">
+  <img src="Media/RoboKitLogo-dark.png#gh-dark-mode-only" width="110">
+</p>
 
-## Overview
+<h2 align="center">RoboKit</h2>
+
 **RoboKit** is a ...
 
 ## Requirements

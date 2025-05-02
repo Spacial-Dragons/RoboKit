@@ -14,7 +14,7 @@ extension InputSphereManager {
     /// Creates the Input Sphere, allowing the user to reposition it in space.
     /// - If the Input Sphere doesn’t exist, it is initialized as a mint-colored sphere.
     /// - The sphere is positioned slightly above the root point.
-    public func createInputSphere(rootPoint: Entity?, parentEntity: Entity, color: Color = .mint, radius: Float = 0.015) {
+    public func addInputSphere(rootPoint: Entity?, parentEntity: Entity, color: Color = .mint, radius: Float = 0.015) {
         guard let rootPoint = rootPoint else {
             print("Error: Failed to create Input Sphere. Root Point is nil.")
             return

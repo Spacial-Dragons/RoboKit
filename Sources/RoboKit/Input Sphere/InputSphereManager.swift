@@ -10,6 +10,9 @@ import RealityKit
 
 @MainActor
 @Observable public final class InputSphereManager: Sendable {
+    
+    public init() {}
+    
     /// The Input Sphere represents the target position and rotation for a robot's end effector.
     public var inputSphere: Entity? = nil
     

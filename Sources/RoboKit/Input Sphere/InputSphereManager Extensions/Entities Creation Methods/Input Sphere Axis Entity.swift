@@ -20,7 +20,7 @@ extension InputSphereManager {
         let offset = SIMD3<Float>(
             x: axis == .lateral ? height / 2 : 0,
             y: axis == .vertical ? height / 2 : 0,
-            z: axis == .longitudinal ? height / 2 : 0
+            z: axis == .longitudinal ? -height / 2 : 0
         )
 
         axisEntity.position = offset

@@ -38,7 +38,8 @@ extension InputSphereManager {
         
         inputSphere = sphere
         updateInputSpherePosition()
-        // createInputSphereAxes()
+            
+        if showAxes { addInputSphereAxes() }
     }
 }
 

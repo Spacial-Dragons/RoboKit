@@ -27,5 +27,5 @@ import RealityKit
     ]
     
     /// Axis entities for the Input Sphere.
-    var inputSphereAxes: [Axis: Entity] = [:]
+    var inputSphereAxes: [InputSphereAxis: Entity] = [:]
 }

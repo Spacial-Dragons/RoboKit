@@ -31,7 +31,6 @@ extension InputSphereManager {
             HoverEffectComponent()
         ])
         
-        entity.name = inputSphereName
         return entity
     }
 }

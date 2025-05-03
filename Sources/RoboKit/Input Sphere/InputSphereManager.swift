@@ -16,9 +16,6 @@ import RealityKit
     /// The Input Sphere represents the target position and rotation for a robot's end effector.
     public var inputSphere: Entity? = nil
     
-    /// The name of the Input Sphere entity.
-    let inputSphereName = "InputSphere"
-    
     /// The current position of the Input Sphere.
     var inputSpherePosition: SIMD3<Float> = .zero
     
@@ -31,10 +28,4 @@ import RealityKit
     
     /// Axis entities for the Input Sphere.
     var inputSphereAxes: [Axis: Entity] = [:]
-    
-//    /// The height of the Input Sphere’s axis.
-//    let inputSphereAxisHeight: Float = 0.1
-//    
-//    /// The radius of the Input Sphere’s axis.
-//    let inputSphereAxisRadius: Float = 0.002
 }

@@ -26,6 +26,23 @@ import RealityKit
         .pitch: 0
     ]
     
+    /// RealityKit is using a 3D coordinate system common in many 3D engines:
+    ///
+    /// •⁠  ⁠Y-axis points upward
+    /// •⁠  ⁠Z-axis points toward you
+    /// •⁠  ⁠X-axis points to the right
+    ///
+    /// The rotation conversion matrix below is suited for converting RealityKit coordinate system to
+    /// ROS coordinate system:
+    /// •⁠  ⁠Y-axis points forward
+    /// •⁠  ⁠Z-axis points upward
+    /// •⁠  ⁠X-axis points to the right
+    internal static let rotationConversionMatrix = simd_float3x3(
+        SIMD3<Float>( 1,  0,  0),
+        SIMD3<Float>( 0,  0, 1),
+        SIMD3<Float>( 0,  1,  0)
+    )
+    
     /// Axis entities for the Input Sphere.
-    var inputSphereAxes: [InputSphereAxis: Entity] = [:]
+    internal var inputSphereAxes: [InputSphereAxis: Entity] = [:]
 }

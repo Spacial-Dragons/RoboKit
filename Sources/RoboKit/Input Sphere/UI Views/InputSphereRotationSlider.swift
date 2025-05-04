@@ -10,9 +10,16 @@ import SwiftUI
 public struct InputSphereRotationSlider: View {
     @Environment(InputSphereManager.self) private var inputSphereManager: InputSphereManager
     let eulerAngle: EulerAngle
+    let maxValue: Float = 180
+    let minValue: Float = -180
+    let step: Float = 1
 
+    public init(eulerAngle: EulerAngle) {
+        self.eulerAngle = eulerAngle
+    }
+    
     /// Retrieves the appropriate binding for the selected Euler angle.
-    private var rotationValue: Binding<Float> {
+    private var angleValue: Binding<Float> {
         Binding(
             get: { inputSphereManager.inputSphereEulerAngles[eulerAngle] ?? 0 },
             set: { inputSphereManager.inputSphereEulerAngles[eulerAngle] = $0 }
@@ -30,17 +37,16 @@ public struct InputSphereRotationSlider: View {
     public var body: some View {
         VStack {
             // Displays the current angle value in degrees
-            Text("\(Int(rotationValue.wrappedValue * 180 / .pi))°")
+            Text("\(Int(angleValue.wrappedValue.toDegrees))°")
                 .padding(.leading, 50)
             
             // Slider with labels
             VStack(alignment: .leading) {
                 HStack {
                     Text("\(angleLabel):")
-                    Text("-180°")
-                    Slider(value: rotationValue, in: (-1 * .pi)...(.pi), step: 2 * .pi / 360)
-                        .frame(width: 400)
-                    Text("180°")
+                    Text("\(String(format: "%.0f", minValue))°")
+                    Slider(value: angleValue, in: (minValue.toRadians)...(maxValue.toRadians), step: step.toRadians)
+                    Text("\(String(format: "%.0f", maxValue))°")
                 }
             }
         }

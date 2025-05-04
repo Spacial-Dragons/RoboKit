@@ -20,7 +20,7 @@ import RealityKit
     public var inputSpherePosition: SIMD3<Float> = .zero
     
     /// The Euler angles (roll, yaw, pitch) of the Input Sphere.
-    var inputSphereEulerAngles: [EulerAngle: Float] = [
+    public var inputSphereEulerAngles: [EulerAngle: Float] = [
         .roll: 0,
         .yaw: 0,
         .pitch: 0

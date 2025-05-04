@@ -11,7 +11,7 @@ extension InputSphereManager {
     public func addInputSphereAxes() {
         guard let inputSphere = inputSphere else { return }
         let axes: [InputSphereAxis] = [.lateral, .vertical, .longitudinal]
-//        updateInputSpherePosition()
+        updateInputSpherePosition()
         
         for axis in axes {
             let axisEntity = inputSphereAxisEntity(

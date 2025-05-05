@@ -14,7 +14,7 @@ import SwiftUI
 //    static var log: [String] = []
     
     /// The server's conenction listener.
-    private let listener: NWListener
+    public let listener: NWListener
 
     /// This array and the existence of the `Connection` class allow for the connection of multiple clients to this server at once.
     private var connectionsByID: [Int: Connection] = [:]

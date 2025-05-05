@@ -9,7 +9,7 @@ import Foundation
 import Network
 
 /// Possible errors from the JSON encoding and decoding process
-enum JSONErrors: Error {
+public enum JSONErrors: Error {
     case undecodable
     case unknown
 }

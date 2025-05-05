@@ -42,7 +42,7 @@ import SwiftUI
     
     
     /// Initializes the client and the connection instance to the server. Warning: Connection is not yet running here.
-    init(host: NWEndpoint.Host, port: NWEndpoint.Port) {
+    public init(host: NWEndpoint.Host, port: NWEndpoint.Port) {
         self.host = host
         self.port = port
         self.connection = NWConnection(host: host, port: port, using: .tcp)

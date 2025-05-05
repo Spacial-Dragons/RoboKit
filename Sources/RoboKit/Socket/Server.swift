@@ -38,7 +38,7 @@ import SwiftUI
     public var cancelledConnection: (() -> Void)? = nil
     
     /// Initializes the server's listener. Server is NOT yet ready for connections.
-    init(port: NWEndpoint.Port) {
+    public init(port: NWEndpoint.Port) {
         self.listener = try! NWListener(using: .tcp, on: port)
     }
 

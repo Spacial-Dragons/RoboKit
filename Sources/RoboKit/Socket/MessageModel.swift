@@ -16,6 +16,11 @@ public enum JSONErrors: Error {
 
 /// Model for the message that the`TCPClient` can send to the `Server`
 public struct JSONMessageModel: Codable {
+    public init(clawControl: Bool, positionAndRotation: [Float]) {
+        self.clawControl = clawControl
+        self.positionAndRotation = positionAndRotation
+    }
+    
     public let clawControl: Bool
     public let positionAndRotation: [Float]
 }

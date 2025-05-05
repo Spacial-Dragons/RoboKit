@@ -10,13 +10,12 @@ import Network
 import SwiftUI
 
 @Observable public final class Server: @unchecked Sendable {
-    /// A static log to record server/connection events.
-//    static var log: [String] = []
-    
+
     /// The server's conenction listener.
     private let listener: NWListener
 
-    /// This array and the existence of the `Connection` class allow for the connection of multiple clients to this server at once.
+    /// This array and the existence of the `Connection` class allow
+    /// for the connection of multiple clients to this server at once.
     private var connectionsByID: [Int: Connection] = [:]
     
     /// Custom logic for when the connection to the client is on `setup` state
@@ -37,71 +36,104 @@ import SwiftUI
     /// Custom logic for when the connection to the client is on `cancelled` state
     public var cancelledConnection: (() -> Void)? = nil
     
+
+    @MainActor
+    static func log(_ message: String, level: LogLevel) {
+        AppLogger.shared.log(message, level: level, category: .socket)
+    }
+
     /// Initializes the server's listener. Server is NOT yet ready for connections.
-    init(port: NWEndpoint.Port) {
-        self.listener = try! NWListener(using: .tcp, on: port)
+    init(port: NWEndpoint.Port) throws {
+        guard let listener = try? NWListener(using: .tcp, on: port) else {
+            throw NWError.dns(DNSServiceErrorType(kDNSServiceErr_Unknown))
+        }
+        self.listener = listener
+        Task { @MainActor in
+            Server.log("Server initialized on port \(port)", level: .info)
+        }
     }
 
     /// Starts the server. After this function is called, server is ready to receive connection requests from clients.
     /// - Parameters:
     ///  - logMessage: Optional message to add to the server log once this method is called.
-    func start(logMessage: String? ) throws {
+    func start(logMessage: String?) throws {
         if let message = logMessage {
-//            self.log.append(message)
+            Task { @MainActor in
+                Server.log("Server starting: \(message)", level: .info)
+            }
         }
-        
+
         self.listener.stateUpdateHandler = self.stateDidChange(to:)
         self.listener.newConnectionHandler = self.didAccept(nwConnection:)
         self.listener.start(queue: .main)
+        Task { @MainActor in
+            Server.log("Server started successfully", level: .info)
+        }
     }
 
     /// The state handler for the server.
     private func stateDidChange(to newState: NWListener.State) {
         switch newState {
         case .setup:
-            break
+            Task { @MainActor in
+                Server.log("Server state: setup", level: .debug)
+            }
         case .waiting:
-            break
+            Task { @MainActor in
+                Server.log("Server state: waiting", level: .debug)
+            }
         case .ready:
-            break
+            Task { @MainActor in
+                Server.log("Server state: ready", level: .info)
+            }
         case .failed(let error):
-//            self.log.append("Server failed with error: \(error)")
+            Task { @MainActor in
+                Server.log("Server failed with error: \(error)", level: .error)
+            }
             self.stop()
         case .cancelled:
-            break
+            Task { @MainActor in
+                Server.log("Server state: cancelled", level: .warning)
+            }
         default:
-            break
+            Task { @MainActor in
+                Server.log("Server state: unknown", level: .debug)
+            }
         }
     }
 
-    /// Determines what should be done when the server accepts a new connection, and assigns the individual connection methods.
+    /// Determines what should be done when the server accepts a new connection,
+    /// and assigns the individual connection methods.
     /// - Parameters:
     ///  - nwConnection: the new connection stablished with a client.
     private func didAccept(nwConnection: NWConnection) {
         let connection = Connection(nwConnection: nwConnection)
         self.connectionsByID[connection.id] = connection
-        connection.didStopCallback = { _ in
+        connection.didStopCallback = { [weak self] _ in
+            guard let self = self else { return }
             self.connectionDidStop(connection)
         }
         connection.start(values: nil)
-        
-        
+
         connection.setupConnection = self.setupConnection
         connection.waitingConnection = self.waitingConnection
         connection.preparingConnection = self.preparingConnection
         connection.readyConnection = self.readyConnection
         connection.failedConnection = self.failedConnection
         connection.cancelledConnection = self.cancelledConnection
-        
-//        self.log.append("Server did open connection \(connection.id)")
-        
+
+        Task { @MainActor in
+            Server.log("Server accepted new connection with ID: \(connection.id)", level: .info)
+        }
     }
     /// Helper method that manages the server's dictionary of connections when the server has a connection ended.
     /// - Parameters:
     ///  - connection: the connection that was concluded.
     private func connectionDidStop(_ connection: Connection) {
         self.connectionsByID.removeValue(forKey: connection.id)
-//        self.log.append("Server closed connection \(connection.id)")
+        Task { @MainActor in
+            Server.log("Server closed connection with ID: \(connection.id)", level: .info)
+        }
     }
 
     /// Helper method that cancels a connection when it's cancelled or fails.
@@ -111,21 +143,28 @@ import SwiftUI
         self.listener.cancel()
         for connection in self.connectionsByID.values {
             connection.didStopCallback = nil
-            //Server.log.append("Connection \(self.id) has stopped")
+            Task { @MainActor in
+                Server.log("Connection \(connection.id) has stopped", level: .info)
+            }
         }
         self.connectionsByID.removeAll()
+        Task { @MainActor in
+            Server.log("Server stopped", level: .info)
+        }
     }
-    
 }
 
-/// The `Connection` class is responsible for representing each client connection to the server. It handles the logic for said connections and allows for RoboKit's server to receive multiple clients simultaniously.
+/// The `Connection` class is responsible for representing each client connection to the server.
+/// It handles the logic for said connections and allows for RoboKit's
+/// server to receive multiple clients simultaniously.
 @Observable class Connection: @unchecked Sendable {
-    
-    /// Static ID necessary for the differentiation of each connection's identification  in the server's `connectionsByID` dictionary.
+
+    /// Static ID necessary for the differentiation of each connection's identification
+    /// in the server's `connectionsByID` dictionary.
     nonisolated(unsafe) private static var nextID: Int = 0
 
     let nwConnection: NWConnection
-    
+
     /// The unique identification to a connection. Assigned based on the static `nextID` property
     let id: Int
     
@@ -150,11 +189,17 @@ import SwiftUI
     public var cancelledConnection: (() -> Void)? = nil
 
     ///Initializes the Connection instance, assigning it an Integer ID
+    @MainActor
+    static func log(_ message: String, level: LogLevel) {
+        AppLogger.shared.log(message, level: level, category: .socket)
+    }
     init(nwConnection: NWConnection) {
         self.nwConnection = nwConnection
         self.id = Connection.nextID
         Connection.nextID += 1
-        
+        Task { @MainActor in
+            Connection.log("New connection created with ID: \(self.id)", level: .debug)
+        }
     }
 
     /// Starts the Connection between the Client and Server
@@ -170,55 +215,74 @@ import SwiftUI
             self.send(data: convertedData)
         }
         self.nwConnection.start(queue: .main)
+        Task { @MainActor in
+            Connection.log("Connection \(self.id) started", level: .info)
+        }
     }
-
 
     /// Sends data from the server to the client
     /// - Parameters:
     ///  - data: The data that should be sent
     func send(data: Data) {
-        self.nwConnection.send(content: data, completion: .contentProcessed( { error in
+        self.nwConnection.send(content: data, completion: .contentProcessed { [weak self] error in
+            guard let self = self else { return }
             if let error = error {
                 self.connectionDidFail(error: error)
                 return
             }
-//            Server.log.append("Connection \(self.id) did send, data: \(data as NSData)")
-
-        }))
+            Task { @MainActor in
+                Connection.log("Connection \(self.id) sent data: \(data as NSData)", level: .debug)
+            }
+        })
     }
 
-    /// Function to handle the connections states. The state update handler administers the possible NWConnection statuses and calls helper methods accordingly
+    /// Function to handle the connections states.
+    /// The state update handler administers the possible NWConnection statuses
+    /// and calls helper methods accordingly
     private func stateDidChange(to state: NWConnection.State) {
         switch state {
         case .setup:
+            Task { @MainActor in
+                Connection.log("Connection \(self.id) state: setup", level: .debug)
+            }
             if let setupConnection = setupConnection {
                 setupConnection()
             }
-            break
         case .waiting(let error):
+            Task { @MainActor in
+                Connection.log("Connection \(self.id) state: waiting with error: \(error)", level: .warning)
+            }
             if let waitingConnection = waitingConnection {
                 waitingConnection()
             }
             self.connectionDidFail(error: error)
         case .preparing:
+            Task { @MainActor in
+                Connection.log("Connection \(self.id) state: preparing", level: .debug)
+            }
             if let preparingConnection = preparingConnection {
                 preparingConnection()
             }
-            break
         case .ready:
+            Task { @MainActor in
+                Connection.log("Connection \(self.id) state: ready", level: .info)
+            }
             if let readyConnection = readyConnection {
                 readyConnection()
             }
-//            Server.log.append("Connection \(self.id) ready")
         case .failed(let error):
             self.connectionDidFail(error: error)
         case .cancelled:
+            Task { @MainActor in
+                Connection.log("Connection \(self.id) state: cancelled", level: .warning)
+            }
             if let cancelledConnection = cancelledConnection {
                 cancelledConnection()
             }
-            break
         default:
-            break
+            Task { @MainActor in
+                Connection.log("Connection \(self.id) state: unknown", level: .debug)
+            }
         }
     }
 
@@ -229,13 +293,17 @@ import SwiftUI
         if let failedConnection = failedConnection {
             failedConnection()
         }
-//        Server.log.append("Connection \(self.id) failed with error: \(error)")
+        Task { @MainActor in
+            Connection.log("Connection \(self.id) failed with error: \(error)", level: .error)
+        }
         self.stop(error: error)
     }
+
     /// Method that cancels the connection once it is ended.
     private func connectionDidEnd() {
-        
-//        Server.log.append("Connection \(self.id) did end")
+        Task { @MainActor in
+            Connection.log("Connection \(self.id) ended", level: .info)
+        }
         self.stop(error: nil)
     }
 
@@ -249,25 +317,29 @@ import SwiftUI
             self.didStopCallback = nil
             didStopCallback(error)
         }
+        Task { @MainActor in
+            Connection.log("Connection \(self.id) stopped", level: .info)
+        }
     }
 
     /// Method resposible for receiving and decoding messages from clients.
     public func setupReceive() {
-        self.nwConnection.receive(minimumIncompleteLength: 1, maximumLength: 65536) { (data, _, isComplete, error) in
-            
-            guard let data = data else { return }
-            
+        self.nwConnection.receive(minimumIncompleteLength: 1, maximumLength: 65536) { [weak self] (data, _, isComplete, error) in
+            guard let self = self, let data = data else { return }
+
             do {
                 let message = try JSONManager.decodeFromJSON(data: data)
-                
                 if type(of: message) == JSONMessageModel.self {
-//                    Server.log.append("---------------------------\nConnection \(self.id) did receive data: \n\(message)")
+                    Task { @MainActor in
+                        Connection.log("Connection \(self.id) received data: \(message)", level: .debug)
+                    }
                 }
             } catch {
-                print("ops")
+                Task { @MainActor in
+                    Connection.log("Connection \(self.id) failed to decode message: \(error)", level: .error)
+                }
             }
 
-            
             if isComplete {
                 self.connectionDidEnd()
             } else if let error = error {

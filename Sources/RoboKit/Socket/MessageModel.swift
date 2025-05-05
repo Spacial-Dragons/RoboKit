@@ -22,33 +22,21 @@ public struct JSONMessageModel: Codable {
 
 /// Manager for the encoding and decoding of the JSON messages
 public struct JSONManager {
-    
     /// Encodes JSON messages before sending them
     static public func encodeToJSON<T: Codable>(data: T) -> Data {
         let encoder = JSONEncoder()
         var finalMessage = Data()
 
         do {
-            
             finalMessage = try encoder.encode(data)
-            
         } catch {
             print("❌ JSON Encoding error: \(error)")
         }
-        
         return finalMessage
     }
-    
     /// Decodes JSON messages as they are received
     static public func decodeFromJSON<T: Codable>(data: Data) throws -> T {
         let decoder = JSONDecoder()
-        let finalMessage: T? = try decoder.decode(T.self, from: data)
-        
-        if let fm = finalMessage  {
-            return fm
-        } else {
-            throw JSONErrors.undecodable
-        }
+        return try decoder.decode(T.self, from: data)
     }
-    
 }

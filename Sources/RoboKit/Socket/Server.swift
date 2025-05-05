@@ -99,7 +99,7 @@ import SwiftUI
 /// The `Connection` class is responsible for representing each client connection to the server.
 /// It handles the logic for said connections and allows for RoboKit's server to receive
 /// multiple clients simultaniously.
-@Observable class Connection: @unchecked Sendable {
+@Observable public class Connection: @unchecked Sendable {
     /// Static ID necessary for the differentiation of each connection's identification  in the server's
     /// `connectionsByID` dictionary.
     nonisolated(unsafe) private static var nextID: Int = 0

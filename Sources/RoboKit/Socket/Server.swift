@@ -35,9 +35,7 @@ import SwiftUI
     }
 
     /// Starts the server. After this function is called, server is ready to receive connection requests from clients.
-    /// - Parameters:
-    ///  - logMessage: Optional message to add to the server log once this method is called.
-    public func start(logMessage: String? ) throws {
+    public func start() throws {
         self.listener.stateUpdateHandler = self.stateDidChange(to:)
         self.listener.newConnectionHandler = self.didAccept(nwConnection:)
         self.listener.start(queue: .main)

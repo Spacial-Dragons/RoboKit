@@ -24,7 +24,7 @@ public struct JSONMessageModel: Codable {
 public struct JSONManager {
     
     /// Encodes JSON messages before sending them
-    static func encodeToJSON(data: JSONMessageModel) -> Data {
+    static func encodeToJSON<T: Codable>(data: T) -> Data {
         let encoder = JSONEncoder()
         var finalMessage = Data()
 
@@ -40,9 +40,9 @@ public struct JSONManager {
     }
     
     /// Decodes JSON messages as they are received
-    static func decodeFromJSON(data: Data) throws -> JSONMessageModel {
+    static func decodeFromJSON<T: Codable>(data: Data) throws -> T {
         let decoder = JSONDecoder()
-        let finalMessage: JSONMessageModel? = try decoder.decode(JSONMessageModel.self, from: data)
+        let finalMessage: T? = try decoder.decode(T.self, from: data)
         
         if let fm = finalMessage  {
             return fm

@@ -8,7 +8,7 @@
 import Foundation
 
 extension Float {
-    var toDegrees: Float {
+    public var toDegrees: Float {
         return self * 180 / .pi
     }
 }

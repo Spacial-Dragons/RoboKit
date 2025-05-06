@@ -7,7 +7,7 @@
 
 // Converts position from RealityKit to ROS coordinate system
 extension SIMD3 where Scalar == Float {
-    func convertToROSCoordinateSystem() -> SIMD3<Float> {
+    public func convertToROSCoordinateSystem() -> SIMD3<Float> {
         let newZ = z == 0 ? 0 : -z
         return SIMD3<Float>(x, newZ, y)
     }

@@ -8,7 +8,7 @@
 import Foundation
 
 extension Float {
-    var toRadians: Float {
+    public var toRadians: Float {
         return self * .pi / 180
     }
 }

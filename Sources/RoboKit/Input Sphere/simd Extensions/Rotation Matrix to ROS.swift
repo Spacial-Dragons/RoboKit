@@ -9,7 +9,7 @@ import simd
 
 // Converts Rotation Matrix from RealityKit to ROS coordinate system
 extension simd_float3x3 {
-    @MainActor func convertToROSCoordinateSystem() -> simd_float3x3 {
+    @MainActor public func convertToROSCoordinateSystem() -> simd_float3x3 {
         let rotationConversionMatrix = InputSphereManager.rotationConversionMatrix
         return rotationConversionMatrix * self * rotationConversionMatrix.transpose
     }

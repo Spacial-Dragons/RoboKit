@@ -10,19 +10,10 @@ import Network
 import SwiftUI
 
 @Observable public final class Server: @unchecked Sendable {
-<<<<<<< HEAD
     /// The server's conenction listener.
     public let listener: NWListener
     /// This array and the existence of the `Connection` class allow for the connection of
     /// multiple clients to this server at once.
-=======
-
-    /// The server's conenction listener.
-    private let listener: NWListener
-
-    /// This array and the existence of the `Connection` class allow
-    /// for the connection of multiple clients to this server at once.
->>>>>>> origin/feat/socket-refactoring-error-handling
     private var connectionsByID: [Int: Connection] = [:]
     /// Custom logic for when the connection to the client is on `setup` state
     public var setupConnection: (() -> Void)?
@@ -35,48 +26,31 @@ import SwiftUI
     /// Custom logic for when the connection to the client is on `failed` state
     public var failedConnection: (() -> Void)?
     /// Custom logic for when the connection to the client is on `cancelled` state
-<<<<<<< HEAD
     public var cancelledConnection: (() -> Void)?
-    /// Initializes the server's listener. Server is NOT yet ready for connections.
-    public init(port: UInt16) throws {
-        let parameters = NWParameters.tcp
-        let nwPort = NWEndpoint.Port(rawValue: port)!
-        self.listener = try NWListener(using: parameters, on: nwPort)
-    }
-
-    /// Starts the server. After this function is called, server is ready to receive connection requests from clients.
-    public func start() throws {
-=======
-    public var cancelledConnection: (() -> Void)? = nil
-    
-
+    /// Initializes the server's listener. Server is NOT yet ready for
     @MainActor
     static func log(_ message: String, level: LogLevel) {
         AppLogger.shared.log(message, level: level, category: .socket)
     }
-
-    /// Initializes the server's listener. Server is NOT yet ready for connections.
-    init(port: NWEndpoint.Port) throws {
-        guard let listener = try? NWListener(using: .tcp, on: port) else {
-            throw NWError.dns(DNSServiceErrorType(kDNSServiceErr_Unknown))
-        }
-        self.listener = listener
+    public init(port: UInt16) throws {
+        let parameters = NWParameters.tcp
+        let nwPort = NWEndpoint.Port(rawValue: port)!
+        self.listener = try NWListener(using: parameters, on: nwPort)
+        //        guard let listener = try? NWListener(using: .tcp, on: port) else {
+        //            throw NWError.dns(DNSServiceErrorType(kDNSServiceErr_Unknown))
+        //        }
+        //        self.listener = listener
         Task { @MainActor in
             Server.log("Server initialized on port \(port)", level: .info)
         }
     }
-
     /// Starts the server. After this function is called, server is ready to receive connection requests from clients.
-    /// - Parameters:
-    ///  - logMessage: Optional message to add to the server log once this method is called.
-    func start(logMessage: String?) throws {
+    public func start(logMessage: String?) throws {
         if let message = logMessage {
             Task { @MainActor in
                 Server.log("Server starting: \(message)", level: .info)
             }
         }
-
->>>>>>> origin/feat/socket-refactoring-error-handling
         self.listener.stateUpdateHandler = self.stateDidChange(to:)
         self.listener.newConnectionHandler = self.didAccept(nwConnection:)
         self.listener.start(queue: .main)
@@ -84,7 +58,6 @@ import SwiftUI
             Server.log("Server started successfully", level: .info)
         }
     }
-
     /// The state handler for the server.
     private func stateDidChange(to newState: NWListener.State) {
         switch newState {
@@ -101,12 +74,9 @@ import SwiftUI
                 Server.log("Server state: ready", level: .info)
             }
         case .failed(let error):
-<<<<<<< HEAD
-=======
             Task { @MainActor in
                 Server.log("Server failed with error: \(error)", level: .error)
             }
->>>>>>> origin/feat/socket-refactoring-error-handling
             self.stop()
         case .cancelled:
             Task { @MainActor in
@@ -118,14 +88,9 @@ import SwiftUI
             }
         }
     }
-
-<<<<<<< HEAD
+    
     /// Determines what should be done when the server accepts a new connection, and
     /// assigns the individual connection methods.
-=======
-    /// Determines what should be done when the server accepts a new connection,
-    /// and assigns the individual connection methods.
->>>>>>> origin/feat/socket-refactoring-error-handling
     /// - Parameters:
     ///  - nwConnection: the new connection stablished with a client.
     private func didAccept(nwConnection: NWConnection) {
@@ -136,37 +101,28 @@ import SwiftUI
             self.connectionDidStop(connection)
         }
         connection.start(values: nil)
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/feat/socket-refactoring-error-handling
         connection.setupConnection = self.setupConnection
         connection.waitingConnection = self.waitingConnection
         connection.preparingConnection = self.preparingConnection
         connection.readyConnection = self.readyConnection
         connection.failedConnection = self.failedConnection
         connection.cancelledConnection = self.cancelledConnection
-<<<<<<< HEAD
-=======
-
+        
         Task { @MainActor in
             Server.log("Server accepted new connection with ID: \(connection.id)", level: .info)
         }
->>>>>>> origin/feat/socket-refactoring-error-handling
     }
     /// Helper method that manages the server's dictionary of connections when the server has a connection ended.
     /// - Parameters:
     ///  - connection: the connection that was concluded.
     private func connectionDidStop(_ connection: Connection) {
         self.connectionsByID.removeValue(forKey: connection.id)
-<<<<<<< HEAD
-=======
         Task { @MainActor in
             Server.log("Server closed connection with ID: \(connection.id)", level: .info)
         }
->>>>>>> origin/feat/socket-refactoring-error-handling
+        
     }
-
+    
     /// Helper method that cancels a connection when it's cancelled or fails.
     private func stop() {
         self.listener.stateUpdateHandler = nil
@@ -174,12 +130,10 @@ import SwiftUI
         self.listener.cancel()
         for connection in self.connectionsByID.values {
             connection.didStopCallback = nil
-<<<<<<< HEAD
-=======
             Task { @MainActor in
                 Server.log("Connection \(connection.id) has stopped", level: .info)
             }
->>>>>>> origin/feat/socket-refactoring-error-handling
+            
         }
         self.connectionsByID.removeAll()
         Task { @MainActor in
@@ -189,27 +143,13 @@ import SwiftUI
 }
 
 /// The `Connection` class is responsible for representing each client connection to the server.
-<<<<<<< HEAD
 /// It handles the logic for said connections and allows for RoboKit's server to receive
 /// multiple clients simultaniously.
 @Observable public class Connection: @unchecked Sendable {
     /// Static ID necessary for the differentiation of each connection's identification  in the server's
     /// `connectionsByID` dictionary.
     nonisolated(unsafe) private static var nextID: Int = 0
-
     let nwConnection: NWConnection
-=======
-/// It handles the logic for said connections and allows for RoboKit's
-/// server to receive multiple clients simultaniously.
-@Observable class Connection: @unchecked Sendable {
-
-    /// Static ID necessary for the differentiation of each connection's identification
-    /// in the server's `connectionsByID` dictionary.
-    nonisolated(unsafe) private static var nextID: Int = 0
-
-    let nwConnection: NWConnection
-
->>>>>>> origin/feat/socket-refactoring-error-handling
     /// The unique identification to a connection. Assigned based on the static `nextID` property
     let id: Int
     var didStopCallback: ((Error?) -> Void)?
@@ -224,30 +164,20 @@ import SwiftUI
     /// Custom logic for when the connection to the client is on `failed` state
     public var failedConnection: (() -> Void)?
     /// Custom logic for when the connection to the client is on `cancelled` state
-<<<<<<< HEAD
     public var cancelledConnection: (() -> Void)?
     /// Initializes the Connection instance, assigning it an Integer ID
-=======
-    public var cancelledConnection: (() -> Void)? = nil
-
-    ///Initializes the Connection instance, assigning it an Integer ID
     @MainActor
     static func log(_ message: String, level: LogLevel) {
         AppLogger.shared.log(message, level: level, category: .socket)
     }
->>>>>>> origin/feat/socket-refactoring-error-handling
     init(nwConnection: NWConnection) {
         self.nwConnection = nwConnection
         self.id = Connection.nextID
         Connection.nextID += 1
-<<<<<<< HEAD
-=======
         Task { @MainActor in
             Connection.log("New connection created with ID: \(self.id)", level: .debug)
         }
->>>>>>> origin/feat/socket-refactoring-error-handling
     }
-
     /// Starts the Connection between the Client and Server
     func start(values: [Int]?) {
         self.nwConnection.stateUpdateHandler = { [weak self] newState in
@@ -265,10 +195,6 @@ import SwiftUI
             Connection.log("Connection \(self.id) started", level: .info)
         }
     }
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/feat/socket-refactoring-error-handling
     /// Sends data from the server to the client
     /// - Parameters:
     ///  - data: The data that should be sent
@@ -279,24 +205,15 @@ import SwiftUI
                 self.connectionDidFail(error: error)
                 return
             }
-<<<<<<< HEAD
-
-        }))
-    }
-
-    /// Function to handle the connections states. The state update handler administers the possible
-    /// NWConnection statuses and calls helper methods accordingly
-=======
             Task { @MainActor in
                 Connection.log("Connection \(self.id) sent data: \(data as NSData)", level: .debug)
             }
         })
     }
-
+    
     /// Function to handle the connections states.
     /// The state update handler administers the possible NWConnection statuses
     /// and calls helper methods accordingly
->>>>>>> origin/feat/socket-refactoring-error-handling
     private func stateDidChange(to state: NWConnection.State) {
         switch state {
         case .setup:
@@ -343,7 +260,7 @@ import SwiftUI
             }
         }
     }
-
+    
     /// Method that cancels the connection once it fails.
     /// - Parameters:
     ///  - error: the error that occurred to cause the failure
@@ -356,18 +273,15 @@ import SwiftUI
         }
         self.stop(error: error)
     }
-
+    
     /// Method that cancels the connection once it is ended.
     private func connectionDidEnd() {
-<<<<<<< HEAD
-=======
         Task { @MainActor in
             Connection.log("Connection \(self.id) ended", level: .info)
         }
->>>>>>> origin/feat/socket-refactoring-error-handling
         self.stop(error: nil)
     }
-
+    
     /// Method responsible for cleaning up the Connections stateUpdateHandler and CallBack once it is ended or fails.
     /// - Parameters:
     ///  - error: In case of failure, this is the error that caused it
@@ -382,20 +296,14 @@ import SwiftUI
             Connection.log("Connection \(self.id) stopped", level: .info)
         }
     }
-
+    
     /// Method resposible for receiving and decoding messages from clients.
     public func setupReceive() {
-<<<<<<< HEAD
         self.nwConnection.receive(minimumIncompleteLength: 1, maximumLength: 65536) { (data, _, isComplete, error) in
             guard let data = data else { return }
-            do {
-                let message: Data = try JSONManager.decodeFromJSON(data: data)
-//                if type(of: message) == T.self {
-//                }
-=======
-        self.nwConnection.receive(minimumIncompleteLength: 1, maximumLength: 65536) { [weak self] (data, _, isComplete, error) in
-            guard let self = self, let data = data else { return }
-
+            //                self.nwConnection.receive(minimumIncompleteLength: 1, maximumLength: 65536) { [weak self] (data, _, isComplete, error) in
+            //                    guard let self = self, let data = data else { return }
+            
             do {
                 let message = try JSONManager.decodeFromJSON(data: data)
                 if type(of: message) == JSONMessageModel.self {
@@ -403,13 +311,12 @@ import SwiftUI
                         Connection.log("Connection \(self.id) received data: \(message)", level: .debug)
                     }
                 }
->>>>>>> origin/feat/socket-refactoring-error-handling
+                
             } catch {
                 Task { @MainActor in
                     Connection.log("Connection \(self.id) failed to decode message: \(error)", level: .error)
                 }
             }
-
             if isComplete {
                 self.connectionDidEnd()
             } else if let error = error {
@@ -420,3 +327,4 @@ import SwiftUI
         }
     }
 }
+    

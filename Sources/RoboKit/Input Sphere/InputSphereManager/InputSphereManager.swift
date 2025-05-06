@@ -16,8 +16,11 @@ import RealityKit
     /// The Input Sphere represents the target position and rotation for a robot's end effector.
     public var inputSphere: Entity? = nil
     
-    /// The current position of the Input Sphere.
-    public var inputSpherePosition: SIMD3<Float> = .zero
+    /// The current position of the Input Sphere relative to the Parent Entity.
+    public var inputSpherePositionRelativeToParent: SIMD3<Float> = .zero
+    
+    /// The current position of the Input Sphere relative to the Root Point.
+    public var inputSpherePositionRelativeToRoot: SIMD3<Float> = .zero
     
     /// The Euler angles (roll, yaw, pitch) of the Input Sphere.
     public var inputSphereEulerAngles: [EulerAngle: Float] = [

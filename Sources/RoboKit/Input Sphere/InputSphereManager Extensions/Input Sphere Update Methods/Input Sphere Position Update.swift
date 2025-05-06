@@ -5,12 +5,15 @@
 //  Created by Mariia Chemerys on 03.05.2025.
 //
 
+import RealityKit
+
 extension InputSphereManager {
     
     /// Updates and stores the current position of the input sphere.
-    internal func updateInputSpherePosition() {
+    internal func updateInputSpherePosition(rootPoint: Entity) {
         if let inputSphere {
-            self.inputSpherePosition = inputSphere.position
+            self.inputSpherePositionRelativeToParent = inputSphere.position
+            self.inputSpherePositionRelativeToRoot = inputSphere.position(relativeTo: rootPoint)
         }
     }
 }

@@ -8,10 +8,10 @@
 import RealityKit
 
 extension InputSphereManager {
-    public func addInputSphereAxes() {
+    public func addInputSphereAxes(rootPoint: Entity) {
         guard let inputSphere = inputSphere else { return }
         let axes: [InputSphereAxis] = [.lateral, .vertical, .longitudinal]
-        updateInputSpherePosition()
+        updateInputSpherePosition(rootPoint: rootPoint)
         
         for axis in axes {
             let axisEntity = inputSphereAxisEntity(

@@ -9,18 +9,19 @@ import SwiftUI
 import RealityKit
 
 extension InputSphereManager {
-    internal func handleInputSphereDragGesture(_ value: EntityTargetValue<DragGesture.Value>, parentEntity: Entity) {
+    internal func handleInputSphereDragGesture(_ value: EntityTargetValue<DragGesture.Value>, parentEntity: Entity, rootPoint: Entity) {
         value.entity.position = value.convert(value.location3D, from: .local, to: parentEntity)
-        updateInputSpherePosition()
+        updateInputSpherePosition(rootPoint: rootPoint)
     }
 }
 
 extension View {
     public func inputSphereDragGesture(
         parentEntity: Entity,
+        rootPoint: Entity?,
         inputSphereManager: InputSphereManager
     ) -> some View {
-        if let inputSphere = inputSphereManager.inputSphere {
+        if let inputSphere = inputSphereManager.inputSphere, let rootPoint = rootPoint {
             return AnyView(
                 self.gesture(
                     DragGesture()
@@ -28,7 +29,8 @@ extension View {
                         .onChanged { value in
                             inputSphereManager.handleInputSphereDragGesture(
                                 value,
-                                parentEntity: parentEntity
+                                parentEntity: parentEntity,
+                                rootPoint: rootPoint
                             )
                         }
                 )

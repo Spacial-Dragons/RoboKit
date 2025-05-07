@@ -1,4 +1,9 @@
-# RoboKit Documentation
+<p align="center">
+  <img src="Media/RoboKitLogo-light.png#gh-light-mode-only" width="110">
+  <img src="Media/RoboKitLogo-dark.png#gh-dark-mode-only" width="110">
+</p>
+
+<h2 align="center">RoboKit</h2>
 
 ## Overview
 **RoboKit** is a framework designed to faciliate the integration between visionOS applications and robotics software.

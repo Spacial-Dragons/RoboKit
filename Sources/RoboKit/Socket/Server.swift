@@ -88,7 +88,6 @@ import SwiftUI
             }
         }
     }
-    
     /// Determines what should be done when the server accepts a new connection, and
     /// assigns the individual connection methods.
     /// - Parameters:
@@ -107,7 +106,6 @@ import SwiftUI
         connection.readyConnection = self.readyConnection
         connection.failedConnection = self.failedConnection
         connection.cancelledConnection = self.cancelledConnection
-        
         Task { @MainActor in
             Server.log("Server accepted new connection with ID: \(connection.id)", level: .info)
         }
@@ -120,9 +118,7 @@ import SwiftUI
         Task { @MainActor in
             Server.log("Server closed connection with ID: \(connection.id)", level: .info)
         }
-        
     }
-    
     /// Helper method that cancels a connection when it's cancelled or fails.
     private func stop() {
         self.listener.stateUpdateHandler = nil
@@ -133,7 +129,6 @@ import SwiftUI
             Task { @MainActor in
                 Server.log("Connection \(connection.id) has stopped", level: .info)
             }
-            
         }
         self.connectionsByID.removeAll()
         Task { @MainActor in
@@ -210,7 +205,6 @@ import SwiftUI
             }
         })
     }
-    
     /// Function to handle the connections states.
     /// The state update handler administers the possible NWConnection statuses
     /// and calls helper methods accordingly
@@ -260,7 +254,6 @@ import SwiftUI
             }
         }
     }
-    
     /// Method that cancels the connection once it fails.
     /// - Parameters:
     ///  - error: the error that occurred to cause the failure
@@ -273,7 +266,6 @@ import SwiftUI
         }
         self.stop(error: error)
     }
-    
     /// Method that cancels the connection once it is ended.
     private func connectionDidEnd() {
         Task { @MainActor in
@@ -281,7 +273,6 @@ import SwiftUI
         }
         self.stop(error: nil)
     }
-    
     /// Method responsible for cleaning up the Connections stateUpdateHandler and CallBack once it is ended or fails.
     /// - Parameters:
     ///  - error: In case of failure, this is the error that caused it

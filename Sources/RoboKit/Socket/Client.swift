@@ -29,7 +29,6 @@ import SwiftUI
     public var failedConnection: (() -> Void)?
     /// Custom logic for when the connection to the server is on `cancelled` state
     public var cancelledConnection: (() -> Void)?
-    
     @MainActor
     private func log(_ message: String, level: LogLevel) {
         AppLogger.shared.log(message, level: level, category: .socket)
@@ -59,10 +58,12 @@ import SwiftUI
             switch state {
             case .setup:
                 self.setUpConnection()
+                break
             case .waiting:
                 self.connectionWaiting()
             case .preparing:
                 self.connectionPreparing()
+                break
             case .ready:
                 Task { @MainActor in
                     self.log("Client connection ready", level: .info)
@@ -72,21 +73,24 @@ import SwiftUI
                 self.connectionFailed()
             case .cancelled:
                 self.connectionCanceled()
+                break
             default:
                 Task { @MainActor in
                     self.log("Client state: unknown", level: .debug)
                 }
+                break
             }
         }
         self.receiveMessage()
         self.sendMessage(data: value)
         self.connection?.start(queue: .main)
     }
-    
     /// Receives messages sent from the server to the client
     /// - Parameters:
-    ///   - minLength: The minimum length in bytes to receive from the connection, until the content is complete. If unnassigned, it will be set to 1
-    ///   - maxLength: The maximum length to receive from the connection at once. If unnasigned, it will be set to 65536 bytes
+    ///   - minLength: The minimum length in bytes to receive from the connection, until the
+    ///   content is complete. If unnassigned, it will be set to 1
+    ///   - maxLength: The maximum length to receive from the connection at once.
+    ///   If unnasigned, it will be set to 65536 bytes
     public func receiveMessage(minLength min: Int = 1, maxLength max: Int = 65536) {
         self.connection?.receive(minimumIncompleteLength: min, maximumLength: max) { data, _, isComplete, error in
             if let data = data, !data.isEmpty {
@@ -153,7 +157,7 @@ import SwiftUI
     }
 
     /// Determines the logic that should be implemented when the State Handler is in `waiting`
-    public func connectionWaiting(){
+    public func connectionWaiting() {
         Task { @MainActor in
             log("Client connection waiting", level: .warning)
         }
@@ -163,7 +167,7 @@ import SwiftUI
     }
 
     /// Determines the logic that should be implemented when the State Handler is in `preparing`
-    public func connectionPreparing(){
+    public func connectionPreparing() {
         Task { @MainActor in
             log("Client connection preparing", level: .debug)
         }

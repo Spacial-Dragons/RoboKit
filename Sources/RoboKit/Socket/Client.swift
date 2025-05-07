@@ -58,12 +58,10 @@ import SwiftUI
             switch state {
             case .setup:
                 self.setUpConnection()
-                break
             case .waiting:
                 self.connectionWaiting()
             case .preparing:
                 self.connectionPreparing()
-                break
             case .ready:
                 Task { @MainActor in
                     self.log("Client connection ready", level: .info)
@@ -73,12 +71,10 @@ import SwiftUI
                 self.connectionFailed()
             case .cancelled:
                 self.connectionCanceled()
-                break
             default:
                 Task { @MainActor in
                     self.log("Client state: unknown", level: .debug)
                 }
-                break
             }
         }
         self.receiveMessage()

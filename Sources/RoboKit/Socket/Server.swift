@@ -36,10 +36,6 @@ import SwiftUI
         let parameters = NWParameters.tcp
         let nwPort = NWEndpoint.Port(rawValue: port)!
         self.listener = try NWListener(using: parameters, on: nwPort)
-        //        guard let listener = try? NWListener(using: .tcp, on: port) else {
-        //            throw NWError.dns(DNSServiceErrorType(kDNSServiceErr_Unknown))
-        //        }
-        //        self.listener = listener
         Task { @MainActor in
             Server.log("Server initialized on port \(port)", level: .info)
         }
@@ -292,19 +288,12 @@ import SwiftUI
     public func setupReceive() {
         self.nwConnection.receive(minimumIncompleteLength: 1, maximumLength: 65536) { (data, _, isComplete, error) in
             guard let data = data else { return }
-            //                self.nwConnection.receive(minimumIncompleteLength: 1, maximumLength: 65536) { [weak self] (data, _, isComplete, error) in
-            //                    guard let self = self, let data = data else { return }
-
             do {
                 let message: JSONMessageModel = try JSONManager.decodeFromJSON(data: data)
                 if type(of: message) == JSONMessageModel.self {
                     Task { @MainActor in
                         Connection.log(
-                            """
-                            Connection \(self.id) received JSON message: 
-                            [Claw Control: \(message.clawControl),
-                            Position & Rotation: \(message.positionAndRotation)]
-                            """,
+                            "Connection \(self.id) received JSON message: [Claw Control: \(message.clawControl), Position & Rotation: \(message.positionAndRotation)]",
                             level: .debug)
                     }
                 }

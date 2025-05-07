@@ -124,7 +124,7 @@ import SwiftUI
         }
         self.connection?.send(content: data, completion: .contentProcessed({ [weak self] error in
             guard let self = self else { return }
-            if let _ = error {
+            if error != nil {
                 Task { @MainActor in
                     self.log("Client failed to send data", level: .error)
                 }

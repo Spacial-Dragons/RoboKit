@@ -201,6 +201,7 @@ import SwiftUI
             }
         })
     }
+    // swiftlint:disable cyclomatic_complexity
     /// Function to handle the connections states.
     /// The state update handler administers the possible NWConnection statuses
     /// and calls helper methods accordingly
@@ -250,6 +251,7 @@ import SwiftUI
             }
         }
     }
+    // swiftlint:enable cyclomatic_complexity
     /// Method that cancels the connection once it fails.
     /// - Parameters:
     ///  - error: the error that occurred to cause the failure
@@ -293,7 +295,11 @@ import SwiftUI
                 if type(of: message) == JSONMessageModel.self {
                     Task { @MainActor in
                         Connection.log(
-                            "Connection \(self.id) received JSON message: [Claw Control: \(message.clawControl), Position & Rotation: \(message.positionAndRotation)]",
+                            """
+                            Connection \(self.id) received JSON message:
+                            [Claw Control: \(message.clawControl),
+                             Position & Rotation: \(message.positionAndRotation)]
+                            """,
                             level: .debug)
                     }
                 }

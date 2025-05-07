@@ -186,9 +186,9 @@ import SwiftUI
         if let ready = readyConnection {
             ready()
         }
-        self.receiveMessage()
-        self.sendMessage(data: value)
-        self.connection?.start(queue: .main)
+//        self.receiveMessage()
+//        self.sendMessage(data: value)
+//        self.connection?.start(queue: .main)
     }
     /// Determines the logic that should be implemented when the State Handler is in `cancelled`
     public func connectionCanceled() {

@@ -8,7 +8,6 @@
 import SwiftUI
 import RealityKit
 
-
 extension InputSphereManager {
     
     /// Creates the Input Sphere, allowing the user to reposition it in space.
@@ -39,7 +38,7 @@ extension InputSphereManager {
         inputSphere = sphere
         updateInputSpherePosition(rootPoint: rootPoint)
             
-        if showAxes { addInputSphereAxes(rootPoint: rootPoint) }
+        if showAxes { addInputSphereAxes() }
     }
 }
 

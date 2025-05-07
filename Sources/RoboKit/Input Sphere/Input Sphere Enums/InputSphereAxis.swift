@@ -7,7 +7,7 @@
 
 import RealityKit
 
-internal enum InputSphereAxis {
+public enum InputSphereAxis {
     case longitudinal, vertical, lateral
     
     // The orientation of Input Sphere axes is in ROS coordinate system

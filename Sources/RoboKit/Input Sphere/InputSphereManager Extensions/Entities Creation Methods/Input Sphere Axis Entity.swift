@@ -8,8 +8,12 @@
 import RealityKit
 
 extension InputSphereManager {
-    
-    internal func inputSphereAxisEntity(height: Float, radius: Float, material: Material, axis: InputSphereAxis) -> ModelEntity {
+
+    internal func inputSphereAxisEntity(
+        height: Float,
+        radius: Float,
+        material: Material,
+        axis: InputSphereAxis) -> ModelEntity {
         let axisEntity = ModelEntity(
             mesh: MeshResource.generateCylinder(height: height, radius: radius),
             materials: [material]
@@ -24,9 +28,9 @@ extension InputSphereManager {
         )
 
         axisEntity.position = offset
-        
+
         addAxisArrow(to: axisEntity, height: height, radius: radius, material: material)
-        
+
         return axisEntity
     }
 }

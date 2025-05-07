@@ -14,7 +14,7 @@ extension simd_float4x4 {
     /// We’re taking the first three columns (x, y, z) of the 4x4 transform matrix
     /// because they encode orientation (rotation & scale).
     public var rotationMatrix: simd_float3x3 {
-        get{
+        get {
             simd_float3x3(
                 simd_make_float3(self.columns.0),
                 simd_make_float3(self.columns.1),
@@ -30,7 +30,7 @@ extension simd_float4x4 {
             columns.2.x = newValue.columns.2.x
             columns.2.y = newValue.columns.2.y
             columns.2.z = newValue.columns.2.z
-            
+
         }
     }
 }

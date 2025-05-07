@@ -11,7 +11,7 @@ extension InputSphereManager {
     public func addInputSphereAxes() {
         guard let inputSphere = inputSphere else { return }
         let axes: [InputSphereAxis] = [.lateral, .vertical, .longitudinal]
-        
+
         for axis in axes {
             let axisEntity = inputSphereAxisEntity(
                 height: 0.1,
@@ -23,14 +23,14 @@ extension InputSphereManager {
             inputSphere.addChild(axisEntity)
         }
     }
-    
+
     public func removeInputSphereAxes() {
-        guard let inputSphere = inputSphere else { return }
-        
+        guard inputSphere != nil else { return }
+
         for (_, axisEntity) in inputSphereAxes {
             axisEntity.removeFromParent()
         }
-        
+
         inputSphereAxes.removeAll()
     }
 }

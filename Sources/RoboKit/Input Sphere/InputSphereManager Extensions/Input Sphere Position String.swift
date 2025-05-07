@@ -8,16 +8,14 @@
 import RealityKit
 
 extension InputSphereManager {
-    
     internal func inputSpherePositionString(relativeToRootPoint rootPoint: Entity) -> String? {
-        guard let inputSphere else { return nil }
-        let position = inputSpherePositionRelativeToRoot
+        guard let position = inputSpherePositionRelativeToRoot else { return nil }
         let positionInROS = position.convertToROSCoordinateSystem()
-        
+
         let positionString = String(format:
             " x: %.3f m \t y: %.3f m \t z: %.3f m",
             positionInROS.x, positionInROS.y, positionInROS.z)
-        
+
         return (positionString)
     }
 }

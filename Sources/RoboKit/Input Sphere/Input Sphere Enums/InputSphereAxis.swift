@@ -9,7 +9,7 @@ import RealityKit
 
 public enum InputSphereAxis {
     case longitudinal, vertical, lateral
-    
+
     // The orientation of Input Sphere axes is in ROS coordinate system
     var orientation: simd_quatf? {
         switch self {
@@ -18,7 +18,7 @@ public enum InputSphereAxis {
         case .longitudinal: return simd_quatf(angle: -.pi / 2, axis: [1, 0, 0])
         }
     }
-    
+
     var material: Material {
         switch self {
         case .lateral: return SimpleMaterial(color: .red, isMetallic: true)

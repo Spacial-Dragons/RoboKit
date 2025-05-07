@@ -14,11 +14,11 @@ public struct InputSpherePositionView: View {
     private var positionString: String? {
         return inputSphereManager.inputSpherePositionString(relativeToRootPoint: rootPoint)
     }
-    
+
     public init(relativeToRootPoint rootPoint: Entity) {
         self.rootPoint = rootPoint
     }
-    
+
     public var body: some View {
         Text(positionString ?? "NA")
     }

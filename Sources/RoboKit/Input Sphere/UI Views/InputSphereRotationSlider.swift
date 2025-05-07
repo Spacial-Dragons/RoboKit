@@ -17,7 +17,7 @@ public struct InputSphereRotationSlider: View {
     public init(eulerAngle: EulerAngle) {
         self.eulerAngle = eulerAngle
     }
-    
+
     /// Retrieves the appropriate binding for the selected Euler angle.
     private var angleValue: Binding<Float> {
         Binding(
@@ -39,7 +39,7 @@ public struct InputSphereRotationSlider: View {
             // Displays the current angle value in degrees
             Text("\(Int(angleValue.wrappedValue.toDegrees))°")
                 .padding(.leading, 50)
-            
+
             // Slider with labels
             VStack(alignment: .leading) {
                 HStack {

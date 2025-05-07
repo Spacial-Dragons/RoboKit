@@ -44,7 +44,7 @@ import SwiftUI
         }
     }
 
-    /// Function to start the conenction to the server.
+    /// Function to start the connection to the server.
     ///  The state update handler administers the possible NWConnection statuses and calls helper methods accordingly
     public func startConnection(value: Data) {
         Task { @MainActor in
@@ -84,9 +84,9 @@ import SwiftUI
     /// Receives messages sent from the server to the client
     /// - Parameters:
     ///   - minLength: The minimum length in bytes to receive from the connection, until the
-    ///   content is complete. If unnassigned, it will be set to 1
+    ///   content is complete. If unassigned, it will be set to 1
     ///   - maxLength: The maximum length to receive from the connection at once.
-    ///   If unnasigned, it will be set to 65536 bytes
+    ///   If unassigned, it will be set to 65536 bytes
     public func receiveMessage(minLength min: Int = 1, maxLength max: Int = 65536) {
         self.connection?.receive(minimumIncompleteLength: min, maximumLength: max) { data, _, isComplete, error in
             if let data = data, !data.isEmpty {

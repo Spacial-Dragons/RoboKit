@@ -15,12 +15,12 @@ public enum JSONErrors: Error {
 }
 
 /// Model for the message that the`TCPClient` can send to the `Server`
-public struct JSONMessageModel: Codable {
+public struct JSONMessageModel: Codable, Sendable {
     public init(clawControl: Bool, positionAndRotation: [Float]) {
         self.clawControl = clawControl
         self.positionAndRotation = positionAndRotation
     }
-    
+
     public let clawControl: Bool
     public let positionAndRotation: [Float]
 }
@@ -35,31 +35,26 @@ public struct JSONManager {
     static public func encodeToJSON<T: Codable>(data: T) -> Data {
         let encoder = JSONEncoder()
         var finalMessage = Data()
-        
+
         do {
             finalMessage = try encoder.encode(data)
             Task { @MainActor in
-                log("Successfully encoded JSON message: \(data)]", level: .debug)
+                log("Successfully encoded JSON message: \(finalMessage)]", level: .debug)
             }
-            
         } catch {
             let errorMessage = error.localizedDescription
             Task { @MainActor in
                 log("Failed to encode JSON message: \(errorMessage)", level: .error)
             }
         }
-        
+
         return finalMessage
     }
-    
+
     /// Decodes JSON messages as they are received
     static func decodeFromJSON<T: Codable>(data: Data) throws -> T {
         do {
             let finalMessage = try JSONDecoder().decode(T.self, from: data)
-            
-            Task { @MainActor in
-                log("Successfully decoded JSON message: [\(finalMessage)]", level: .debug)
-            }
             return finalMessage
         } catch {
             let errorMessage = error.localizedDescription
@@ -68,7 +63,5 @@ public struct JSONManager {
             }
             throw JSONErrors.undecodable
         }
-        
     }
 }
-

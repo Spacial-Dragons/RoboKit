@@ -296,22 +296,28 @@ import SwiftUI
             Connection.log("Connection \(self.id) stopped", level: .info)
         }
     }
-    
+
     /// Method resposible for receiving and decoding messages from clients.
     public func setupReceive() {
         self.nwConnection.receive(minimumIncompleteLength: 1, maximumLength: 65536) { (data, _, isComplete, error) in
             guard let data = data else { return }
             //                self.nwConnection.receive(minimumIncompleteLength: 1, maximumLength: 65536) { [weak self] (data, _, isComplete, error) in
             //                    guard let self = self, let data = data else { return }
-            
+
             do {
-                let message = try JSONManager.decodeFromJSON(data: data)
+                let message: JSONMessageModel = try JSONManager.decodeFromJSON(data: data)
                 if type(of: message) == JSONMessageModel.self {
                     Task { @MainActor in
-                        Connection.log("Connection \(self.id) received data: \(message)", level: .debug)
+                        Connection.log(
+                            """
+                            Connection \(self.id) received JSON message: 
+                            [Claw Control: \(message.clawControl),
+                            Position & Rotation: \(message.positionAndRotation)]
+                            """,
+                            level: .debug)
                     }
                 }
-                
+
             } catch {
                 Task { @MainActor in
                     Connection.log("Connection \(self.id) failed to decode message: \(error)", level: .error)
@@ -327,4 +333,3 @@ import SwiftUI
         }
     }
 }
-    

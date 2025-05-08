@@ -27,7 +27,11 @@ import RealityKit
         .roll: 0,
         .yaw: 0,
         .pitch: 0
-    ]
+    ] {
+        didSet {
+            self.updateInputSphereRotation()
+        }
+    }
 
     /// RealityKit is using a 3D coordinate system common in many 3D engines:
     ///

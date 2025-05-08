@@ -15,7 +15,7 @@ extension InputSphereManager {
         let position = transformMatrix.position.convertToROSCoordinateSystem()
         return position
     }
-    
+
     public func getInputSphereRotation(relativeToRootPoint rootPoint: Entity) -> simd_float3x3? {
         guard let inputSphere = inputSphere else { return nil }
         let transformMatrix = inputSphere.transformMatrix(relativeTo: rootPoint)

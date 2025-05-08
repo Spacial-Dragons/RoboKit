@@ -5,10 +5,12 @@
 
 <h2 align="center">RoboKit</h2>
 
-**RoboKit** is a ...
+## Overview
+**RoboKit** is a framework designed to faciliate the integration between visionOS applications and robotics software.
 
 ## Requirements
 - visionOS 2.0+
+- XCode
 
 ## Installation
 To install RoboKit using [Swift Package Manager](https://github.com/apple/swift-package-manager), follow the [official tutorial by Apple](https://developer.apple.com/documentation/xcode/adding_package_dependencies_to_your_app) and use the URL for this repository:
@@ -18,11 +20,23 @@ To install RoboKit using [Swift Package Manager](https://github.com/apple/swift-
    ```
    https://github.com/Spacial-Dragons/RoboKit
    ```
-
+3. Select the Dependency Rule as `Up to Next Major Version`
 ---
 
 ## Socket Module
-*Documentation coming soon.*
+
+### Description
+The Socket module provides a pre-structured TCP socket that allows for communication between the visionOS application and the software that responsible for the robot.
+
+### Setup Guide
+
+#### 1. Initialize a client instance
+- Intilize and assign a `TCPClient` instance to a variable, definiting its host and port:
+```swift
+var client: TCPClient = TCPClient(host: "localhost", port: 12345)
+```
+> [!NOTE]  
+> The host and port assigned to the client should be those of the server that you desire to reach.  
 
 ---
 

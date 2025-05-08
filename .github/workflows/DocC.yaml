@@ -2,7 +2,9 @@ name: DocC Archiving
 
 on:
   push:
-    branches: [main]
+    branches: 
+      - main
+      - feat/docc  # TODO: remove before merging
 
 permissions:
   contents: write
@@ -35,18 +37,19 @@ jobs:
             -skipMacroValidation
     
       - name: Process DocC Archive for Static Hosting
+        env:
+          REPO_NAME: ${{ github.event.repository.name }}
         run: |
           # locate the generated .doccarchive
           ARCHIVE_PATH=$(find "${{ github.workspace }}/DerivedData" -type d -name "*.doccarchive" | head -n 1)
           echo "Found DocC archive at: $ARCHIVE_PATH"
     
           OUTPUT_PATH="${{ github.workspace }}/docs"
-          URL_BASE_PATH="NewTestDocc"
     
           xcrun docc process-archive transform-for-static-hosting \
             "$ARCHIVE_PATH" \
             --output-path "$OUTPUT_PATH" \
-            --hosting-base-path "$URL_BASE_PATH" \
+            --hosting-base-path "$REPO_NAME"
     
       - name: Commit and Push to GitHub Pages
         run: |

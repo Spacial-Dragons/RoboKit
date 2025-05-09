@@ -7,12 +7,26 @@
 
 import simd
 
-// Extension to extract a Rotation Matrix from the Transformation Matrix
 extension simd_float4x4 {
-    /// Returns a 3x3 matrix representing only the rotation (and scale).
+    /// A 3×3 rotation matrix extracted from or inserted into the upper-left portion of the transformation matrix.
     ///
-    /// We’re taking the first three columns (x, y, z) of the 4x4 transform matrix
-    /// because they encode orientation (rotation & scale).
+    /// This property allows you to extract or set the rotation component of a 4×4 transformation matrix.
+    /// The rotation matrix is derived from the upper-left 3×3 submatrix, which typically represents
+    /// the orientation of an object in 3D space.
+    ///
+    /// When setting this property, the existing 3×3 rotation portion of the matrix is updated,
+    /// leaving the translation and perspective components unchanged.
+    ///
+    /// Example:
+    /// ```swift
+    /// let transform = simd_float4x4(...)
+    /// let rotation = transform.rotationMatrix
+    ///
+    /// var newTransform = transform
+    /// newTransform.rotationMatrix = simd_float3x3(...)
+    /// ```
+    ///
+    /// - Note: The setter modifies only the rotation portion (`columns.0`, `columns.1`, and `columns.2`) of the matrix.
     public var rotationMatrix: simd_float3x3 {
         get {
             simd_float3x3(

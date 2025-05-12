@@ -286,7 +286,7 @@ import SwiftUI
         }
     }
 
-    /// Method resposible for receiving and decoding messages from clients.
+    /// Method responsible for receiving and decoding messages from clients.
     public func setupReceive() {
         self.nwConnection.receive(minimumIncompleteLength: 1, maximumLength: 65536) { (data, _, isComplete, error) in
             guard let data = data else { return }

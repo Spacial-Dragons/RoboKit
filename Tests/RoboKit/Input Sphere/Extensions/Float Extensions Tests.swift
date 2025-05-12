@@ -5,7 +5,7 @@
 //  Created by Mariia Chemerys on 12.05.2025.
 //
 import Testing
-import simd
+import Foundation
 @testable import RoboKit
 
 @Suite("Float Extensions")

@@ -10,6 +10,12 @@ import RealityKit
 extension InputSphereManager {
 
     /// Updates the rotation of the Input Sphere based on its Euler angles.
+    ///
+    /// This method reads the current Euler angle values—roll, yaw, and pitch—from the
+    /// `inputSphereEulerAngles` dictionary, converts them into quaternions, and
+    /// combines them to update the `inputSphere`'s rotation.
+    ///
+    /// If the `inputSphere` is `nil`, this method performs no action.
     public func updateInputSphereRotation() {
         guard let inputSphere else { return }
 

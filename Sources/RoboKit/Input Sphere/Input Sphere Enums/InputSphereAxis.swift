@@ -37,7 +37,7 @@ public enum InputSphereAxis {
         case .longitudinal: return simd_quatf(angle: -.pi / 2, axis: [1, 0, 0])
         }
     }
-
+  
     /// The material associated with the axis, used for visual distinction in the input sphere's appearance.
     ///
     /// - Returns: A `SimpleMaterial` with a unique color per axis—red for lateral, blue for vertical,

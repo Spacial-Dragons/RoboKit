@@ -31,6 +31,7 @@ extension InputSphereManager {
             inputSphere.addChild(axisEntity)
         }
     }
+
     /// Removes all axis entities from the Input Sphere.
     ///
     /// This method detaches and clears all previously added axis entities from the Input Sphere.

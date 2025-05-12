@@ -2,6 +2,15 @@
 
 Test Summary
 
+@Metadata {
+    @PageImage(
+        purpose: icon, 
+        source: "RoboKitLogo.png", 
+        alt: "RoboKit logo.")
+    @PageColor(blue)
+}
+
+
 ## Overview
 
 Test Overview

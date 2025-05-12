@@ -193,3 +193,8 @@ import SwiftUI
         }
     }
 }
+
+
+extension TCPClient {
+    
+}

@@ -9,7 +9,7 @@ import Foundation
 import Network
 import SwiftUI
 
-@Observable public final class Server: @unchecked Sendable {
+@Observable public final class TCPServer: @unchecked Sendable {
     /// The server's conenction listener.
     public let listener: NWListener
     /// This array and the existence of the `Connection` class allow for the connection of

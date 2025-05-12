@@ -8,25 +8,9 @@
 import Foundation
 import Network
 
-/// Possible errors from the JSON encoding and decoding process
-public enum JSONErrors: Error {
-    case undecodable
-    case unknown
-}
-
-/// Model for the message that the`TCPClient` can send to the `Server`
-public struct JSONMessageModel: Codable, Sendable {
-    public init(clawControl: Bool, positionAndRotation: [Float]) {
-        self.clawControl = clawControl
-        self.positionAndRotation = positionAndRotation
-    }
-
-    public let clawControl: Bool
-    public let positionAndRotation: [Float]
-}
 
 /// Manager for the encoding and decoding of the JSON messages
-public struct JSONManager {
+public struct CodingManager {
     @MainActor
     private static func log(_ message: String, level: LogLevel) {
         AppLogger.shared.log(message, level: level, category: .socket)

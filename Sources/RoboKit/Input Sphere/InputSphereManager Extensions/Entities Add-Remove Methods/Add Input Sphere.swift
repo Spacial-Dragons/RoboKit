@@ -21,7 +21,8 @@ extension InputSphereManager {
     ///   - radius: The radius of the sphere. Defaults to `0.015`.
     ///   - showAxes: A Boolean value indicating whether to display Input Sphere's axes. Defaults to `true`.
     ///
-    /// If the root point is `nil` or the Input Sphere has already been created, the method exits early and logs an error.
+    /// If the root point is `nil` or the Input Sphere has already been created,
+    /// the method exits early and logs an error.
     public func addInputSphere(
         parentEntity: Entity,
         rootPoint: Entity?,

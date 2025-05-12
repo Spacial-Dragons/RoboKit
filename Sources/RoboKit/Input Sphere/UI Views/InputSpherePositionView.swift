@@ -21,7 +21,7 @@ import SwiftUI
 public struct InputSpherePositionView: View {
     @Environment(InputSphereManager.self) private var inputSphereManager: InputSphereManager
     let rootPoint: Entity
-    
+
     /// The formatted position string of the Input Sphere relative to the root point.
     private var positionString: String? {
         return inputSphereManager.inputSpherePositionString(relativeToRootPoint: rootPoint)

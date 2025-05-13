@@ -8,7 +8,20 @@
 import RealityKit
 
 extension InputSphereManager {
-
+    /// Creates a model entity representing one of the Input Sphere's axes.
+    ///
+    /// This method constructs a cylindrical mesh aligned along the specified axis and applies
+    /// a corresponding orientation and position offset to visually align it within the 3D space.
+    /// It also adds an arrowhead to the axis using `addAxisArrow(to:height:radius:material:)`
+    /// for clearer directional indication.
+    ///
+    /// - Parameters:
+    ///   - height: The height of the cylindrical axis.
+    ///   - radius: The radius of the cylindrical axis.
+    ///   - material: The visual material applied to the axis mesh.
+    ///   - axis: The axis being represented—either `.lateral`, `.vertical`, or `.longitudinal`.
+    ///
+    /// - Returns: A `ModelEntity` representing the visualized axis, including an arrowhead.
     internal func inputSphereAxisEntity(
         height: Float,
         radius: Float,

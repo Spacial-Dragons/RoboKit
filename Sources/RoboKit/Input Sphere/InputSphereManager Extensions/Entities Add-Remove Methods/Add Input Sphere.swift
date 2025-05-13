@@ -9,10 +9,20 @@ import SwiftUI
 import RealityKit
 
 extension InputSphereManager {
-
-    /// Creates the Input Sphere, allowing the user to reposition it in space.
-    /// - If the Input Sphere doesn’t exist, it is initialized as a mint-colored sphere.
-    /// - The sphere is positioned slightly above the root point.
+    /// Adds the Input Sphere entity to the specified parent entity.
+    ///
+    /// The Input Sphere represents the target position and orientation of a robot's end effector.
+    /// This method positions the Input Sphere above the provided root point and optionally displays its axes.
+    ///
+    /// - Parameters:
+    ///   - parentEntity: The entity to which the Input Sphere will be added as a child.
+    ///   - rootPoint: The origin of robot's frame of reference.
+    ///   - color: The color of the Input Sphere. Defaults to `.mint`.
+    ///   - radius: The radius of the sphere. Defaults to `0.015`.
+    ///   - showAxes: A Boolean value indicating whether to display Input Sphere's axes. Defaults to `true`.
+    ///
+    /// If the root point is `nil` or the Input Sphere has already been created,
+    /// the method exits early and logs an error.
     public func addInputSphere(
         parentEntity: Entity,
         rootPoint: Entity?,

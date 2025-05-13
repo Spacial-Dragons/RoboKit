@@ -54,7 +54,6 @@ struct RotationFromTransformMatrixTests {
         #expect(matrix.columns.2.y == 7)
         #expect(matrix.columns.2.z == 8)
 
-        // Ensure other values remain untouched
         #expect(matrix.columns.0.w == 0)
         #expect(matrix.columns.1.w == 0)
         #expect(matrix.columns.2.w == 0)

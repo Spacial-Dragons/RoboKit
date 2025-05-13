@@ -17,16 +17,32 @@ struct InputSpherePositionGetterTests {
     var root = Entity()
     var sphere = Entity()
 
+    struct TestCase {
+        let inputPosition: SIMD3<Float>
+        let expectedROSPosition: SIMD3<Float>
+        let description: Comment
+    }
+
+    let testCases: [TestCase] = [
+        .init(inputPosition: [0, 0, 0], expectedROSPosition: [0, 0, 0], description: "Origin"),
+        .init(inputPosition: [1, 2, 3], expectedROSPosition: [1, -3, 2], description: "Positive XYZ"),
+        .init(inputPosition: [-1, -2, -3], expectedROSPosition: [-1, 3, -2], description: "Negative XYZ"),
+        .init(inputPosition: [0, 1, 0], expectedROSPosition: [0, 0, 1], description: "Y axis only"),
+        .init(inputPosition: [0, 0, 1], expectedROSPosition: [0, -1, 0], description: "Z axis only")
+    ]
+
     @Test("Input Sphere position getter returns correct position relative to root in ROS coordinate system")
-    func testGetPosition() {
+    func testGetPositionCases() {
         manager.inputSphere = sphere
         root.position = [0, 0, 0]
-        sphere.position = [1, 2, 3]  // Will be converted to ROS: x, -z, y = [1, 3, -2]
 
-        let result = manager.getInputSpherePosition(relativeToRootPoint: root)
-
-        #expect(result != nil)
-        #expect(result == SIMD3<Float>(1, -3, 2))  // ROS conversion
+        for testCase in testCases {
+            sphere.position = testCase.inputPosition
+            let result = manager.getInputSpherePosition(relativeToRootPoint: root)
+            
+            #expect(result != nil, testCase.description)
+            #expect(result == testCase.expectedROSPosition, "Failed for: \(testCase.description)")
+        }
     }
 
     @Test("Input Sphere position getter returns nil position if inputSphere is nil")

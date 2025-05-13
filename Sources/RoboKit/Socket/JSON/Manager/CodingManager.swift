@@ -8,7 +8,6 @@
 import Foundation
 import Network
 
-
 /// Manager for the encoding and decoding of the JSON messages
 public struct CodingManager {
     @MainActor

@@ -1,20 +1,3 @@
-//
-// ===----------------------------------------------------------------------=== //
-//
-// This source file is part of the RoboKit open source project
-//
-//
-// Licensed under MIT
-//
-// See LICENSE for license information
-// See "Contributors" section on GitHub for the list of project authors
-//
-// SPDX-License-Identifier: MIT
-//
-// ===----------------------------------------------------------------------=== //
-
-import OSLog
-
 /// Represents different levels of logging severity.
 /// Each level corresponds to a specific OSLogType and has a numeric value for comparison.
 enum LogLevel: Int {
@@ -28,6 +11,7 @@ enum LogLevel: Int {
     case error = 3
     /// Fault level logs - used for critical errors that should be investigated immediately
     case fault = 4
+
     /// Maps the LogLevel to the corresponding OSLogType
     var osLogType: OSLogType {
         switch self {
@@ -38,6 +22,7 @@ enum LogLevel: Int {
         case .fault: return .fault
         }
     }
+
     /// Returns a string representation of the log level
     var stringValue: String {
         switch self {
@@ -47,26 +32,6 @@ enum LogLevel: Int {
         case .error: return "ERROR"
         case .fault: return "FAULT"
         }
-    }
-}
-
-/// Represents different categories of logging within the application.
-/// Each category helps organize and filter logs based on their source or purpose.
-enum LogCategory: String {
-    /// Logs related to socket connections and network communication
-    case socket
-    /// Logs related to device calibration processes
-    case calibration
-    /// Logs related to UI components and user interactions
-    case uimodule
-    /// Logs related to application lifecycle events
-    case lifecycle
-    /// Logs related to tracking and monitoring operations
-    case tracking
-
-    /// Returns a formatted string representation of the category
-    var formatted: String {
-        "[\(self.rawValue.capitalized)]"
     }
 }
 

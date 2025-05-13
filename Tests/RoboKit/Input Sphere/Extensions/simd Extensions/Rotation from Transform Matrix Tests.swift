@@ -11,7 +11,7 @@ import simd
 @Suite("simd Extensions")
 struct RotationFromTransformMatrixTests {
 
-    @Test("rotationMatrix getter extracts the correct 3x3 matrix")
+    @Test("RotationMatrix getter extracts the correct 3x3 matrix")
     func testRotationMatrixGetter() {
         let transform = simd_float4x4(
             SIMD4<Float>(1, 0, 0, 0),
@@ -30,7 +30,7 @@ struct RotationFromTransformMatrixTests {
         #expect(result == expected)
     }
 
-    @Test("rotationMatrix setter updates only the top-left 3x3 portion")
+    @Test("RotationMatrix setter updates only the top-left 3x3 portion")
     func testRotationMatrixSetter() {
         var matrix = matrix_identity_float4x4
 

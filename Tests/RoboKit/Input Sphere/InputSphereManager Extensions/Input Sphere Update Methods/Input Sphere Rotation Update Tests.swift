@@ -9,7 +9,7 @@ import Testing
 import simd
 @testable import RoboKit
 
-@Suite("InputSphereManager Extensions - Input Sphere Update Methods")
+@Suite("InputSphereManager - Input Sphere Update Methods")
 @MainActor
 struct UpdateInputSphereRotationTests {
 

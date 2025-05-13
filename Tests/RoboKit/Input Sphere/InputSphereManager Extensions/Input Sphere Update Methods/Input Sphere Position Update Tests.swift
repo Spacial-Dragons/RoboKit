@@ -9,7 +9,7 @@ import Testing
 import RealityKit
 @testable import RoboKit
 
-@Suite("InputSphereManager Extensions - Input Sphere Update Methods")
+@Suite("InputSphereManager - Input Sphere Update Methods")
 @MainActor
 struct UpdateInputSpherePositionTests {
 

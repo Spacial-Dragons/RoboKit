@@ -39,7 +39,7 @@ struct InputSpherePositionGetterTests {
         for testCase in testCases {
             sphere.position = testCase.inputPosition
             let result = manager.getInputSpherePosition(relativeToRootPoint: root)
-            
+
             #expect(result != nil, testCase.description)
             #expect(result == testCase.expectedROSPosition, "Failed for: \(testCase.description)")
         }

@@ -23,7 +23,8 @@ struct FloatExtensionsTests {
 
         for (degrees, expected) in testCases {
             let result = degrees.toRadians
-            #expect(abs(result - expected) < 0.0001, "\(degrees)° → Expected \(expected), got \(result)")
+            #expect(abs(result - expected) < 0.0001,
+                    "\(degrees)° → Expected \(expected), got \(result)")
         }
     }
 
@@ -39,7 +40,8 @@ struct FloatExtensionsTests {
 
         for (radians, expected) in testCases {
             let result = radians.toDegrees
-            #expect(abs(result - expected) < 0.0001, "\(radians) rad → Expected \(expected), got \(result)")
+            #expect(abs(result - expected) < 0.0001,
+                    "\(radians) rad → Expected \(expected), got \(result)")
         }
     }
 }

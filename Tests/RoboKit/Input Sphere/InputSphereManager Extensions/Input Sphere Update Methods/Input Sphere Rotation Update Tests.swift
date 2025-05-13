@@ -15,7 +15,7 @@ struct UpdateInputSphereRotationTests {
 
     var manager = InputSphereManager()
     var sphere = Entity()
-    
+
     @Test("Input Sphere rotation updates correctly")
     func testUpdateRotationWithVariousEulerAngles() {
         let testCases: [(EulerAngles: [EulerAngle: Float], expectedRotation: simd_quatf)] = [
@@ -47,16 +47,11 @@ struct UpdateInputSphereRotationTests {
 
     @Test("No rotation update if Input Sphere is nil")
     func testNoUpdateWhenInputSphereIsNil() {
-        // Ensure inputSphere is nil
         manager.inputSphere = nil
-
-        // Save the initial state of inputSphere
         let initialRotation = sphere.transform.rotation
 
-        // Perform the update
         manager.updateInputSphereRotation()
 
-        // The rotation should remain unchanged since inputSphere is nil
         #expect(sphere.transform.rotation == initialRotation)
     }
 }

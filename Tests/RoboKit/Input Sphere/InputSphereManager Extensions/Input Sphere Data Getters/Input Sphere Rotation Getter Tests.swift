@@ -24,10 +24,14 @@ struct InputSphereRotationGetterTests {
     }
 
     let testCases: [RotationTestCase] = [
-        .init(description: "90° around longitudinal axis", rotation: simd_quatf(angle: .pi / 2, axis: [0, 0, 1])),
-        .init(description: "180° around vertical axis", rotation: simd_quatf(angle: .pi, axis: [0, 1, 0])),
-        .init(description: "45° around lateral axis", rotation: simd_quatf(angle: .pi / 4, axis: [1, 0, 0])),
-        .init(description: "Identity rotation", rotation: simd_quatf())
+        .init(description: "90° around longitudinal axis",
+              rotation: simd_quatf(angle: .pi / 2, axis: [0, 0, 1])),
+        .init(description: "180° around vertical axis",
+              rotation: simd_quatf(angle: .pi, axis: [0, 1, 0])),
+        .init(description: "45° around lateral axis",
+              rotation: simd_quatf(angle: .pi / 4, axis: [1, 0, 0])),
+        .init(description: "Identity rotation",
+              rotation: simd_quatf())
     ]
 
     @Test("Input Sphere rotation getter returns correct rotation matrix relative to root in ROS coordinate system")
@@ -43,8 +47,9 @@ struct InputSphereRotationGetterTests {
             let result = manager.getInputSphereRotation(relativeToRootPoint: root)
 
             #expect(result != nil, testCase.description)
-            #expect(result!.isApproximatelyEqual(to: expectedRotation, tolerance: 1e-4), "Failed for: \(testCase.description)")
-                   
+            #expect(result!.isApproximatelyEqual(to: expectedRotation, tolerance: 1e-4),
+                    "Failed for: \(testCase.description)")
+
         }
     }
 

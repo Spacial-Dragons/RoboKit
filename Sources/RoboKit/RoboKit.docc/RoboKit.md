@@ -1,6 +1,6 @@
 # ``RoboKit``
 
-Test Summary
+RoboKit is a framework designed to facilitate the integration between visionOS applications and robotics software.
 
 @Metadata {
     @PageImage(

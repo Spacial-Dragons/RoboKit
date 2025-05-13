@@ -13,7 +13,6 @@
 //
 // ===----------------------------------------------------------------------=== //
 
-
 import SwiftUI
 
 /// A SwiftUI view that provides a slider to adjust one of the Input Sphere's Euler angles.

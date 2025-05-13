@@ -13,7 +13,6 @@
 //
 // ===----------------------------------------------------------------------=== //
 
-
 import RealityKit
 
 /// An enumeration that defines the three principal axes of the Input Sphere,

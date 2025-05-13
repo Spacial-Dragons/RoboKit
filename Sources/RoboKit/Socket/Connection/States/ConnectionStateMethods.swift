@@ -13,7 +13,6 @@
 //
 // ===----------------------------------------------------------------------=== //
 
-
 extension Connection {
     /// Method that cancels the connection once it fails.
     /// - Parameters:

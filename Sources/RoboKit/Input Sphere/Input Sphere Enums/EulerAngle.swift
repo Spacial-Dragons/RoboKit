@@ -13,7 +13,6 @@
 //
 // ===----------------------------------------------------------------------=== //
 
-
 /// An enumeration that defines the three principal Euler angles used to
 /// describe orientation in 3D space: roll, yaw, and pitch.
 ///

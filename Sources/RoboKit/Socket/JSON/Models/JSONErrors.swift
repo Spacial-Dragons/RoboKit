@@ -13,7 +13,6 @@
 //
 // ===----------------------------------------------------------------------=== //
 
-
 /// Possible errors from the JSON encoding and decoding process
 public enum JSONErrors: Error {
     case undecodable

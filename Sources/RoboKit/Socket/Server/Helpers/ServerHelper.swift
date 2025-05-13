@@ -13,7 +13,6 @@
 //
 // ===----------------------------------------------------------------------=== //
 
-
 extension TCPServer {
     /// Starts the server. After this function is called, server is ready to receive connection requests from clients.
     public func start(logMessage: String?) throws {

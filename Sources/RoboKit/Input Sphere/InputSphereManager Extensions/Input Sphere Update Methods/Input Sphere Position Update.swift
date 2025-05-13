@@ -13,7 +13,6 @@
 //
 // ===----------------------------------------------------------------------=== //
 
-
 import RealityKit
 
 extension InputSphereManager {

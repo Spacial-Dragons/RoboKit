@@ -13,7 +13,6 @@
 //
 // ===----------------------------------------------------------------------=== //
 
-
 extension SIMD3 where Scalar == Float {
     /// Converts the current vector from RealityKit's to ROS (Robot Operating System) coordinate system.
     ///

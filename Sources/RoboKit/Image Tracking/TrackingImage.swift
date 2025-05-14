@@ -22,7 +22,8 @@ import UIKit
 ///
 /// Each reference image must include:
 /// - `imageName`: The name of the image in `xcassets`.
-/// - `rootOffset`: The offset (in meters) from the intended physical root point. The offset should be represented in RealityKit coordinate system.
+/// - `rootOffset`: The offset (in meters) from the intended physical root point.
+/// The offset should be represented in RealityKit coordinate system.
 ///
 /// Example:
 /// ```swift

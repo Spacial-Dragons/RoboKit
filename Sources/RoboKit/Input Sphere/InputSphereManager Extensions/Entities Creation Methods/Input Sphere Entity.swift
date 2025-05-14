@@ -21,6 +21,16 @@ extension InputSphereManager {
     ///
     /// - Returns: A fully configured `Entity` representing the Input Sphere.
     internal func inputSphereEntity(color: Color, radius: Float) -> Entity {
+        // Log sphere creation parameters at debug level
+        AppLogger.shared.debug(
+            "Creating Input Sphere entity",
+            category: .inputsphere,
+            context: [
+                "color": String(describing: color),
+                "radius": radius
+            ]
+        )
+        
         let entity = Entity()
 
         let simpleMaterial = SimpleMaterial(
@@ -32,6 +42,16 @@ extension InputSphereManager {
             materials: [simpleMaterial]
         )
         entity.components.set(model)
+        
+        // Log model component setup at debug level
+        AppLogger.shared.debug(
+            "Input Sphere model component configured",
+            category: .inputsphere,
+            context: [
+                "meshRadius": radius,
+                "materialType": String(describing: type(of: simpleMaterial))
+            ]
+        )
 
         let collisionShape = ShapeResource.generateSphere(radius: radius)
 
@@ -40,6 +60,34 @@ extension InputSphereManager {
             InputTargetComponent(),
             HoverEffectComponent()
         ])
+        
+        // Log interaction components setup at debug level
+        AppLogger.shared.debug(
+            "Input Sphere interaction components configured",
+            category: .inputsphere,
+            context: [
+                "hasCollisionComponent": true,
+                "hasInputTargetComponent": true,
+                "hasHoverEffectComponent": true,
+                "collisionShapeRadius": radius
+            ]
+        )
+        
+        // Log successful sphere creation at info level
+        AppLogger.shared.info(
+            "Input Sphere entity created successfully",
+            category: .inputsphere,
+            context: [
+                "finalRadius": radius,
+                "color": String(describing: color),
+                "components": [
+                    "model": true,
+                    "collision": true,
+                    "inputTarget": true,
+                    "hoverEffect": true
+                ]
+            ]
+        )
 
         return entity
     }

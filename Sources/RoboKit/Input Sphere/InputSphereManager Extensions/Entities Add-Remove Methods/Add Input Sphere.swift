@@ -31,12 +31,18 @@ extension InputSphereManager {
         showAxes: Bool = true) {
 
         guard let rootPoint = rootPoint else {
-            print("Error: Failed to create Input Sphere. Root Point is nil.")
+            AppLogger.shared.error(
+                "Failed to create Input Sphere: Root Point is nil",
+                category: .inputsphere
+            )
             return
         }
 
         guard inputSphere == nil else {
-            print("Error: Failed to create Input Sphere. Input Sphere already exists.")
+            AppLogger.shared.error(
+                "Failed to create Input Sphere: Input Sphere already exists",
+                category: .inputsphere
+            )
             return
         }
 
@@ -48,6 +54,22 @@ extension InputSphereManager {
         inputSphere = sphere
         updateInputSpherePosition(rootPoint: rootPoint)
 
-        if showAxes { addInputSphereAxes() }
+        AppLogger.shared.info(
+            "Input Sphere created successfully",
+            category: .inputsphere,
+            context: [
+                "position": sphere.position,
+                "radius": radius,
+                "showAxes": showAxes
+            ]
+        )
+
+        if showAxes {
+            addInputSphereAxes()
+            AppLogger.shared.debug(
+                "Input Sphere axes added",
+                category: .inputsphere
+            )
+        }
     }
 }

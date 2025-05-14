@@ -19,9 +19,28 @@ extension InputSphereManager {
     /// - Returns: A `SIMD3<Float>` representing the position in ROS coordinates,
     /// or `nil` if the Input Sphere does not exist.
     public func getInputSpherePosition(relativeToRootPoint rootPoint: Entity) -> SIMD3<Float>? {
-        guard let inputSphere = inputSphere else { return nil }
+        guard let inputSphere = inputSphere else {
+            AppLogger.shared.debug(
+                "Failed to get Input Sphere position: sphere is nil",
+                category: .inputsphere
+            )
+            return nil
+        }
+        
         let transformMatrix = inputSphere.transformMatrix(relativeTo: rootPoint)
         let position = transformMatrix.position.convertToROSCoordinateSystem()
+        
+        // Log position retrieval at debug level
+        AppLogger.shared.debug(
+            "Input Sphere position retrieved",
+            category: .inputsphere,
+            context: [
+                "position": position,
+                "relativeToRootPoint": rootPoint.position,
+                "coordinateSystem": "ROS"
+            ]
+        )
+        
         return position
     }
 

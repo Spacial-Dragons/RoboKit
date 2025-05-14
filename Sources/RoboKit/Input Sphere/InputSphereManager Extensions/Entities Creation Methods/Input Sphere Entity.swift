@@ -21,18 +21,23 @@ extension InputSphereManager {
     ///
     /// - Returns: A fully configured `Entity` representing the Input Sphere.
     internal func inputSphereEntity(color: Color, radius: Float) -> Entity {
-        // Log sphere creation parameters at debug level
-        AppLogger.shared.debug(
-            "Creating Input Sphere entity",
-            category: .inputsphere,
-            context: [
-                "color": String(describing: color),
-                "radius": radius
-            ]
-        )
-        
-        let entity = Entity()
+        logSphereCreationParameters(color: color, radius: radius)
 
+        let entity = Entity()
+        setupModelComponent(for: entity, color: color, radius: radius)
+        setupInteractionComponents(for: entity, radius: radius)
+        logSuccessfulSphereCreation(color: color, radius: radius)
+
+        return entity
+    }
+
+    /// Sets up the model component for the Input Sphere entity.
+    ///
+    /// - Parameters:
+    ///   - entity: The entity to configure.
+    ///   - color: The color for the sphere's material.
+    ///   - radius: The radius of the sphere.
+    private func setupModelComponent(for entity: Entity, color: Color, radius: Float) {
         let simpleMaterial = SimpleMaterial(
             color: UIColor(color), isMetallic: true
         )
@@ -42,17 +47,16 @@ extension InputSphereManager {
             materials: [simpleMaterial]
         )
         entity.components.set(model)
-        
-        // Log model component setup at debug level
-        AppLogger.shared.debug(
-            "Input Sphere model component configured",
-            category: .inputsphere,
-            context: [
-                "meshRadius": radius,
-                "materialType": String(describing: type(of: simpleMaterial))
-            ]
-        )
 
+        logModelComponentSetup(radius: radius, materialType: type(of: simpleMaterial))
+    }
+
+    /// Sets up the interaction components for the Input Sphere entity.
+    ///
+    /// - Parameters:
+    ///   - entity: The entity to configure.
+    ///   - radius: The radius of the sphere.
+    private func setupInteractionComponents(for entity: Entity, radius: Float) {
         let collisionShape = ShapeResource.generateSphere(radius: radius)
 
         entity.components.set([
@@ -60,8 +64,36 @@ extension InputSphereManager {
             InputTargetComponent(),
             HoverEffectComponent()
         ])
-        
-        // Log interaction components setup at debug level
+
+        logInteractionComponentsSetup(radius: radius)
+    }
+
+    /// Logs the initial parameters for sphere creation.
+    private func logSphereCreationParameters(color: Color, radius: Float) {
+        AppLogger.shared.debug(
+            "Creating Input Sphere entity",
+            category: .inputsphere,
+            context: [
+                "color": String(describing: color),
+                "radius": radius
+            ]
+        )
+    }
+
+    /// Logs the model component setup details.
+    private func logModelComponentSetup(radius: Float, materialType: Any.Type) {
+        AppLogger.shared.debug(
+            "Input Sphere model component configured",
+            category: .inputsphere,
+            context: [
+                "meshRadius": radius,
+                "materialType": String(describing: materialType)
+            ]
+        )
+    }
+
+    /// Logs the interaction components setup details.
+    private func logInteractionComponentsSetup(radius: Float) {
         AppLogger.shared.debug(
             "Input Sphere interaction components configured",
             category: .inputsphere,
@@ -72,8 +104,10 @@ extension InputSphereManager {
                 "collisionShapeRadius": radius
             ]
         )
-        
-        // Log successful sphere creation at info level
+    }
+
+    /// Logs the successful creation of the Input Sphere entity.
+    private func logSuccessfulSphereCreation(color: Color, radius: Float) {
         AppLogger.shared.info(
             "Input Sphere entity created successfully",
             category: .inputsphere,
@@ -88,7 +122,5 @@ extension InputSphereManager {
                 ]
             ]
         )
-
-        return entity
     }
 }

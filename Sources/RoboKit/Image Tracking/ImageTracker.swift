@@ -17,23 +17,51 @@ import simd
 import ARKit
 import SwiftUI
 
+
+/// Error that is being thrown in case the requested tracking image is not found in the Assets catalog.
+enum TrackingError: Error {
+    case imageNotFound(imageName: String)
+}
+
+/// The Image Tracker module provides functionality for detecting and tracking images in the physical environment using ARKit and visionOS.
 /// A class responsible for tracking images using ARKit and providing corresponding transformation data.
 /// It handles the initialization of AR sessions, image tracking, and updates for tracked anchors.
 /// - Note: This class supports different platforms (simulator and visionOS) with platform-specific implementations.
 ///
-
-enum TrackingError: Error {
-    case imageNotFound(imageName: String)
-}
+/// After defining the reference images, initialize the `ImageTracker` class by providing the `arResourceGroupName` and the array of images:
+///
+/// ```swift
+/// @State private var imageTracker: RoboKit.ImageTracker = .init(
+///    arResourceGroupName: "AR Resources",
+///    images: trackingImages
+///)
+///```
 
 @MainActor
 @Observable
 public class ImageTracker {
 
     /// The publicly available computed root transformation matrix of the tracked image set.
+    /// A `simd_float4x4?` transform matrix representing the center point between all tracked images, based on their `rootOffset` values.
+    ///
+    /// Basic usage:
+    /// ```swift
+    /// .onChange(of: imageTracker.rootTransform) {
+    ///    print(imageTracker.rootTransform)
+    /// }
+    /// ```
     public var rootTransform: simd_float4x4? { computeRootPosition() }
 
     /// A publicly available array of transformation matrices for each tracked image.
+    ///
+    /// An array of `simd_float4x4` matrices representing the individual positions of each tracked image in RealityKit space.
+    ///
+    /// Basic usage:
+    /// ```swift
+    /// .onChange(of: imageTracker.trackedImagesTransform) {
+    ///    print(imageTracker.trackedImagesTransform)
+    /// }
+    /// ```
     public var trackedImagesTransform: [simd_float4x4] { getTrackedImagesTransform() }
 
     // Mapping of reference image names to their corresponding tracking image and AR reference image.
@@ -55,7 +83,7 @@ public class ImageTracker {
     /// - Parameters:
     ///   - arResourceGroupName: The name of the asset catalog group containing the AR reference images.
     ///   - images: An array of `TrackingImage` instances with their associated offsets.
-    /// - Note: If a reference image is not found, the initializer will trigger a fatal error.
+    /// - Note: If a reference image is not found, the initializer will trigger an error.
     public init(arResourceGroupName: String, images: [TrackingImage]) throws {
         // Load images from both main bundle and from the module bundle
         let mainSet = ARKit.ReferenceImage.loadReferenceImages(inGroupNamed: arResourceGroupName, bundle: .main)

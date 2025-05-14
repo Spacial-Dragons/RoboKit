@@ -19,6 +19,20 @@ import UIKit
 
 /// Represents a tracking image with its associated metadata.
 /// This structure is used to define a Tracking image's name and its physical offset relative to a reference point.
+///
+/// Each reference image must include:
+/// - `imageName`: The name of the image in `xcassets`.
+/// - `rootOffset`: The offset (in meters) from the intended physical root point. The offset should be represented in RealityKit coordinate system.
+///
+/// Example:
+/// ```swift
+/// import RoboKit
+///
+/// let trackingImages: [TrackingImage] = [
+///    TrackingImage(imageName: "TrackingImage-1", rootOffset: .init(x: -0.1135, y: 0, z: 0.175)),
+///    TrackingImage(imageName: "TrackingImage-2", rootOffset: .init(x: 0.1135, y: 0, z: -0.175))
+/// ]
+/// ```
 
 @MainActor
 public struct TrackingImage {
@@ -36,7 +50,6 @@ public struct TrackingImage {
     /// - Parameters:
     ///   - imageName: The exact name of the image in the asset catalog.
     ///   - rootOffset: The physical offset from the root point in meters.
-
     ///
     /// The initializer validates that the image exists in the asset catalog. If the image is not found,
     /// it triggers a fatal error with detailed instructions to resolve the issue.

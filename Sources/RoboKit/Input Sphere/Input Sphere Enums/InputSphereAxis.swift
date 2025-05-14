@@ -12,7 +12,7 @@ import RealityKit
 ///
 /// Use `InputSphereAxis` to specify a spatial direction for the input sphere's reference components.
 /// Each case provides its associated axis orientation and a distinct visual material for display in 3D space.
-public enum InputSphereAxis {
+public enum InputSphereAxis: String {
 
     /// The longitudinal axis, aligned with the y-axis in the ROS coordinate system.
     /// This axis is commonly associated with roll. It includes a predefined orientation and green material.

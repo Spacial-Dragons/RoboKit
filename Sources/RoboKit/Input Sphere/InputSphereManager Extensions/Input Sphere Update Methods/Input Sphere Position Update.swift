@@ -23,6 +23,11 @@ extension InputSphereManager {
         if let inputSphere {
             self.inputSpherePositionRelativeToParent = inputSphere.position
             self.inputSpherePositionRelativeToRoot = inputSphere.position(relativeTo: rootPoint)
+        } else {
+            AppLogger.shared.warning(
+                "Attempted to update Input Sphere position but sphere is nil",
+                category: .inputsphere
+            )
         }
     }
 }

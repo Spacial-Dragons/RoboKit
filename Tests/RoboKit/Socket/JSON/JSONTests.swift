@@ -1,10 +1,9 @@
 import Testing
 @testable import RoboKit
 
-@MainActor
-@Suite("Socket Tests")
-struct SocketTests {
-    @Test func <#test name#>() async throws {
+@Suite("JSON Tests")
+struct JSONTests {
+    @Test func encodingObjectToJSONTest() async throws {
         <#body#>
     }
 }

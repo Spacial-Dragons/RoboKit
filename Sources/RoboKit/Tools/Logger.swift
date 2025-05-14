@@ -42,6 +42,8 @@ enum LogCategory: String {
     case socket
     /// Logs related to device calibration processes
     case calibration
+    /// Logs related to Input Sphere
+    case inputsphere
     /// Logs related to UI components and user interactions
     case uimodule
     /// Logs related to application lifecycle events

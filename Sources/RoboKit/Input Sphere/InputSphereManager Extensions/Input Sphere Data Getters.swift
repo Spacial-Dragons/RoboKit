@@ -35,9 +35,32 @@ extension InputSphereManager {
     /// - Returns: A `simd_float3x3` representing the rotation matrix in ROS coordinates,
     /// or `nil` if the Input Sphere does not exist.
     public func getInputSphereRotation(relativeToRootPoint rootPoint: Entity) -> simd_float3x3? {
-        guard let inputSphere = inputSphere else { return nil }
+        guard let inputSphere = inputSphere else {
+            AppLogger.shared.debug(
+                "Failed to get Input Sphere rotation: sphere is nil",
+                category: .inputsphere
+            )
+            return nil
+        }
+        
         let transformMatrix = inputSphere.transformMatrix(relativeTo: rootPoint)
         let rotation = transformMatrix.rotationMatrix.convertToROSCoordinateSystem()
+        
+        // Log rotation retrieval at debug level
+        AppLogger.shared.debug(
+            "Input Sphere rotation retrieved",
+            category: .inputsphere,
+            context: [
+                "rotationMatrix": [
+                    "row0": [rotation[0][0], rotation[0][1], rotation[0][2]],
+                    "row1": [rotation[1][0], rotation[1][1], rotation[1][2]],
+                    "row2": [rotation[2][0], rotation[2][1], rotation[2][2]]
+                ],
+                "relativeToRootPoint": rootPoint.position,
+                "coordinateSystem": "ROS"
+            ]
+        )
+        
         return rotation
     }
 }

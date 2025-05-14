@@ -1,5 +1,9 @@
 # Socket
 
+@Metadata {
+    @PageImage(purpose: card, source: "SocketModuleCard", alt: "Socket Module Card")
+}
+
 The Socket module provides a pre-structured TCP socket that allows for communication between the visionOS application and external software responsible for controlling a robot.
 
 ## Overview

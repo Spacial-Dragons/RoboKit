@@ -1,5 +1,9 @@
 # Image Tracker
 
+@Metadata {
+    @PageImage(purpose: card, source: "ImageTrackerModuleCard", alt: "Image Tracking Module Card")
+}
+
 The Image Tracker module provides functionality for detecting and tracking images in the physical environment using ARKit and visionOS.
 
 ## Overview

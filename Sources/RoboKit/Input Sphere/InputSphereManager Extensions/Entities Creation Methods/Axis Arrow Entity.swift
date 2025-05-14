@@ -30,10 +30,10 @@ extension InputSphereManager {
                 "materialType": String(describing: type(of: material))
             ]
         )
-        
+
         let arrowMesh = MeshResource.generateCone(height: height * 0.2, radius: radius * 3)
         let entity = ModelEntity(mesh: arrowMesh, materials: [material])
-        
+
         // Log successful arrow creation at debug level
         AppLogger.shared.debug(
             "Axis arrow entity created",
@@ -46,7 +46,7 @@ extension InputSphereManager {
                 "entityPosition": entity.position
             ]
         )
-        
+
         return entity
     }
 }

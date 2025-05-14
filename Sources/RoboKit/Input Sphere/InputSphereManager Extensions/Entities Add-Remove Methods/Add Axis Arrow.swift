@@ -31,10 +31,10 @@ extension InputSphereManager {
                 "materialType": String(describing: type(of: material))
             ]
         )
-        
+
         let arrowEntity = axisArrowEntity(height: height, radius: radius, material: material)
         arrowEntity.position = SIMD3<Float>(0, height / 2, 0)
-        
+
         // Log arrow creation and positioning at debug level
         AppLogger.shared.debug(
             "Axis arrow created and positioned",
@@ -45,9 +45,9 @@ extension InputSphereManager {
                 "arrowRadius": radius
             ]
         )
-        
+
         axisEntity.addChild(arrowEntity)
-        
+
         // Log successful arrow addition at info level
         AppLogger.shared.info(
             "Axis arrow added successfully",

@@ -27,7 +27,7 @@ extension InputSphereManager {
         radius: Float,
         material: Material,
         axis: InputSphereAxis) -> ModelEntity {
-        
+
         // Log axis creation parameters at debug level
         AppLogger.shared.debug(
             "Creating Input Sphere axis entity",
@@ -39,7 +39,7 @@ extension InputSphereManager {
                 "materialType": String(describing: type(of: material))
             ]
         )
-        
+
         let axisEntity = ModelEntity(
             mesh: MeshResource.generateCylinder(height: height, radius: radius),
             materials: [material]
@@ -54,7 +54,7 @@ extension InputSphereManager {
         )
 
         axisEntity.position = offset
-        
+
         // Log axis entity configuration at debug level
         AppLogger.shared.debug(
             "Input Sphere axis entity configured",
@@ -68,7 +68,7 @@ extension InputSphereManager {
         )
 
         addAxisArrow(to: axisEntity, height: height, radius: radius, material: material)
-        
+
         // Log successful axis entity creation at info level
         AppLogger.shared.info(
             "Input Sphere axis entity created successfully",

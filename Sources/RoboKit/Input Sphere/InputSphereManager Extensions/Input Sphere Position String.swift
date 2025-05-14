@@ -24,7 +24,7 @@ extension InputSphereManager {
             )
             return nil
         }
-        
+
         // Log position conversion at debug level
         AppLogger.shared.debug(
             "Converting Input Sphere position to ROS coordinates",
@@ -34,13 +34,13 @@ extension InputSphereManager {
                 "relativeToRootPoint": rootPoint.position
             ]
         )
-        
+
         let positionInROS = position.convertToROSCoordinateSystem()
 
         let positionString = String(format:
             " x: %.3f m \t y: %.3f m \t z: %.3f m",
             positionInROS.x, positionInROS.y, positionInROS.z)
-        
+
         // Log formatted position string at debug level
         AppLogger.shared.debug(
             "Input Sphere position string formatted",

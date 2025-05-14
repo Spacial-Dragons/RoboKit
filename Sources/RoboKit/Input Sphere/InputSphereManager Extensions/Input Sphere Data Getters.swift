@@ -26,10 +26,10 @@ extension InputSphereManager {
             )
             return nil
         }
-        
+
         let transformMatrix = inputSphere.transformMatrix(relativeTo: rootPoint)
         let position = transformMatrix.position.convertToROSCoordinateSystem()
-        
+
         // Log position retrieval at debug level
         AppLogger.shared.debug(
             "Input Sphere position retrieved",
@@ -40,7 +40,7 @@ extension InputSphereManager {
                 "coordinateSystem": "ROS"
             ]
         )
-        
+
         return position
     }
 
@@ -61,10 +61,10 @@ extension InputSphereManager {
             )
             return nil
         }
-        
+
         let transformMatrix = inputSphere.transformMatrix(relativeTo: rootPoint)
         let rotation = transformMatrix.rotationMatrix.convertToROSCoordinateSystem()
-        
+
         // Log rotation retrieval at debug level
         AppLogger.shared.debug(
             "Input Sphere rotation retrieved",
@@ -79,7 +79,7 @@ extension InputSphereManager {
                 "coordinateSystem": "ROS"
             ]
         )
-        
+
         return rotation
     }
 }

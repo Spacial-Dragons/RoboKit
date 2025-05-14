@@ -31,7 +31,7 @@ extension InputSphereManager {
         inputSphere.transform.rotation = rollQuat * yawQuat * pitchQuat
 
         let oldAngles = inputSphereEulerAngles
-        
+
         // Log rotation changes if they are significant
         if oldAngles != inputSphereEulerAngles {
             // Log detailed rotation changes at debug level

@@ -15,12 +15,38 @@ extension InputSphereManager {
     /// the given `Material`.
     ///
     /// - Parameters:
-    ///   - height: The total height of the axis entity, used to determine the arrow’s size proportionally.
-    ///   - radius: The base radius of the axis shaft, used to scale the arrow’s radius.
+    ///   - height: The total height of the axis entity, used to determine the arrow's size proportionally.
+    ///   - radius: The base radius of the axis shaft, used to scale the arrow's radius.
     ///   - material: The material applied to the arrow mesh.
     /// - Returns: A `ModelEntity` containing the arrow geometry and material.
     internal func axisArrowEntity(height: Float, radius: Float, material: Material) -> ModelEntity {
+        // Log arrow creation parameters at debug level
+        AppLogger.shared.debug(
+            "Creating axis arrow entity",
+            category: .inputsphere,
+            context: [
+                "arrowHeight": height,
+                "arrowRadius": radius,
+                "materialType": String(describing: type(of: material))
+            ]
+        )
+        
         let arrowMesh = MeshResource.generateCone(height: height * 0.2, radius: radius * 3)
-        return ModelEntity(mesh: arrowMesh, materials: [material])
+        let entity = ModelEntity(mesh: arrowMesh, materials: [material])
+        
+        // Log successful arrow creation at debug level
+        AppLogger.shared.debug(
+            "Axis arrow entity created",
+            category: .inputsphere,
+            context: [
+                "arrowDimensions": [
+                    "height": height * 0.2,
+                    "radius": radius * 3
+                ],
+                "entityPosition": entity.position
+            ]
+        )
+        
+        return entity
     }
 }

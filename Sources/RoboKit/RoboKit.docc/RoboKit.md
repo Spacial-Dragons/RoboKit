@@ -28,6 +28,7 @@ RoboKit makes it easier to build immersive, real-time robotic control interfaces
 @Links(visualStyle: detailedGrid) {
     - <doc:ImageTrackerModule>
     - <doc:SocketModule>
+    - <doc:InputSphere>
 }
 
 ## Topics

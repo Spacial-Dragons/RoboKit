@@ -28,5 +28,11 @@ Comprehensive documentation for **RoboKit** is available online. It includes get
 
 **Access the full documentation here:** [https://robokit.vercel.app/docs](https://robokit.vercel.app/docs)
 
-## Demo project
 For advanced usage examples, please refer to the [Demo project](https://github.com/Spacial-Dragons/RoboKit-Demo) demonstrating the capabilities of the `RoboKit`.
+
+## Contributing to RoboKit
+
+Contributions to RoboKit are welcomed and encouraged! Please see the
+[Contributing to RoboKit guide](CONTRIBUTING.md).
+
+Before submitting the pull request, please make sure you have *tested your changes* and that they follow the RoboKit project [guidelines for contributing code](CONTRIBUTING.md#Commit-Guidelines).

@@ -22,6 +22,8 @@ For interaction, the ``InputSphereManager`` provides an intuitive interface to m
 
 RoboKit makes it easier to build immersive, real-time robotic control interfaces in visionOS.
 
+ [View Demo Project](https://github.com/Spacial-Dragons/RoboKit-Demo) — A showcase app demonstrating the different modules available in RoboKit.
+
 
 ### Featured
 

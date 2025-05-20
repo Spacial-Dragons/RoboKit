@@ -9,7 +9,7 @@ import SwiftUI
 
 public struct ObjectWidthUnitPicker: View {
 
-    @Binding public var objectWidthUnit: ObjectWidthUnit
+    @Binding private var objectWidthUnit: ObjectWidthUnit
 
     public init(objectWidthUnit: Binding<ObjectWidthUnit>) {
         self._objectWidthUnit = objectWidthUnit

@@ -8,7 +8,7 @@
 import SwiftUI
 
 public struct ClawControlToggle: View {
-    @Binding public var clawShouldOpen: Bool
+    @Binding private var clawShouldOpen: Bool
 
     public init(clawShouldOpen: Binding<Bool>) {
         self._clawShouldOpen = clawShouldOpen

@@ -8,7 +8,7 @@
 import SwiftUI
 
 public struct ObjectWidthTextField: View {
-    @Binding public var objectWidth: Float
+    @Binding private var objectWidth: Float
     
     public init(objectWidth: Binding<Float>) {
         self._objectWidth = objectWidth

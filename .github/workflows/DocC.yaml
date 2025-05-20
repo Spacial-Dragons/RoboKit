@@ -1,0 +1,62 @@
+name: DocC Archiving
+
+on:
+  push:
+    branches: 
+      - main
+      - feat/docc  # TODO: remove before merging
+
+permissions:
+  contents: write
+
+jobs:
+  test-visionos:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+    
+      - name: Install Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+    
+      - name: Resolve SwiftPM dependencies
+        run: swift package resolve
+    
+      - name: Generate DocC Archive
+        run: |
+          xcodebuild docbuild \
+            -scheme RoboKit \
+            -derivedDataPath ${{ github.workspace }}/DerivedData \
+            -destination 'platform=visionOS Simulator,name=Apple Vision Pro,OS=2.2' \
+            -skipPackagePluginValidation \
+            -skipMacroValidation
+    
+      - name: Process DocC Archive for Static Hosting
+        env:
+          REPO_NAME: ${{ github.event.repository.name }}
+        run: |
+          # locate the generated .doccarchive
+          ARCHIVE_PATH=$(find "${{ github.workspace }}/DerivedData" -type d -name "*.doccarchive" | head -n 1)
+          echo "Found DocC archive at: $ARCHIVE_PATH"
+    
+          OUTPUT_PATH="${{ github.workspace }}/docs"
+    
+          xcrun docc process-archive transform-for-static-hosting \
+            "$ARCHIVE_PATH" \
+            --output-path "$OUTPUT_PATH" \
+            --hosting-base-path "$REPO_NAME"
+    
+      - name: Commit and Push to GitHub Pages
+        env:
+          BRANCH_NAME: ${{ github.ref_name }}
+        run: |
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add docs
+          git commit -m "Update DocC documentation for GitHub Pages"
+          git push origin "$BRANCH_NAME"

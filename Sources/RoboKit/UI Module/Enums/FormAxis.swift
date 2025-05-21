@@ -6,8 +6,7 @@
 //
 
 public enum FormAxis: String, CaseIterable {
-    /// Axes labels are in ROS coordinate system
-    case lateral = "X"
-    case longitudinal = "Y"
-    case vertical = "Z"
+    case lateral
+    case longitudinal
+    case vertical
 }

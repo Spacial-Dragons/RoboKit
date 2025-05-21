@@ -9,16 +9,16 @@ import SwiftUI
 
 public struct FormPositionTextField: View {
     @Environment(FormManager.self) private var formManager: FormManager
-    private let formAxis: RoboKit.FormAxis
+    private let axis: Axis
     
-    public init(formAxis: FormAxis) {
-        self.formAxis = formAxis
+    public init(axis: Axis) {
+        self.axis = axis
     }
     
     private var positionValue: Binding<Float> {
         Binding(
             get: {
-                switch formAxis {
+                switch axis {
                 case .lateral:
                     formManager.formPositionRelativeToRoot.x
                 case .longitudinal:
@@ -28,7 +28,7 @@ public struct FormPositionTextField: View {
                 }
             },
             set: {
-                switch formAxis {
+                switch axis {
                 case .lateral:
                     formManager.formPositionRelativeToRoot.x = $0
                 case .longitudinal:
@@ -40,8 +40,8 @@ public struct FormPositionTextField: View {
         )
     }
     
-    private var formAxisLabel: String {
-        switch formAxis {
+    private var axisLabel: String {
+        switch axis {
         case .lateral: return "X"
         case .longitudinal: return "Y"
         case .vertical: return "Z"
@@ -50,9 +50,9 @@ public struct FormPositionTextField: View {
     
     public var body: some View {
         HStack {
-            Text("\(formAxisLabel)")
+            Text("\(axisLabel)")
             
-            TextField("Position \(formAxisLabel)", value: positionValue, format: .number)
+            TextField("Position \(axisLabel)", value: positionValue, format: .number)
                 .keyboardType(.numbersAndPunctuation)
                 .font(.system(size: 20))
                 .padding()

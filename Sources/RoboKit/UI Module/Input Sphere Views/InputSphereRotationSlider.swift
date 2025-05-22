@@ -72,10 +72,9 @@ public struct InputSphereRotationSlider: View {
                 /// Text displaying the current angle value in degrees.
                 Text("\(Int(angleValue.wrappedValue.toDegrees))°")
                     .padding(.leading, 35)
-                
-                /// Slider with labels for min, max, and current value.
                 HStack {
                     Text(axisLabel)
+                        .padding(.trailing)
                     Text("\(String(format: "%.0f", minValue))°")
                     Slider(
                         value: angleValue,
@@ -88,6 +87,7 @@ public struct InputSphereRotationSlider: View {
         } else {
             HStack {
                 Text(axisLabel)
+                    .padding(.trailing)
                 Slider(
                     value: angleValue,
                     in: (minValue.toRadians)...(maxValue.toRadians),

@@ -37,7 +37,7 @@ public struct InputSpherePositionText: View {
     }
     
     public var body: some View {
-        HStack {
+        HStack(spacing: 20) {
             Text(axisLabel)
             Text(positionValue.map { String(format: "%.3f", $0) } ?? "NA")
         }

@@ -11,17 +11,17 @@
 /// Use `EulerAngle` to represent the axis of rotation in contexts such as robotics, animation, or 3D graphics.
 /// This enum is especially useful when working across coordinate systems like ROS and RealityKit,
 /// where axis mappings differ.
-public enum EulerAngle {
-
-    /// Rotation around the longitudinal axis — the y-axis in ROS and, z in RealityKit coordinate systems.
-    /// Commonly referred to as *roll*.
-    case roll
-
-    /// Rotation around the vertical axis — the z-axis in ROS and the y-axis in RealityKit.
-    /// Commonly referred to as *yaw*.
-    case yaw
+public enum EulerAngle: CaseIterable {
 
     /// Rotation around the lateral axis — the x-axis in both ROS and RealityKit.
     /// Commonly referred to as *pitch*.
     case pitch
+    
+    /// Rotation around the vertical axis — the z-axis in ROS and the y-axis in RealityKit.
+    /// Commonly referred to as *yaw*.
+    case yaw
+    
+    /// Rotation around the longitudinal axis — the y-axis in ROS and, z in RealityKit coordinate systems.
+    /// Commonly referred to as *roll*.
+    case roll
 }

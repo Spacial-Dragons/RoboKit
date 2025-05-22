@@ -46,12 +46,12 @@ public struct InputSphereRotationSlider: View {
         )
     }
 
-    /// The label for the angle, capitalized for display.
-    private var angleLabel: String {
+    /// The label for the axis, capitalized for display.
+    private var axisLabel: String {
         switch eulerAngle {
-        case .roll: return "Roll"
-        case .yaw: return "Yaw"
-        case .pitch: return "Pitch"
+        case .pitch: return "Rotation X"
+        case .yaw: return "Rotation Y"
+        case .roll: return "Rotation Z"
         }
     }
 
@@ -65,7 +65,7 @@ public struct InputSphereRotationSlider: View {
             /// Slider with labels for min, max, and current value.
             VStack(alignment: .leading) {
                 HStack {
-                    Text("\(angleLabel):")
+                    Text(axisLabel)
                     Text("\(String(format: "%.0f", minValue))°")
                     Slider(
                         value: angleValue,

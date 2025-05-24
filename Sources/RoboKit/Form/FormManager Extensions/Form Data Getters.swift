@@ -9,7 +9,7 @@ import simd
 
 extension FormManager {
     public func getFormPosition() -> SIMD3<Float> {
-        let position = formPositionRelativeToRoot.convertToROSCoordinateSystem()
+        let position = formPositionRelativeToRootROS
         return position
     }
     

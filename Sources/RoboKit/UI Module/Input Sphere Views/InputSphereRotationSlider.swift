@@ -6,26 +6,11 @@
 //
 
 import SwiftUI
+import RealityKit
 
-/// A SwiftUI view that provides a slider to adjust one of the Input Sphere's Euler angles.
-///
-/// `InputSphereRotationSlider` binds to a specific `EulerAngle` (roll, yaw, or pitch)
-/// and allows users to update its value via a slider input in degrees. The underlying
-/// rotation is stored in radians and managed by the `InputSphereManager`.
-///
-/// This view is useful for fine-tuning robot end-effector orientation in AR environments
-/// using intuitive slider controls.
-///
-/// ```swift
-/// InputSphereRotationSlider(eulerAngle: .yaw)
-/// ```
-///
-/// - Note: The angle is displayed in degrees, while the value is stored internally in radians.
-///
-/// - Parameters:
-///   - eulerAngle: The Euler angle to control. Options are `.roll`, `.yaw`, or `.pitch`.
 public struct InputSphereRotationSlider: View {
     @Environment(InputSphereManager.self) private var inputSphereManager: InputSphereManager
+    let rootPoint: Entity
     let eulerAngle: EulerAngle
     let maxValue: Float
     let minValue: Float
@@ -35,12 +20,14 @@ public struct InputSphereRotationSlider: View {
     /// Initializes a slider for a specific Euler angle.
     ///
     /// - Parameter eulerAngle: The Euler angle this slider adjusts.
-    public init(eulerAngle: EulerAngle,
+    public init(rootPoint: Entity,
+                eulerAngle: EulerAngle,
                 maxValue: Float = 180,
                 minValue: Float = -180,
                 step: Float = 1,
                 showMinMax: Bool = false,
     ) {
+        self.rootPoint = rootPoint
         self.eulerAngle = eulerAngle
         self.maxValue = maxValue
         self.minValue = minValue
@@ -52,7 +39,11 @@ public struct InputSphereRotationSlider: View {
     private var angleValue: Binding<Float> {
         Binding(
             get: { inputSphereManager.inputSphereEulerAngles[eulerAngle] ?? 0 },
-            set: { inputSphereManager.inputSphereEulerAngles[eulerAngle] = $0 }
+            set: {
+                inputSphereManager.inputSphereEulerAngles[eulerAngle] = $0
+                inputSphereManager.rotateInputSphere()
+                inputSphereManager.updateInputSphereRotation(relativeToRootPoint: rootPoint)
+            }
         )
     }
     
@@ -97,6 +88,5 @@ public struct InputSphereRotationSlider: View {
                     .frame(width: 50)
             }
         }
-        
     }
 }

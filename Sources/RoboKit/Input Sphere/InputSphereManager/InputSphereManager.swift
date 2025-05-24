@@ -33,6 +33,8 @@ public final class InputSphereManager {
 
     /// The current position of the Input Sphere relative to a designated root point.
     public var inputSpherePositionRelativeToRoot: SIMD3<Float>?
+    
+    public var inputSphereRotationRelativeToRoot: simd_float3x3?
 
     /// A dictionary of Euler angles (roll, yaw, pitch) defining the Input Sphere’s rotation.
     ///
@@ -41,11 +43,7 @@ public final class InputSphereManager {
         .roll: 0,
         .yaw: 0,
         .pitch: 0
-    ] {
-        didSet {
-            self.updateInputSphereRotation()
-        }
-    }
+    ]
 
     /// A matrix used to convert rotations between RealityKit’s and ROS’s coordinate systems.
     ///

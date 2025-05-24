@@ -24,7 +24,8 @@ extension InputSphereManager {
         parentEntity: Entity,
         rootPoint: Entity) {
         value.entity.position = value.convert(value.location3D, from: .local, to: parentEntity)
-        updateInputSpherePosition(rootPoint: rootPoint)
+        updateInputSpherePosition(relativeToRootPoint: rootPoint)
+        updateInputSphereRotation(relativeToRootPoint: rootPoint)
     }
 }
 

@@ -46,7 +46,7 @@ extension InputSphereManager {
         parentEntity.addChild(sphere)
 
         inputSphere = sphere
-        updateInputSpherePosition(rootPoint: rootPoint)
+        updateInputSpherePosition(relativeToRootPoint: rootPoint)
 
         if showAxes { addInputSphereAxes() }
     }

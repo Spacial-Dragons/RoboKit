@@ -15,31 +15,33 @@ public struct FormPositionTextField: View {
         self.axis = axis
     }
     
+    // ROS system
     private var positionValue: Binding<Float> {
         Binding(
             get: {
                 switch axis {
                 case .lateral:
-                    formManager.formPositionRelativeToRoot.x
+                    formManager.formPositionRelativeToRootROS.x
                 case .longitudinal:
-                    formManager.formPositionRelativeToRoot.y
+                    formManager.formPositionRelativeToRootROS.y
                 case .vertical:
-                    formManager.formPositionRelativeToRoot.z
+                    formManager.formPositionRelativeToRootROS.z
                 }
             },
             set: {
                 switch axis {
                 case .lateral:
-                    formManager.formPositionRelativeToRoot.x = $0
+                    formManager.formPositionRelativeToRootROS.x = $0
                 case .longitudinal:
-                    formManager.formPositionRelativeToRoot.y = $0
+                    formManager.formPositionRelativeToRootROS.y = $0
                 case .vertical:
-                    formManager.formPositionRelativeToRoot.z = $0
+                    formManager.formPositionRelativeToRootROS.z = $0
                 }
             }
         )
     }
     
+    // ROS Labels
     private var axisLabel: String {
         switch axis {
         case .lateral: return "X"

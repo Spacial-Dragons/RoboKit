@@ -14,6 +14,16 @@ public extension SIMD3 where Scalar == Float {
     }
 }
 
+public extension simd_float3x3 {
+    var array: [Float] {
+        [
+            columns.0.x, columns.0.y, columns.0.z,
+            columns.1.x, columns.1.y, columns.1.z,
+            columns.2.x, columns.2.y, columns.2.z
+        ]
+    }
+}
+
 //Position Vector to ROS
 extension SIMD3 where Scalar == Float {
     /// Converts the current vector from RealityKit's to ROS (Robot Operating System) coordinate system.
@@ -38,6 +48,32 @@ extension SIMD3 where Scalar == Float {
         return SIMD3<Float>(x, newZ, y)
     }
 }
+
+// Position Vector to RealityKit
+extension SIMD3 where Scalar == Float {
+    /// Converts the current vector from ROS (Robot Operating System) to RealityKit coordinate system.
+    ///
+    /// This method adjusts the vector's components to match the RealityKit coordinate convention,
+    /// reversing the transformation used in `convertToROSCoordinateSystem()`.
+    ///
+    /// Specifically:
+    /// - The `x` component remains unchanged.
+    /// - The `y` component becomes the original `z`.
+    /// - The `z` component becomes the negated original `y`, unless `y` is zero.
+    ///
+    /// ```swift
+    /// let rosVector = SIMD3<Float>(1.0, -3.0, 2.0)
+    /// let rkVector = rosVector.convertToRealityKitCoordinateSystem()
+    /// // rkVector = SIMD3<Float>(1.0, 2.0, 3.0)
+    /// ```
+    ///
+    /// - Returns: A `SIMD3<Float>` adjusted to match RealityKit coordinate system conventions.
+    public func convertToRealityKitCoordinateSystem() -> SIMD3<Float> {
+        let newZ = y == 0 ? 0 : -y
+        return SIMD3<Float>(x, z, newZ)
+    }
+}
+
 
 // Rotation Matrix to ROS
 extension simd_float3x3 {

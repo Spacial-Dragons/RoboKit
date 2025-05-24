@@ -35,7 +35,7 @@ public struct FormRotationTextField: View {
         HStack {
             Text("\(axisLabel)")
             
-            TextField("Rotation \(axisLabel)", value: angleValue, format: .number)
+            TextField("", value: angleValue, format: .number)
                 .keyboardType(.numbersAndPunctuation)
                 .font(.system(size: 20))
                 .padding()

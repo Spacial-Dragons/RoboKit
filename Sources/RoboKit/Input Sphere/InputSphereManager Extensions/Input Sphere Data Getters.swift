@@ -29,15 +29,17 @@ extension InputSphereManager {
     public func getInputSpherePosition() -> SIMD3<Float>? {
         let position = inputSpherePositionRelativeToRoot?.convertToROSCoordinateSystem()
 
-        // Log position retrieval at debug level
-        AppLogger.shared.debug(
-            "Input Sphere position retrieved",
-            category: .inputsphere,
-            context: [
-                "position": position,
-                "coordinateSystem": "ROS"
-            ]
-        )
+        if let position {
+            // Log position retrieval at debug level
+            AppLogger.shared.debug(
+                "Input Sphere position retrieved",
+                category: .inputsphere,
+                context: [
+                    "position": position,
+                    "coordinateSystem": "ROS"
+                ]
+            )
+        }
 
         return position
     }

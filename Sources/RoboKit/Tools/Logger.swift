@@ -1,3 +1,18 @@
+//
+// ===----------------------------------------------------------------------=== //
+//
+// This source file is part of the RoboKit open source project
+//
+//
+// Licensed under MIT
+//
+// See LICENSE for license information
+// See "Contributors" section on GitHub for the list of project authors
+//
+// SPDX-License-Identifier: MIT
+//
+// ===----------------------------------------------------------------------=== //
+
 import OSLog
 
 /// Represents different levels of logging severity.
@@ -42,6 +57,8 @@ enum LogCategory: String {
     case socket
     /// Logs related to device calibration processes
     case calibration
+    /// Logs related to Input Sphere
+    case inputsphere
     /// Logs related to UI components and user interactions
     case uimodule
     /// Logs related to application lifecycle events

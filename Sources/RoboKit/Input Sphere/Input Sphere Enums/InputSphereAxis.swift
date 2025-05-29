@@ -1,9 +1,17 @@
 //
-//  Axis.swift
-//  RoboKit
+// ===----------------------------------------------------------------------=== //
 //
-//  Created by Mariia Chemerys on 03.05.2025.
+// This source file is part of the RoboKit open source project
 //
+//
+// Licensed under MIT
+//
+// See LICENSE for license information
+// See "Contributors" section on GitHub for the list of project authors
+//
+// SPDX-License-Identifier: MIT
+//
+// ===----------------------------------------------------------------------=== //
 
 import RealityKit
 
@@ -12,7 +20,7 @@ import RealityKit
 ///
 /// Use `InputSphereAxis` to specify a spatial direction for the input sphere's reference components.
 /// Each case provides its associated axis orientation and a distinct visual material for display in 3D space.
-public enum InputSphereAxis {
+public enum InputSphereAxis: String {
 
     /// The longitudinal axis, aligned with the y-axis in the ROS coordinate system.
     /// This axis is commonly associated with roll. It includes a predefined orientation and green material.

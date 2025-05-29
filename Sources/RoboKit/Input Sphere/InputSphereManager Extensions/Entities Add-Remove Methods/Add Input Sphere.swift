@@ -1,9 +1,17 @@
 //
-//  Add Input Sphere.swift
-//  RoboKit
+// ===----------------------------------------------------------------------=== //
 //
-//  Created by Mariia Chemerys on 02.05.2025.
+// This source file is part of the RoboKit open source project
 //
+//
+// Licensed under MIT
+//
+// See LICENSE for license information
+// See "Contributors" section on GitHub for the list of project authors
+//
+// SPDX-License-Identifier: MIT
+//
+// ===----------------------------------------------------------------------=== //
 
 import SwiftUI
 import RealityKit
@@ -31,12 +39,18 @@ extension InputSphereManager {
         showAxes: Bool = true) {
 
         guard let rootPoint = rootPoint else {
-            print("Error: Failed to create Input Sphere. Root Point is nil.")
+            AppLogger.shared.error(
+                "Failed to create Input Sphere: Root Point is nil",
+                category: .inputsphere
+            )
             return
         }
 
         guard inputSphere == nil else {
-            print("Error: Failed to create Input Sphere. Input Sphere already exists.")
+            AppLogger.shared.error(
+                "Failed to create Input Sphere: Input Sphere already exists",
+                category: .inputsphere
+            )
             return
         }
 
@@ -48,6 +62,22 @@ extension InputSphereManager {
         inputSphere = sphere
         updateInputSpherePosition(relativeToRootPoint: rootPoint)
 
-        if showAxes { addInputSphereAxes() }
+        AppLogger.shared.info(
+            "Input Sphere created successfully",
+            category: .inputsphere,
+            context: [
+                "position": sphere.position,
+                "radius": radius,
+                "showAxes": showAxes
+            ]
+        )
+
+        if showAxes {
+            addInputSphereAxes()
+            AppLogger.shared.debug(
+                "Input Sphere axes added",
+                category: .inputsphere
+            )
+        }
     }
 }

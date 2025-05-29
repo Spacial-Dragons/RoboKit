@@ -1,9 +1,17 @@
 //
-//  Input Sphere Drag Gesture.swift
-//  RoboKit
+// ===----------------------------------------------------------------------=== //
 //
-//  Created by Mariia Chemerys on 03.05.2025.
+// This source file is part of the RoboKit open source project
 //
+//
+// Licensed under MIT
+//
+// See LICENSE for license information
+// See "Contributors" section on GitHub for the list of project authors
+//
+// SPDX-License-Identifier: MIT
+//
+// ===----------------------------------------------------------------------=== //
 
 import SwiftUI
 import RealityKit
@@ -23,9 +31,25 @@ extension InputSphereManager {
         _ value: EntityTargetValue<DragGesture.Value>,
         parentEntity: Entity,
         rootPoint: Entity) {
+
+        let oldPosition = value.entity.position
         value.entity.position = value.convert(value.location3D, from: .local, to: parentEntity)
         updateInputSpherePosition(relativeToRootPoint: rootPoint)
         updateInputSphereRotation(relativeToRootPoint: rootPoint)
+
+        // Log significant position changes during drag
+        if oldPosition != value.entity.position {
+            // Log detailed drag updates at debug level
+            AppLogger.shared.debug(
+                "Input Sphere dragged",
+                category: .tracking,
+                context: [
+                    "oldPosition": oldPosition,
+                    "newPosition": value.entity.position,
+                    "dragLocation": value.location3D
+                ]
+            )
+        }
     }
 }
 
@@ -47,6 +71,27 @@ extension View {
         inputSphereManager: InputSphereManager
     ) -> some View {
         if let inputSphere = inputSphereManager.inputSphere, let rootPoint = rootPoint {
+            // Log gesture setup at debug level
+            AppLogger.shared.debug(
+                "Input Sphere drag gesture enabled",
+                category: .inputsphere,
+                context: [
+                    "hasInputSphere": true,
+                    "hasRootPoint": true
+                ]
+            )
+
+            // Log successful gesture setup at info level
+            AppLogger.shared.info(
+                "Input Sphere drag gesture initialized",
+                category: .inputsphere,
+                context: [
+                    "inputSpherePosition": inputSphere.position,
+                    "parentEntityName": parentEntity.name,
+                    "rootPointPosition": rootPoint.position
+                ]
+            )
+
             return AnyView(
                 self.gesture(
                     DragGesture()
@@ -61,6 +106,15 @@ extension View {
                 )
             )
         } else {
+            // Log gesture setup failure at warning level
+            AppLogger.shared.warning(
+                "Input Sphere drag gesture not enabled",
+                category: .inputsphere,
+                context: [
+                    "hasInputSphere": inputSphereManager.inputSphere != nil,
+                    "hasRootPoint": rootPoint != nil
+                ]
+            )
             return AnyView(self)
         }
     }

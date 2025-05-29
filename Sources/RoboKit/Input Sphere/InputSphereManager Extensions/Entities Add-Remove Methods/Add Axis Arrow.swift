@@ -1,9 +1,17 @@
 //
-//  Add Axis Arrow.swift
-//  RoboKit
+// ===----------------------------------------------------------------------=== //
 //
-//  Created by Mariia Chemerys on 03.05.2025.
+// This source file is part of the RoboKit open source project
 //
+//
+// Licensed under MIT
+//
+// See LICENSE for license information
+// See "Contributors" section on GitHub for the list of project authors
+//
+// SPDX-License-Identifier: MIT
+//
+// ===----------------------------------------------------------------------=== //
 
 import RealityKit
 
@@ -19,8 +27,48 @@ extension InputSphereManager {
     ///   - radius: The radius of the corresponding axis.
     ///   - material: The material of the corresponding axis.
     internal func addAxisArrow(to axisEntity: Entity, height: Float, radius: Float, material: Material) {
+        // Log the start of arrow creation at debug level
+        AppLogger.shared.debug(
+            "Creating axis arrow",
+            category: .inputsphere,
+            context: [
+                "axisEntityName": axisEntity.name,
+                "axisEntityPosition": axisEntity.position,
+                "arrowHeight": height,
+                "arrowRadius": radius,
+                "materialType": String(describing: type(of: material))
+            ]
+        )
+
         let arrowEntity = axisArrowEntity(height: height, radius: radius, material: material)
         arrowEntity.position = SIMD3<Float>(0, height / 2, 0)
+
+        // Log arrow creation and positioning at debug level
+        AppLogger.shared.debug(
+            "Axis arrow created and positioned",
+            category: .inputsphere,
+            context: [
+                "arrowPosition": arrowEntity.position,
+                "arrowHeight": height,
+                "arrowRadius": radius
+            ]
+        )
+
         axisEntity.addChild(arrowEntity)
+
+        // Log successful arrow addition at info level
+        AppLogger.shared.info(
+            "Axis arrow added successfully",
+            category: .inputsphere,
+            context: [
+                "axisEntityName": axisEntity.name,
+                "arrowPosition": arrowEntity.position,
+                "parentAxisPosition": axisEntity.position,
+                "arrowDimensions": [
+                    "height": height,
+                    "radius": radius
+                ]
+            ]
+        )
     }
 }

@@ -1,9 +1,17 @@
 //
-//  Input Sphere Position Update.swift
-//  RoboKit
+// ===----------------------------------------------------------------------=== //
 //
-//  Created by Mariia Chemerys on 03.05.2025.
+// This source file is part of the RoboKit open source project
 //
+//
+// Licensed under MIT
+//
+// See LICENSE for license information
+// See "Contributors" section on GitHub for the list of project authors
+//
+// SPDX-License-Identifier: MIT
+//
+// ===----------------------------------------------------------------------=== //
 
 import RealityKit
 
@@ -23,6 +31,11 @@ extension InputSphereManager {
         if let inputSphere {
             self.inputSpherePositionRelativeToParent = inputSphere.position
             self.inputSpherePositionRelativeToRoot = inputSphere.position(relativeTo: rootPoint)
+        } else {
+            AppLogger.shared.warning(
+                "Attempted to update Input Sphere position but sphere is nil",
+                category: .inputsphere
+            )
         }
     }
 }

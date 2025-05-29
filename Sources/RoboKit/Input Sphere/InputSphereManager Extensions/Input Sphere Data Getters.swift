@@ -35,7 +35,6 @@ extension InputSphereManager {
             category: .inputsphere,
             context: [
                 "position": position,
-                "relativeToRootPoint": rootPoint.position,
                 "coordinateSystem": "ROS"
             ]
         )
@@ -54,20 +53,21 @@ extension InputSphereManager {
     public func getInputSphereRotation() -> simd_float3x3? {
         let rotation = inputSphereRotationRelativeToRoot?.convertToROSCoordinateSystem()
         
-        // Log rotation retrieval at debug level
-        AppLogger.shared.debug(
-            "Input Sphere rotation retrieved",
-            category: .inputsphere,
-            context: [
-                "rotationMatrix": [
-                    "row0": [rotation[0][0], rotation[0][1], rotation[0][2]],
-                    "row1": [rotation[1][0], rotation[1][1], rotation[1][2]],
-                    "row2": [rotation[2][0], rotation[2][1], rotation[2][2]]
-                ],
-                "relativeToRootPoint": rootPoint.position,
-                "coordinateSystem": "ROS"
-            ]
-        )
+        if let rotation {
+            // Log rotation retrieval at debug level
+            AppLogger.shared.debug(
+                "Input Sphere rotation retrieved",
+                category: .inputsphere,
+                context: [
+                    "rotationMatrix": [
+                        "row0": [rotation[0][0], rotation[0][1], rotation[0][2]],
+                        "row1": [rotation[1][0], rotation[1][1], rotation[1][2]],
+                        "row2": [rotation[2][0], rotation[2][1], rotation[2][2]]
+                    ],
+                    "coordinateSystem": "ROS"
+                ]
+            )
+        }
         
         return rotation
     }

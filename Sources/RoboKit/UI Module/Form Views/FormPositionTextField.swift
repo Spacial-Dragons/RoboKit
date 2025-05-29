@@ -10,11 +10,11 @@ import SwiftUI
 public struct FormPositionTextField: View {
     @Environment(FormManager.self) private var formManager: FormManager
     private let axis: Axis
-    
+
     public init(axis: Axis) {
         self.axis = axis
     }
-    
+
     // ROS system
     private var positionValue: Binding<Float> {
         Binding(
@@ -40,7 +40,7 @@ public struct FormPositionTextField: View {
             }
         )
     }
-    
+
     // ROS Labels
     private var axisLabel: String {
         switch axis {
@@ -49,11 +49,11 @@ public struct FormPositionTextField: View {
         case .vertical: return "Z"
         }
     }
-    
+
     public var body: some View {
         HStack {
             Text("\(axisLabel)")
-            
+
             TextField("", value: positionValue, format: .number)
                 .keyboardType(.numbersAndPunctuation)
                 .font(.system(size: 20))

@@ -9,7 +9,7 @@ import Foundation
 import simd
 
 extension FormManager {
-    
+
     public func updateFormRotation() {
         let pitch = (formEulerAngles[.pitch] ?? 0).toRadians
         let yaw = (formEulerAngles[.yaw] ?? 0).toRadians

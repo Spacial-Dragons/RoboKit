@@ -32,7 +32,7 @@ extension InputSphereManager {
 
         inputSphere.transform.rotation = rollQuat * yawQuat * pitchQuat
     }
-    
+
     /// Updates the rotation of the Input Sphere based on its Euler angles.
     ///
     /// This method reads the current Euler angle values—roll, yaw, and pitch—from the
@@ -48,7 +48,7 @@ extension InputSphereManager {
             )
             return
         }
-        
+
         let transformMatrix = inputSphere.transformMatrix(relativeTo: rootPoint)
         inputSphereRotationRelativeToRoot = transformMatrix.rotationMatrix
     }

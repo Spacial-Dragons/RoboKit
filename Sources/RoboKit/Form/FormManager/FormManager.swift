@@ -16,14 +16,14 @@ public final class FormManager {
 
     // Position in RealityKit coordinate system
     public var formPositionRelativeToRoot: SIMD3<Float> = SIMD3<Float>(0, 0.3, 0)
-    
+
     // Position in ROS coordinate system
     public var formPositionRelativeToRootROS: SIMD3<Float> = SIMD3<Float>(0, 0, 0.3) {
         didSet {
             self.updateFormPosition()
         }
     }
-    
+
     // Rotation in RealityKit coordinate system
     public var formRotationRelativeToRoot = simd_float3x3(
         SIMD3<Float>( 1, 0, 0),
@@ -35,12 +35,12 @@ public final class FormManager {
         .roll: 0,
         .yaw: 0,
         .pitch: 0
-    ]{
+    ] {
         didSet {
             self.updateFormRotation()
         }
     }
-    
+
     // ROS conversion matrix
     internal static let rotationConversionMatrix = simd_float3x3(
         SIMD3<Float>( 1, 0, 0),

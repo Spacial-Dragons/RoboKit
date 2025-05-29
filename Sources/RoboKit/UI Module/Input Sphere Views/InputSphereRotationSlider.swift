@@ -46,7 +46,7 @@ public struct InputSphereRotationSlider: View {
             }
         )
     }
-    
+
     /// The label for the axis, capitalized for display.
     private var axisLabel: String {
         switch eulerAngle {
@@ -55,7 +55,7 @@ public struct InputSphereRotationSlider: View {
         case .roll: return showMinMax ? "Z" : "Rotation Z"
         }
     }
-    
+
     /// The content and layout of the slider view.
     public var body: some View {
         if showMinMax {

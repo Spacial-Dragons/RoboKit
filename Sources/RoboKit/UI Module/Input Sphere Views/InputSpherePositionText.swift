@@ -12,24 +12,24 @@ public struct InputSpherePositionText: View {
     @Environment(InputSphereManager.self) private var inputSphereManager: InputSphereManager
     private let axis: Axis
     private let valueWidth: CGFloat
-    
+
     public init(axis: Axis, valueWidth: CGFloat = 60) {
         self.axis = axis
         self.valueWidth = valueWidth
     }
-    
+
     private var positionValue: Float? {
         guard let position = inputSphereManager.inputSpherePositionRelativeToRoot
         else { return nil }
         let positionInROS = position.convertToROSCoordinateSystem()
-        
+
         switch axis {
         case .lateral: return positionInROS.x
         case .longitudinal: return positionInROS.y
         case .vertical: return positionInROS.z
         }
     }
-    
+
     private var axisLabel: String {
         switch axis {
         case .lateral: return "X"
@@ -37,7 +37,7 @@ public struct InputSpherePositionText: View {
         case .vertical: return "Z"
         }
     }
-    
+
     public var body: some View {
         HStack(spacing: 20) {
             Text(axisLabel)

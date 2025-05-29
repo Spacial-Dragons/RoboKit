@@ -9,11 +9,11 @@ import SwiftUI
 
 public struct ObjectWidthTextField: View {
     @Binding private var objectWidth: Float
-    
+
     public init(objectWidth: Binding<Float>) {
         self._objectWidth = objectWidth
     }
-    
+
     public var body: some View {
         TextField("Object Width", value: $objectWidth, format: .number)
             .keyboardType(.numbersAndPunctuation)

@@ -24,7 +24,7 @@ public extension simd_float3x3 {
     }
 }
 
-//Position Vector to ROS
+// Position Vector to ROS
 extension SIMD3 where Scalar == Float {
     /// Converts the current vector from RealityKit's to ROS (Robot Operating System) coordinate system.
     ///
@@ -73,7 +73,6 @@ extension SIMD3 where Scalar == Float {
         return SIMD3<Float>(x, z, newZ)
     }
 }
-
 
 // Rotation Matrix to ROS
 extension simd_float3x3 {

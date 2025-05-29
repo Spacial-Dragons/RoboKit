@@ -12,10 +12,9 @@ extension FormManager {
         let position = formPositionRelativeToRootROS
         return position
     }
-    
+
     public func getFormRotation() -> simd_float3x3 {
         let rotation = formRotationRelativeToRoot.convertToROSCoordinateSystem()
         return rotation
     }
 }
-

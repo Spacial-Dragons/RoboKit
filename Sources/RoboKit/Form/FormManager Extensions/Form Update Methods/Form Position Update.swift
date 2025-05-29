@@ -6,7 +6,7 @@
 //
 
 extension FormManager {
-    
+
     public func updateFormPosition() {
         formPositionRelativeToRoot = formPositionRelativeToRootROS.convertToRealityKitCoordinateSystem()
     }

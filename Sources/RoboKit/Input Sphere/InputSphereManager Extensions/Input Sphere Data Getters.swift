@@ -17,7 +17,7 @@ import RealityKit
 import SwiftUI
 
 extension InputSphereManager {
-    
+
     /// Returns the position of the Input Sphere relative to the provided root point,
     /// transformed into the ROS coordinate system.
     ///
@@ -28,7 +28,7 @@ extension InputSphereManager {
     /// or `nil` if the Input Sphere does not exist.
     public func getInputSpherePosition() -> SIMD3<Float>? {
         let position = inputSpherePositionRelativeToRoot?.convertToROSCoordinateSystem()
-        
+
         // Log position retrieval at debug level
         AppLogger.shared.debug(
             "Input Sphere position retrieved",
@@ -38,10 +38,10 @@ extension InputSphereManager {
                 "coordinateSystem": "ROS"
             ]
         )
-        
+
         return position
     }
-    
+
     /// Returns the rotation matrix of the Input Sphere relative to the provided root point,
     /// transformed into the ROS coordinate system.
     ///
@@ -52,7 +52,7 @@ extension InputSphereManager {
     /// or `nil` if the Input Sphere does not exist.
     public func getInputSphereRotation() -> simd_float3x3? {
         let rotation = inputSphereRotationRelativeToRoot?.convertToROSCoordinateSystem()
-        
+
         if let rotation {
             // Log rotation retrieval at debug level
             AppLogger.shared.debug(
@@ -68,7 +68,7 @@ extension InputSphereManager {
                 ]
             )
         }
-        
+
         return rotation
     }
 }

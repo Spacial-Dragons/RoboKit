@@ -10,11 +10,11 @@ import SwiftUI
 public struct FormRotationTextField: View {
     @Environment(FormManager.self) private var formManager: FormManager
     private let eulerAngle: EulerAngle
-    
+
     public init(eulerAngle: EulerAngle) {
         self.eulerAngle = eulerAngle
     }
-    
+
     /// Retrieves the appropriate binding for the selected Euler angle from the manager.
     private var angleValue: Binding<Float> {
         Binding(
@@ -22,7 +22,7 @@ public struct FormRotationTextField: View {
             set: { formManager.formEulerAngles[eulerAngle] = $0 }
         )
     }
-    
+
     private var axisLabel: String {
         switch eulerAngle {
         case .pitch: return "Rotation X"
@@ -30,11 +30,11 @@ public struct FormRotationTextField: View {
         case .roll: return "Rotation Z"
         }
     }
-    
+
     public var body: some View {
         HStack {
             Text("\(axisLabel)")
-            
+
             TextField("", value: angleValue, format: .number)
                 .keyboardType(.numbersAndPunctuation)
                 .font(.system(size: 20))

@@ -41,7 +41,7 @@ public final class InputSphereManager {
 
     /// The current position of the Input Sphere relative to a designated root point.
     public var inputSpherePositionRelativeToRoot: SIMD3<Float>?
-    
+
     public var inputSphereRotationRelativeToRoot: simd_float3x3?
 
     /// A dictionary of Euler angles (roll, yaw, pitch) defining the Input Sphere’s rotation.

@@ -23,6 +23,5 @@ public struct ObjectWidthUnitPicker: View {
         )
 
         SegmentedControlPicker(items: options, selectedIndex: selectedIndex)
-            .padding()
     }
 }

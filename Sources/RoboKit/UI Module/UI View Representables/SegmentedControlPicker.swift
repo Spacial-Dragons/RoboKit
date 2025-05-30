@@ -4,52 +4,36 @@
 //
 //  Created by Mariia Chemerys on 19.05.2025.
 //
+//
 
 import SwiftUI
 
-public struct SegmentedControlPicker: UIViewRepresentable {
+public struct SegmentedControlPicker: View {
     let items: [String]
     @Binding var selectedIndex: Int
 
-    public func makeUIView(context: Context) -> UISegmentedControl {
-        let control = UISegmentedControl(items: items)
+    public init(items: [String], selectedIndex: Binding<Int>) {
+        self.items = items
+        _selectedIndex = selectedIndex
 
-        control.selectedSegmentTintColor = .white
-
-        control.setTitleTextAttributes([
-            .foregroundColor: UIColor.white
-        ], for: .normal)
-
-        control.setTitleTextAttributes([
-            .foregroundColor: UIColor(Color(.pickerBlue))
-        ], for: .selected)
-
-        control.addTarget(
-            context.coordinator,
-            action: #selector(Coordinator.selectionChanged(_:)),
-            for: .valueChanged
+        // global appearance
+        UISegmentedControl.appearance().selectedSegmentTintColor = .white
+        UISegmentedControl.appearance().setTitleTextAttributes(
+            [.foregroundColor: UIColor.white],
+            for: .normal
         )
-        control.selectedSegmentIndex = selectedIndex
-        return control
+        UISegmentedControl.appearance().setTitleTextAttributes(
+            [.foregroundColor: UIColor(Color(.pickerBlue))],
+            for: .selected
+        )
     }
 
-    public func updateUIView(_ uiView: UISegmentedControl, context: Context) {
-        uiView.selectedSegmentIndex = selectedIndex
-    }
-
-    public func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-
-    public class Coordinator: NSObject {
-        var parent: SegmentedControlPicker
-
-        init(_ parent: SegmentedControlPicker) {
-            self.parent = parent
+    public var body: some View {
+        Picker("", selection: $selectedIndex) {
+            ForEach(items.indices, id: \.self) { index in
+                Text(items[index]).tag(index)
+            }
         }
-
-        @MainActor @objc func selectionChanged(_ sender: UISegmentedControl) {
-            parent.selectedIndex = sender.selectedSegmentIndex
-        }
+        .pickerStyle(.segmented)
     }
 }

@@ -22,6 +22,5 @@ public struct DataModePicker: View {
         )
 
         SegmentedControlPicker(items: options, selectedIndex: selectedIndex)
-            .padding()
     }
 }

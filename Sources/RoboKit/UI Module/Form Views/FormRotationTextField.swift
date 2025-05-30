@@ -45,13 +45,8 @@ public struct FormRotationTextField: View {
 
             TextField("", value: angleValue, format: .number)
                 .keyboardType(.numbersAndPunctuation)
-                .font(.system(size: 20))
-                .padding()
-                .background(
-                    RoundedRectangle(cornerRadius: 12)
-                        .fill(.regularMaterial)
-                        .padding(12)
-                )
+                .font(.title3)
+                .textFieldStyle(CapsuleTextFieldStyle())
         }
     }
 }

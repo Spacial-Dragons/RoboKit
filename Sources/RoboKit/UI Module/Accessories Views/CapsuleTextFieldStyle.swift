@@ -3,7 +3,7 @@
 //
 // This source file is part of the RoboKit open source project
 //
-//
+// 
 // Licensed under MIT
 //
 // See LICENSE for license information
@@ -13,20 +13,15 @@
 //
 // ===----------------------------------------------------------------------=== //
 
+
 import SwiftUI
 
-public struct ClawControlToggle: View {
-    @Binding private var clawShouldOpen: Bool
-
-    public init(clawShouldOpen: Binding<Bool>) {
-        self._clawShouldOpen = clawShouldOpen
-    }
-
-    public var body: some View {
-        Picker("Claw Control", selection: $clawShouldOpen) {
-            Text("Open").tag(true)
-            Text("Close").tag(false)
-        }
-        .pickerStyle(.segmented)
+struct CapsuleTextFieldStyle: TextFieldStyle {
+    // swiftlint:disable:next identifier_name
+    func _body(configuration: TextField<_Label>) -> some View {
+        configuration
+            .padding(4)
+            .background(.regularMaterial)
+            .clipShape(Capsule())
     }
 }

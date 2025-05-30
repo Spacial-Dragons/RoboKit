@@ -39,7 +39,6 @@ public struct InputSphereRotationText: View {
         HStack(spacing: 20) {
             Text(axisLabel)
             Text(angleValue.map { String(format: "%.0f°", $0) } ?? "NA")
-                .frame(width: 50)
         }
     }
 }

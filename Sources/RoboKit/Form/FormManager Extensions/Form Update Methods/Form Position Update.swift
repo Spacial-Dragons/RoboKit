@@ -13,8 +13,9 @@
 //
 // ===----------------------------------------------------------------------=== //
 
-extension FormManager {
+import Foundation
 
+extension FormManager {
     public func updateFormPosition() {
         formPositionRelativeToRoot = formPositionRelativeToRootROS.convertToRealityKitCoordinateSystem()
     }

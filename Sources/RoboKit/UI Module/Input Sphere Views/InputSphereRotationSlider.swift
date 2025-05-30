@@ -64,37 +64,47 @@ public struct InputSphereRotationSlider: View {
         }
     }
 
-    /// The content and layout of the slider view.
     public var body: some View {
-        if showMinMax {
-            VStack {
-                /// Text displaying the current angle value in degrees.
-                Text("\(Int(angleValue.wrappedValue.toDegrees))°")
-                    .padding(.leading, 35)
-                HStack {
-                    Text(axisLabel)
-                        .padding(.trailing)
-                    Text("\(String(format: "%.0f", minValue))°")
-                    Slider(
-                        value: angleValue,
-                        in: (minValue.toRadians)...(maxValue.toRadians),
-                        step: step.toRadians
-                    )
-                    Text("\(String(format: "%.0f", maxValue))°")
-                }
+        VStack {
+            if showMinMax {
+                angleText(padding: .leading, value: Float(angleValue.wrappedValue))
             }
-        } else {
-            HStack {
-                Text(axisLabel)
-                    .padding(.trailing)
-                Slider(
-                    value: angleValue,
-                    in: (minValue.toRadians)...(maxValue.toRadians),
-                    step: step.toRadians
-                )
-                Text("\(Int(angleValue.wrappedValue.toDegrees))°")
+            sliderRow(showMinMax: showMinMax)
+        }
+    }
+
+    @ViewBuilder
+    private func sliderRow(showMinMax: Bool) -> some View {
+        HStack {
+            Text(axisLabel)
+                .padding(.trailing)
+
+            if showMinMax {
+                Text("\(Int(minValue))°")
+            }
+
+            Slider(
+                value: angleValue,
+                in: minValue.toRadians...maxValue.toRadians,
+                step: step.toRadians
+            )
+
+            if showMinMax {
+                Text("\(Int(maxValue))°")
+            } else {
+                angleText(padding: nil, value: Float(angleValue.wrappedValue))
                     .frame(width: 50)
             }
+        }
+    }
+
+    @ViewBuilder
+    private func angleText(padding: Edge.Set?, value: Float) -> some View {
+        if let padding = padding {
+            Text("\(Int(value.toDegrees))°")
+                .padding(padding, 35)
+        } else {
+            Text("\(Int(value.toDegrees))°")
         }
     }
 }

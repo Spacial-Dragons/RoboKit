@@ -18,11 +18,9 @@ import SwiftUI
 public struct InputSpherePositionText: View {
     @Environment(InputSphereManager.self) private var inputSphereManager: InputSphereManager
     private let axis: Axis
-    private let valueWidth: CGFloat
 
-    public init(axis: Axis, valueWidth: CGFloat = 60) {
+    public init(axis: Axis) {
         self.axis = axis
-        self.valueWidth = valueWidth
     }
 
     private var positionValue: Float? {
@@ -49,7 +47,6 @@ public struct InputSpherePositionText: View {
         HStack(spacing: 20) {
             Text(axisLabel)
             Text(positionValue.map { String(format: "%.3f", $0) } ?? "NA")
-                .frame(width: valueWidth)
         }
     }
 }

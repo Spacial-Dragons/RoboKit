@@ -14,7 +14,7 @@
 // ===----------------------------------------------------------------------=== //
 
 import SwiftUI
-import RealityKit
+import RealityFoundation
 
 public struct InputSphereRotationSlider: View {
     @Environment(InputSphereManager.self) private var inputSphereManager: InputSphereManager

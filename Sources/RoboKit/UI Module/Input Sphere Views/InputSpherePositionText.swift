@@ -44,13 +44,11 @@ public struct InputSpherePositionText: View {
     }
 
     public var body: some View {
-
-        HStack(spacing: 5) {
-            Group {
-                Text(axisLabel)
-                Text(positionValue.map { String(format: "%.3f", $0) } ?? "NA")
-                    .foregroundStyle(.secondary)
-            }
+        HStack {
+            Text(axisLabel)
+            Text(positionValue.map { String(format: "%.3f", $0) } ?? "NA")
+                .foregroundStyle(.secondary)
+                .fontDesign(.monospaced)
         }
     }
 }

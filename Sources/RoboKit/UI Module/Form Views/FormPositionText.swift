@@ -42,13 +42,11 @@ public struct FormPositionText: View {
     }
 
     public var body: some View {
-        HStack(spacing: 5) {
-            Group {
-                Text(axisLabel)
-                Text(positionValue.map { String(format: "%.3f", $0) } ?? "NA")
-                    .foregroundStyle(.secondary)
-            }
-            .font(.headline)
+        HStack {
+            Text(axisLabel)
+            Text(positionValue.map { String(format: "%.3f", $0) } ?? "NA")
+                .foregroundStyle(.secondary)
+                .fontDesign(.monospaced)
         }
     }
 }

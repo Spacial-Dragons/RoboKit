@@ -77,5 +77,11 @@ public struct SendDataButton: View {
         .buttonStyle(.plain)
         .contentShape(.hoverEffect, .capsule)
         .hoverEffect()
+
+        // Stop Sending Data after Data Mode switches off
+        .onChange(of: client.selectedDataMode) {
+            guard client.selectedDataMode != .live else { return }
+            isSendingData = false
+        }
     }
 }

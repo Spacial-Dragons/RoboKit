@@ -3,7 +3,7 @@
 //
 // This source file is part of the RoboKit open source project
 //
-// 
+//
 // Licensed under MIT
 //
 // See LICENSE for license information
@@ -34,24 +34,25 @@ public struct SendDataButton: View {
     private var buttonLabel: some View {
         let buttonLabel = isSendingData ? "Sending Data" : "Send Data"
 
-        return ZStack {
-            HStack {
-                Label(buttonLabel, systemImage: "sensor.tag.radiowaves.forward")
-                    .contentTransition(.numericText())
-                    .animation(.spring, value: buttonLabel)
+        return HStack {
+            Label(buttonLabel, systemImage: "sensor.tag.radiowaves.forward")
+                .contentTransition(.numericText())
+                .symbolEffect(.variableColor, isActive: isSendingData)
+                .animation(.spring, value: buttonLabel)
 
-                if isSendingData {
-                    Text("Stop")
-                        .hoverEffect(isEnabled: false)
-                }
+            if isSendingData {
+                Text("Stop")
+                    .frame(maxHeight: .infinity)
+                    .padding(.horizontal)
+                    .background(.gray)
+                    .clipShape(.capsule)
+                    .padding(.all, 5)
             }
-            .padding(.all, 4)
         }
-        .padding(.vertical, 5)
-        .padding(.leading, 5)
-        .padding(.trailing, isSendingData ? 0 : 5)
+        .frame(height: 44)
+        .padding(.leading, 10)
+        .padding(.trailing, isSendingData ? 0 : 10)
         .background(.green)
-        .hoverEffect()
         .clipShape(.capsule)
     }
 
@@ -72,7 +73,9 @@ public struct SendDataButton: View {
         Button(action: sendAction) {
             buttonLabel
         }
-        .buttonStyle(.borderless)
-        .hoverEffect(isEnabled: false)
+        .hoverEffectDisabled()
+        .buttonStyle(.plain)
+        .contentShape(.hoverEffect, .capsule)
+        .hoverEffect()
     }
 }

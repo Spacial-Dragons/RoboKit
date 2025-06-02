@@ -29,16 +29,17 @@ public struct InputSphereRotationText: View {
 
     private var axisLabel: String {
         switch eulerAngle {
-        case .pitch: return "X"
-        case .yaw: return "Y"
-        case .roll: return "Z"
+        case .pitch: return "Rotation X"
+        case .yaw: return "Rotation Y"
+        case .roll: return "Rotation Z"
         }
     }
 
     public var body: some View {
-        HStack(spacing: 20) {
+        HStack {
             Text(axisLabel)
             Text(angleValue.map { String(format: "%.0f°", $0) } ?? "NA")
+                .foregroundStyle(.secondary)
         }
     }
 }

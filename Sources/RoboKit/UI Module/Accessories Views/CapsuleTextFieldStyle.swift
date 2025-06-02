@@ -21,7 +21,8 @@ struct CapsuleTextFieldStyle: TextFieldStyle {
     func _body(configuration: TextField<_Label>) -> some View {
         configuration
             .padding(4)
+            .padding(.leading, 4)
             .background(.regularMaterial)
-            .clipShape(Capsule())
+            .clipShape(.capsule)
     }
 }

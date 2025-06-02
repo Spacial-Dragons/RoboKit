@@ -19,9 +19,12 @@ struct CapsuleTextFieldStyle: TextFieldStyle {
     // swiftlint:disable:next identifier_name
     func _body(configuration: TextField<_Label>) -> some View {
         configuration
+            .hoverEffectDisabled()
             .padding(4)
             .padding(.leading, 4)
             .background(.regularMaterial)
             .clipShape(.capsule)
+            .contentShape(.hoverEffect, .capsule)
+            .hoverEffect()
     }
 }

@@ -13,7 +13,6 @@
 //
 // ===----------------------------------------------------------------------=== //
 
-
 import SwiftUI
 
 public struct SendDataButton: View {
@@ -34,13 +33,13 @@ public struct SendDataButton: View {
     // Label now wraps an HStack: the original text+icon on the left, and a gray capsule on the right
     private var buttonLabel: some View {
         let buttonLabel = isSendingData ? "Sending Data" : "Send Data"
-        
+
         return ZStack {
             HStack {
                 Label(buttonLabel, systemImage: "sensor.tag.radiowaves.forward")
                     .contentTransition(.numericText())
                     .animation(.spring, value: buttonLabel)
-                
+
                 if isSendingData {
                     Text("Stop")
                         .hoverEffect(isEnabled: false)

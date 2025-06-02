@@ -13,7 +13,6 @@
 //
 // ===----------------------------------------------------------------------=== //
 
-
 import SwiftUI
 
 struct CapsuleTextFieldStyle: TextFieldStyle {

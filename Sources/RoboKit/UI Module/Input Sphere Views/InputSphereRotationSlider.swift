@@ -71,6 +71,7 @@ public struct InputSphereRotationSlider: View {
             if showMinMax {
                 Text("\(Int(minValue))°")
                     .foregroundStyle(.secondary)
+                    .fontDesign(.monospaced)
             }
 
             VStack {
@@ -89,19 +90,21 @@ public struct InputSphereRotationSlider: View {
             if showMinMax {
                 Text("\(Int(maxValue))°")
                     .foregroundStyle(.secondary)
+                    .fontDesign(.monospaced)
             } else {
                 Text("-999°")
+                    .fontDesign(.monospaced)
                     .hidden()
                     .overlay(alignment: .trailing) {
                         angleText(value: Float(angleValue.wrappedValue))
                     }
             }
         }
-        .fontDesign(.monospaced)
     }
 
     @ViewBuilder
     private func angleText(value: Float) -> some View {
         Text("\(Int(value.toDegrees))°")
+            .fontDesign(.monospaced)
     }
 }

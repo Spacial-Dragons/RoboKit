@@ -18,9 +18,11 @@ import SwiftUI
 public struct InputSpherePositionText: View {
     @Environment(InputSphereManager.self) private var inputSphereManager: InputSphereManager
     private let axis: Axis
+    private let showFullDescription: Bool
 
-    public init(axis: Axis) {
+    public init(axis: Axis, showFullDescription: Bool = false) {
         self.axis = axis
+        self.showFullDescription = showFullDescription
     }
 
     private var positionValue: Float? {
@@ -45,7 +47,11 @@ public struct InputSpherePositionText: View {
 
     public var body: some View {
         HStack {
-            Text(axisLabel)
+            if showFullDescription {
+                Text("Position \(axisLabel)")
+            } else {
+                Text(axisLabel)
+            }
             Text(positionValue.map { String(format: "%.3f", $0) } ?? "NA")
                 .foregroundStyle(.secondary)
                 .fontDesign(.monospaced)

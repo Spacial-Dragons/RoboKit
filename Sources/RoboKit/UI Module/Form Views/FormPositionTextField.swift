@@ -60,7 +60,7 @@ public struct FormPositionTextField: View {
 
     public var body: some View {
         HStack {
-            Text("\(axisLabel)")
+            Text("Position \(axisLabel)")
 
             TextField("", value: positionValue, format: .number)
                 .keyboardType(.numbersAndPunctuation)

@@ -65,46 +65,41 @@ public struct InputSphereRotationSlider: View {
     }
 
     public var body: some View {
-        VStack {
-            if showMinMax {
-                angleText(padding: .leading, value: Float(angleValue.wrappedValue))
-            }
-            sliderRow(showMinMax: showMinMax)
-        }
-    }
-
-    @ViewBuilder
-    private func sliderRow(showMinMax: Bool) -> some View {
         HStack {
             Text(axisLabel)
-                .padding(.trailing)
 
             if showMinMax {
                 Text("\(Int(minValue))°")
             }
 
-            Slider(
-                value: angleValue,
-                in: minValue.toRadians...maxValue.toRadians,
-                step: step.toRadians
-            )
+            VStack {
+                if showMinMax {
+                    angleText(value: Float(angleValue.wrappedValue))
+                }
+
+                Slider(
+                    value: angleValue,
+                    in: minValue.toRadians...maxValue.toRadians,
+                    step: step.toRadians
+                )
+            }
+            .padding(.horizontal)
 
             if showMinMax {
                 Text("\(Int(maxValue))°")
             } else {
-                angleText(padding: nil, value: Float(angleValue.wrappedValue))
-                    .frame(width: 50)
+                Text("-999°")
+                    .hidden()
+                    .overlay(alignment: .trailing) {
+                        angleText(value: Float(angleValue.wrappedValue))
+                    }
             }
         }
+        .fontDesign(.monospaced)
     }
 
     @ViewBuilder
-    private func angleText(padding: Edge.Set?, value: Float) -> some View {
-        if let padding = padding {
-            Text("\(Int(value.toDegrees))°")
-                .padding(padding, 35)
-        } else {
-            Text("\(Int(value.toDegrees))°")
-        }
+    private func angleText(value: Float) -> some View {
+        Text("\(Int(value.toDegrees))°")
     }
 }

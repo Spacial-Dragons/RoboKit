@@ -45,7 +45,6 @@ public struct FormRotationTextField: View {
 
             TextField("", value: angleValue, format: .number)
                 .keyboardType(.numbersAndPunctuation)
-                .font(.title3)
                 .textFieldStyle(CapsuleTextFieldStyle())
         }
     }

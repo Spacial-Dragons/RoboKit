@@ -25,7 +25,6 @@ public struct ObjectWidthTextField: View {
     public var body: some View {
         TextField("Object Width", value: $objectWidth, format: .number)
             .keyboardType(.numbersAndPunctuation)
-            .font(.title3)
             .textFieldStyle(CapsuleTextFieldStyle())
             .frame(width: 200)
     }

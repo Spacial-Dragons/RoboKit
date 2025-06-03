@@ -64,7 +64,6 @@ public struct FormPositionTextField: View {
 
             TextField("", value: positionValue, format: .number)
                 .keyboardType(.numbersAndPunctuation)
-                .font(.title3)
                 .textFieldStyle(CapsuleTextFieldStyle())
         }
     }

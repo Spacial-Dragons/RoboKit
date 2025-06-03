@@ -70,6 +70,7 @@ public struct InputSphereRotationSlider: View {
 
             if showMinMax {
                 Text("\(Int(minValue))°")
+                    .foregroundStyle(.secondary)
             }
 
             VStack {
@@ -87,6 +88,7 @@ public struct InputSphereRotationSlider: View {
 
             if showMinMax {
                 Text("\(Int(maxValue))°")
+                    .foregroundStyle(.secondary)
             } else {
                 Text("-999°")
                     .hidden()

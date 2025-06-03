@@ -17,17 +17,19 @@ import SwiftUI
 
 public struct SendDataButton: View {
     @Environment(TCPClient.self) private var client: TCPClient
-    @State private var isSendingData: Bool = false
+    @Binding private var isSendingData: Bool
 
     private let onSendLiveData: () -> Void
     private let onSendSetData: () -> Void
 
     public init(
         onSendLiveData: @escaping () -> Void,
-        onSendSetData: @escaping () -> Void
+        onSendSetData: @escaping () -> Void,
+        isSendingData: Binding<Bool>
     ) {
         self.onSendLiveData = onSendLiveData
         self.onSendSetData = onSendSetData
+        self._isSendingData = isSendingData
     }
 
     // Label now wraps an HStack: the original text+icon on the left, and a gray capsule on the right

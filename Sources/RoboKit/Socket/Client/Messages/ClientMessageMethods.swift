@@ -26,7 +26,10 @@ extension TCPClient {
         self.connection?.receive(minimumIncompleteLength: min, maximumLength: max) { data, _, isComplete, error in
             Task {
                 if let data = data, !data.isEmpty {
-                    await self.log("Client received data: \(String(data: data, encoding: .utf8) ?? "error")", level: .debug)
+                    await self.log(
+                        "Client received data: \(String(data: data, encoding: .utf8) ?? "error")",
+                        level: .debug
+                    )
                 }
                 if isComplete {
                     await self.connectionEnded()

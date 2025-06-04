@@ -11,11 +11,11 @@ import Network
 /// The `Connection` class is responsible for representing each client connection to the server.
 /// It handles the logic for said connections and allows for RoboKit's server to receive
 /// multiple clients simultaniously.
-@Observable public class Connection: @unchecked Sendable {
+actor Connection {
     /// Static ID necessary for the differentiation of each connection's identification  in the server's
     /// `connectionsByID` dictionary.
     nonisolated(unsafe) private static var nextID: Int = 0
-    let nwConnection: NWConnection
+    public let nwConnection: NWConnection
     /// The unique identification to a connection. Assigned based on the static `nextID` property
     let id: Int
     var didStopCallback: ((Error?) -> Void)?
@@ -31,18 +31,18 @@ import Network
     public var failedConnection: (() -> Void)?
     /// Custom logic for when the connection to the client is on `cancelled` state
     public var cancelledConnection: (() -> Void)?
-    /// Initializes the Connection instance, assigning it an Integer ID
+    /// Latest message received by the connection
+    public var latestMessage: CPRMessageModel?
+    /// Initializes the Connection instance, assigning it an Integer ID]
     @MainActor
     static func log(_ message: String, level: LogLevel) {
         AppLogger.shared.log(message, level: level, category: .socket)
     }
-    init(nwConnection: NWConnection) {
+    init(nwConnection: NWConnection) async {
         self.nwConnection = nwConnection
         self.id = Connection.nextID
         Connection.nextID += 1
-        Task { @MainActor in
-            Connection.log("New connection created with ID: \(self.id)", level: .debug)
-        }
+        await Connection.log("New connection created with ID: \(self.id)", level: .debug)
     }
 
 }

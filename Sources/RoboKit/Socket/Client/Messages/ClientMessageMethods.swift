@@ -14,23 +14,21 @@ extension TCPClient {
     ///   content is complete. If unassigned, it will be set to 1
     ///   - maxLength: The maximum length to receive from the connection at once.
     ///   If unassigned, it will be set to 65536 bytes
-    public func receiveMessage(minLength min: Int = 1, maxLength max: Int = 65536) {
+    public func receiveMessage(minLength min: Int = 1, maxLength max: Int = 65536) async {
         self.connection?.receive(minimumIncompleteLength: min, maximumLength: max) { data, _, isComplete, error in
-            if let data = data, !data.isEmpty {
-                Task { @MainActor in
-                    self.log("Client received data: \(String(data: data, encoding: .utf8) ?? "error")", level: .debug)
+            Task {
+                if let data = data, !data.isEmpty {
+                    await self.log("Client received data: \(String(data: data, encoding: .utf8) ?? "error")", level: .debug)
                 }
-            }
-
-            if isComplete {
-                self.connectionEnded()
-            } else if let error = error {
-                Task { @MainActor in
-                    self.log("Error receiving message: \(error)", level: .error)
+                if isComplete {
+                    await self.connectionEnded()
+                } else if let error = error {
+                    Task { @MainActor in
+                        self.log("Error receiving message: \(error)", level: .error)
+                    }
+                } else {
+                    await self.receiveMessage()
                 }
-
-            } else {
-                self.receiveMessage()
             }
         }
     }
@@ -38,21 +36,19 @@ extension TCPClient {
     /// and running before this is called
     /// - Parameters:
     ///    - data: the data that should be sent to the server
-    public func sendMessage(data: Data) {
+    public func sendMessage(data: Data) async {
         Task { @MainActor in
             log("Client attempting to send data", level: .debug)
         }
         self.connection?.send(content: data, completion: .contentProcessed({ [weak self] error in
             guard let self = self else { return }
-            if error != nil {
-                Task { @MainActor in
-                    self.log("Client failed to send data", level: .error)
+            Task {
+                if error != nil {
+                    await self.log("Client failed to send data", level: .error)
+                    await self.connectionFailed()
+                    return
                 }
-                self.connectionFailed()
-                return
-            }
-            Task { @MainActor in
-                self.log("Client sent data: \(String(data: data, encoding: .utf8) ?? "error")", level: .debug)
+                await self.log("Client sent data: \(String(data: data, encoding: .utf8) ?? "error")", level: .debug)
             }
         }))
     }

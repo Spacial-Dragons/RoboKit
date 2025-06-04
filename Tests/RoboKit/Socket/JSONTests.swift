@@ -13,7 +13,6 @@ struct JSONTests {
     let CPRMessage = CPRMessageModel(clawControl: true, positionAndRotation: [0, 0, 0, 0])
     @Test("CPRMessage Object is encoded to JSON") func encodingCPRMessageObjectToJSONTest() async throws {
         let data = CodingManager.encodeToJSON(data: CPRMessage)
-        #expect(data != nil)
         let decoded = try CodingManager.decodeFromJSON(data: data) as CPRMessageModel
         #expect(decoded == CPRMessage)
     }
@@ -30,7 +29,6 @@ struct JSONTests {
     }
     @Test("Object is encoded to JSON") func encodingObjectToJSONTest() async throws {
         let data = CodingManager.encodeToJSON(data: message)
-        #expect(data != nil)
         let decoded = try CodingManager.decodeFromJSON(data: data) as Message
         #expect(decoded == message)
     }

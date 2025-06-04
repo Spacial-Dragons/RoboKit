@@ -49,6 +49,7 @@ public struct SendDataButton: View {
                     .background(.gray)
                     .clipShape(.capsule)
                     .padding(.all, 5)
+                    .transition(.move(edge: .trailing))
             }
         }
         .frame(height: 44)
@@ -56,6 +57,7 @@ public struct SendDataButton: View {
         .padding(.trailing, isSendingData ? 0 : 10)
         .background(.green)
         .clipShape(.capsule)
+        .animation(.spring, value: isSendingData)
     }
 
     private var sendAction: () -> Void {

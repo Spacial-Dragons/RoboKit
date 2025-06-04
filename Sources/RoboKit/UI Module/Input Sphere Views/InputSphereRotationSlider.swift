@@ -33,7 +33,7 @@ public struct InputSphereRotationSlider: View {
                 maxValue: Float = 180,
                 minValue: Float = -180,
                 step: Float = 1,
-                showMinMax: Bool = false,
+                showMinMax: Bool = false
     ) {
         self.rootPoint = rootPoint
         self.eulerAngle = eulerAngle

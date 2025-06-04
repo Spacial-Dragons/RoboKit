@@ -24,6 +24,7 @@ struct UpdateInputSphereRotationTests {
 
     var manager = InputSphereManager()
     var sphere = Entity()
+    let root = Entity()
 
     @Test("Input Sphere rotation updates correctly")
     func testUpdateRotationWithVariousEulerAngles() {
@@ -47,7 +48,7 @@ struct UpdateInputSphereRotationTests {
             sphere.transform.rotation = simd_quatf()
             manager.inputSphereEulerAngles = angles
 
-            manager.updateInputSphereRotation()
+            manager.rotateInputSphere()
 
             let dotProduct = simd_dot(sphere.transform.rotation, expected)
             #expect(abs(dotProduct - 1) < 0.0001)
@@ -59,7 +60,7 @@ struct UpdateInputSphereRotationTests {
         manager.inputSphere = nil
         let initialRotation = sphere.transform.rotation
 
-        manager.updateInputSphereRotation()
+        manager.updateInputSphereRotation(relativeToRootPoint: root)
 
         #expect(sphere.transform.rotation == initialRotation)
     }

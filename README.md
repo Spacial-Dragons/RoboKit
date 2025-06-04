@@ -20,12 +20,11 @@ To install RoboKit using [Swift Package Manager](https://github.com/apple/swift-
    ```
    https://github.com/Spacial-Dragons/RoboKit
    ```
-3. Select the Dependency Rule as `Up to Next Major Version` 
+3. Select the Dependency Rule as `Up to Next Major Version`
 
 ## Documentation
 
 Comprehensive documentation for **RoboKit** is available online. It includes getting started guides, API references, and integration tips for visionOS and robotics platforms.
->>>>>>> main
 
 **Access the full documentation here:** [https://robokit.vercel.app/docs](https://robokit.vercel.app/docs)
 

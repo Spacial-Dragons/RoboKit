@@ -17,6 +17,7 @@ import SwiftUI
 
 public struct SendDataButton: View {
     @Environment(TCPClient.self) private var client: TCPClient
+    @Environment(\.accessibilityReduceMotion) var isReduceMotionEnabled
     @Binding private var isSendingData: Bool
 
     private let onSendLiveData: () -> Void
@@ -39,8 +40,8 @@ public struct SendDataButton: View {
         return HStack {
             Label(buttonLabel, systemImage: "sensor.tag.radiowaves.forward")
                 .contentTransition(.numericText())
-                .symbolEffect(.variableColor, isActive: isSendingData)
-                .animation(.spring, value: buttonLabel)
+                .symbolEffect(.variableColor, isActive: isSendingData && !isReduceMotionEnabled)
+                .animation(isReduceMotionEnabled ? nil : .spring(), value: buttonLabel)
 
             if isSendingData {
                 Text("Stop")
@@ -57,7 +58,7 @@ public struct SendDataButton: View {
         .padding(.trailing, isSendingData ? 0 : 10)
         .background(.green)
         .clipShape(.capsule)
-        .animation(.spring, value: isSendingData)
+        .animation(isReduceMotionEnabled ? nil : .spring(), value: isSendingData)
     }
 
     private var sendAction: () -> Void {

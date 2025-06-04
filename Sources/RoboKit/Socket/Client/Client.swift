@@ -18,7 +18,7 @@ import Network
 import SwiftUI
 
 /// The TCP Client class holds the logic for the client of our TCP connection.
-actor TCPClient {
+public actor TCPClient {
     /// The connection to the server
     public var connection: NWConnection?
     /// Host of the server the client should connect to

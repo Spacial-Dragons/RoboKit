@@ -23,12 +23,18 @@ public struct DataModePicker: View {
     public var body: some View {
         @Bindable var client = client
 
-        let options = DataMode.allCases.map { $0.rawValue }
+        let options: [SegmentedControlItem] = DataMode.allCases.map {
+            SegmentedControlItem(label: $0.rawValue)
+        }
         let selectedIndex = Binding<Int>(
             get: { DataMode.allCases.firstIndex(of: client.selectedDataMode) ?? 0 },
             set: { client.selectedDataMode = DataMode.allCases[$0] }
         )
 
-        SegmentedControlPicker(items: options, selectedIndex: selectedIndex)
+        SegmentedControlPicker(
+            items: options,
+            selectedIndex: selectedIndex,
+            accessibilityLabel: Text("Data Transmission Mode")
+        )
     }
 }

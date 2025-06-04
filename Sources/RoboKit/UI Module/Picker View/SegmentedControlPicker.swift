@@ -15,13 +15,26 @@
 
 import SwiftUI
 
+public struct SegmentedControlItem: Identifiable {
+    public var id: UUID = UUID()
+    public var label: String
+    public var accessibilityLabel: Text?
+
+    public init(label: String, accessibilityLabel: Text? = nil) {
+        self.label = label
+        self.accessibilityLabel = accessibilityLabel
+    }
+}
+
 public struct SegmentedControlPicker: View {
-    let items: [String]
+    let items: [SegmentedControlItem]
+    let accessibilityLabel: Text?
     @Binding var selectedIndex: Int
 
-    public init(items: [String], selectedIndex: Binding<Int>) {
+    public init(items: [SegmentedControlItem], selectedIndex: Binding<Int>, accessibilityLabel: Text? = nil) {
         self.items = items
         _selectedIndex = selectedIndex
+        self.accessibilityLabel = accessibilityLabel
 
         // global appearance
         UISegmentedControl.appearance().selectedSegmentTintColor = .white
@@ -37,10 +50,13 @@ public struct SegmentedControlPicker: View {
 
     public var body: some View {
         Picker("", selection: $selectedIndex) {
-            ForEach(items.indices, id: \.self) { index in
-                Text(items[index]).tag(index)
+            ForEach(Array(items.enumerated()), id: \.element.id) { index, item in
+                Text(item.label)
+                    .tag(index)
+                    .accessibilityLabel(item.accessibilityLabel ?? Text(""), isEnabled: item.accessibilityLabel != nil)
             }
         }
         .pickerStyle(.segmented)
+        .accessibilityLabel(accessibilityLabel ?? Text(""), isEnabled: accessibilityLabel != nil)
     }
 }

@@ -70,8 +70,20 @@ extension InputSphereManager {
         entity.components.set([
             CollisionComponent(shapes: [collisionShape]),
             InputTargetComponent(),
-            HoverEffectComponent()
+            HoverEffectComponent(),
+            AccessibilityComponent()
         ])
+
+        entity.isAccessibilityElement = true
+
+        // Localization key for the label
+        entity.accessibilityLabelKey = "Input Sphere"
+
+        // Value description for the entity
+        entity.accessibilityValue = "A Sphere to interact with"
+
+        // Trait to describe the entity's behavior or role
+        entity.accessibilityTraits = [.allowsDirectInteraction]
 
         logInteractionComponentsSetup(radius: radius)
     }

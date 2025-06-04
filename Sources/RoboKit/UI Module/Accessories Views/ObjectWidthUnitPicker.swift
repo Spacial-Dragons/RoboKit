@@ -24,12 +24,18 @@ public struct ObjectWidthUnitPicker: View {
     }
 
     public var body: some View {
-        let options = ObjectWidthUnit.allCases.map { $0.rawValue }
+        let options: [SegmentedControlItem] = ObjectWidthUnit.allCases.map {
+            SegmentedControlItem(label: $0.rawValue, accessibilityLabel: Text($0.accessibilityDescription))
+        }
         let selectedIndex = Binding<Int>(
             get: { ObjectWidthUnit.allCases.firstIndex(of: objectWidthUnit) ?? 0 },
             set: { objectWidthUnit = ObjectWidthUnit.allCases[$0] }
         )
 
-        SegmentedControlPicker(items: options, selectedIndex: selectedIndex)
+        SegmentedControlPicker(
+            items: options,
+            selectedIndex: selectedIndex,
+            accessibilityLabel: Text("Object Width Unit")
+        )
     }
 }

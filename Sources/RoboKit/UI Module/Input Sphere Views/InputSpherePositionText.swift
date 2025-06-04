@@ -46,15 +46,19 @@ public struct InputSpherePositionText: View {
     }
 
     public var body: some View {
-        HStack {
+        let formattedValue = positionValue.map { String(format: "%.3f", $0) } ?? "NA"
+
+        return HStack {
             if showFullDescription {
                 Text("Position \(axisLabel)")
             } else {
                 Text(axisLabel)
             }
-            Text(positionValue.map { String(format: "%.3f", $0) } ?? "NA")
+            Text(formattedValue)
                 .foregroundStyle(.secondary)
                 .fontDesign(.monospaced)
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityLabel(Text("Position on axis \(axisLabel): \(formattedValue)"))
     }
 }

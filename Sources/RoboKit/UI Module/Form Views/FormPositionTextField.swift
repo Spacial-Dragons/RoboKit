@@ -65,6 +65,7 @@ public struct FormPositionTextField: View {
             TextField("", value: positionValue, format: .number)
                 .keyboardType(.numbersAndPunctuation)
                 .textFieldStyle(CapsuleTextFieldStyle())
+                .accessibilityLabel(Text("Position \(axisLabel)"))
         }
     }
 }

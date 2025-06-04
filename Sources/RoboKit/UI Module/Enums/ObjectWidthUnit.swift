@@ -17,4 +17,15 @@ public enum ObjectWidthUnit: String, CaseIterable {
     case millimeters = "MM"
     case centimeters = "CM"
     case meters = "METERS"
+
+    var accessibilityDescription: String {
+        switch self {
+        case .millimeters:
+            return "millimeters"
+        case .centimeters:
+            return "centimeters"
+        case .meters:
+            return "meters"
+        }
+    }
 }

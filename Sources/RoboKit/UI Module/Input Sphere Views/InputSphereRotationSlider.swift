@@ -84,6 +84,8 @@ public struct InputSphereRotationSlider: View {
                     in: minValue.toRadians...maxValue.toRadians,
                     step: step.toRadians
                 )
+                .accessibilityLabel(Text("\(axisLabel) angle"))
+                .accessibilityValue(Text("\(Int(angleValue.wrappedValue.toDegrees)) degrees"))
             }
             .padding(.horizontal)
 

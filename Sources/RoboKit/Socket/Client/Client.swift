@@ -1,9 +1,17 @@
 //
-//  Client.swift
-//  RoboKit
+// ===----------------------------------------------------------------------=== //
 //
-//  Created by Sofia Diniz Melo Santos on 18/03/25.
+// This source file is part of the RoboKit open source project
 //
+//
+// Licensed under MIT
+//
+// See LICENSE for license information
+// See "Contributors" section on GitHub for the list of project authors
+//
+// SPDX-License-Identifier: MIT
+//
+// ===----------------------------------------------------------------------=== //
 
 import Foundation
 import Network
@@ -33,13 +41,11 @@ actor TCPClient {
     func log(_ message: String, level: LogLevel) {
         AppLogger.shared.log(message, level: level, category: .socket)
     }
-
     /// Initializes the client and the connection instance to the server. Warning: Connection is not yet running here.
     public init(host: NWEndpoint.Host, port: NWEndpoint.Port) async {
         self.host = host
         self.port = port
         self.connection = NWConnection(host: host, port: port, using: .tcp)
         await log("TCPClient initialized with host: \(host) and port: \(port)", level: .info)
-        
     }
 }

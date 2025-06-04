@@ -15,18 +15,6 @@ public actor TCPServer {
     /// This array and the existence of the `Connection` class allow for the connection of
     /// multiple clients to this server at once.
     var connectionsByID: [Int: Connection] = [:]
-//    /// Custom logic for when the connection to the client is on `setup` state
-//    public var setupConnection: (() -> Void)?
-//    /// Custom logic for when the connection to the client is on `waiting` state
-//    public var waitingConnection: (() -> Void)?
-//    /// Custom logic for when the connection to the client is on `preparing` state
-//    public var preparingConnection: (() -> Void)?
-//    /// Custom logic for when the connection to the client is on `ready` state
-//    public var readyConnection: (() -> Void)?
-//    /// Custom logic for when the connection to the client is on `failed` state
-//    public var failedConnection: (() -> Void)?
-//    /// Custom logic for when the connection to the client is on `cancelled` state
-//    public var cancelledConnection: (() -> Void)?
     /// Initializes the server's listener. Server is NOT yet ready for
     @MainActor
     static func log(_ message: String, level: LogLevel) {

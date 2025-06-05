@@ -18,10 +18,8 @@ import Foundation
 extension TCPClient {
     /// Adds message to the server log, equates the `stateUpdateHandler` to nil and cancels
     /// the NWConnection. Called when the State Handler is on "cancelled"
-    public func connectionFailed() {
-        Task { @MainActor in
-            log("Client connection failed", level: .error)
-        }
+    public func connectionFailed() async {
+        await log("Client connection failed", level: .error)
         self.connection?.stateUpdateHandler = nil
         self.connection?.cancel()
     }
@@ -31,22 +29,17 @@ extension TCPClient {
             setup()
         }
     }
-
     /// Determines the logic that should be implemented when the State Handler is in `waiting`
-    public func connectionWaiting() {
-        Task { @MainActor in
-            log("Client connection waiting", level: .warning)
-        }
+    public func connectionWaiting() async {
+        await log("Client connection waiting", level: .warning)
         if let waiting = waitingConnection {
             waiting()
         }
     }
 
     /// Determines the logic that should be implemented when the State Handler is in `preparing`
-    public func connectionPreparing() {
-        Task { @MainActor in
-            log("Client connection preparing", level: .debug)
-        }
+    public func connectionPreparing() async {
+        await log("Client connection preparing", level: .debug)
         if let preparing = preparingConnection {
             preparing()
         }
@@ -55,28 +48,46 @@ extension TCPClient {
     /// This is where the main connection logic should be implemented
     /// - Parameters:
     ///   - value: the value that will be sent to the server as soon as the connection starts
-    public func connectionReady(value: Data) {
-        Task { @MainActor in
-            log("Client connection ready", level: .info)
-        }
+    public func connectionReady(value: Data) async {
+        await log("Client connection ready", level: .info)
         if let ready = readyConnection {
             ready()
         }
     }
     /// Determines the logic that should be implemented when the State Handler is in `cancelled`
-    public func connectionCanceled() {
-        Task { @MainActor in
-            log("Client connection cancelled", level: .warning)
-        }
+    public func connectionCanceled() async {
+        await log("Client connection cancelled", level: .warning)
         if let canceled = cancelledConnection {
             canceled()
         }
     }
     /// Ends the connection to the server
-    public func connectionEnded() {
-        Task { @MainActor in
-            log("Client connection ended", level: .info)
-        }
+    public func connectionEnded() async {
+        await log("Client connection ended", level: .info)
         self.connection?.cancel()
+    }
+
+    public func setSetupConnection(_ handler: @escaping () -> Void) {
+        self.setupConnection = handler
+    }
+
+    public func setWaitingConnection(_ handler: @escaping () -> Void) {
+        self.waitingConnection = handler
+    }
+
+    public func setPreparingConnection(_ handler: @escaping () -> Void) {
+        self.preparingConnection = handler
+    }
+
+    public func setReadyConnection(_ handler: @escaping () -> Void) {
+        self.readyConnection = handler
+    }
+
+    public func setFailedConnection(_ handler: @escaping () -> Void) {
+        self.failedConnection = handler
+    }
+
+    public func setCancelledConnection(_ handler: @escaping () -> Void) {
+        self.cancelledConnection = handler
     }
 }

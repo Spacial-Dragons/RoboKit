@@ -18,7 +18,7 @@ import Network
 import SwiftUI
 
 /// The TCP Client class holds the logic for the client of our TCP connection.
-@Observable public final class TCPClient: @unchecked Sendable {
+public actor TCPClient {
     /// The connection to the server
     public var connection: NWConnection?
     /// Host of the server the client should connect to
@@ -41,14 +41,11 @@ import SwiftUI
     func log(_ message: String, level: LogLevel) {
         AppLogger.shared.log(message, level: level, category: .socket)
     }
-
     /// Initializes the client and the connection instance to the server. Warning: Connection is not yet running here.
-    public init(host: NWEndpoint.Host, port: NWEndpoint.Port) {
+    public init(host: NWEndpoint.Host, port: NWEndpoint.Port) async {
         self.host = host
         self.port = port
         self.connection = NWConnection(host: host, port: port, using: .tcp)
-        Task { @MainActor in
-            log("TCPClient initialized with host: \(host) and port: \(port)", level: .info)
-        }
+        await log("TCPClient initialized with host: \(host) and port: \(port)", level: .info)
     }
 }

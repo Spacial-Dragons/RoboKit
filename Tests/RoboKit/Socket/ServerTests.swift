@@ -13,6 +13,7 @@ import Network
 struct TCPServerTests {
     let server: TCPServer
     let connection: Connection
+    let nwConnection = NWConnection(host: .ipv4(.loopback), port: 1234, using: .tls)
     init() async throws {
         self.connection = await Connection(nwConnection: NWConnection(host: .ipv4(.loopback), port: 1234, using: .tcp))
         do {

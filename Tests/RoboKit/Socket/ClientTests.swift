@@ -55,7 +55,7 @@ struct TCPClientTests {
         await client.setReadyConnection {
             test = "Closure Called"
         }
-        await client.connectionReady(value: Data("test".utf8))
+        await client.connectionReady(data: Data("test".utf8))
         #expect(test == "Closure Called")
     }
     @Test("Test if the Cancelled Connection closure is being called")
@@ -75,7 +75,7 @@ struct TCPClientTests {
     }
     @Test("Test if the Ended Connection function is properly canceling the connection")
     func testConnectionEndedCancelsConnection() async {
-            await client.sendMessage(data: Data("test".utf8))
+        await client.sendRawData(Data("test".utf8))
             await client.connectionEnded()
             await #expect(client.connection?.stateUpdateHandler == nil)
     }

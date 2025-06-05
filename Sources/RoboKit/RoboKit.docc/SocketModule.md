@@ -4,34 +4,6 @@
     @PageImage(purpose: card, source: "SocketModuleCard", alt: "Socket Module Card")
 }
 
-The Socket module provides a pre-structured TCP socket that allows for communication between the visionOS application and external software responsible for controlling a robot.
-
-## Overview
-
-This module levereages the Network Framework to provide a convenient structure for a TCP socket that can be initialized with a specified host and port to establish communication with a server.
-
-## Setup
-
-### Initialize a TCPServer Instance
-
-### Initialize a TCPClient Instance
-
-To create a ``TCPClient`` and define its destination host and port:
-
-```swift
-var client: TCPClient = TCPClient(host: "localhost", port: 12345)
-````
-
-> Note: The host and port should match the address and port of the server you wish to connect to.
-
--------
-
-# Socket
-
-@Metadata {
-    @PageImage(purpose: card, source: "SocketModuleCard", alt: "Socket Module Card")
-}
-
 The TCP Communication module provides asynchronous client-server communication over TCP sockets using Apple's Network framework and Swift Concurrency. This module includes three core actors: `TCPClient`, `TCPServer`, and `Connection`.
 
 ## Overview
@@ -106,6 +78,49 @@ An actor that encapsulates a TCP connection between the server and a single clie
 * `setupReceive` begins the data reception loop.
 * `send(data:)` transmits messages.
 
+## CodingManager
+
+A utility responsible for encoding and decoding JSON messages sent between the client and server. Uses the shared `AppLogger` for debugging and error reporting.
+
+### Encode JSON
+
+Encodes any value conforming to `Codable` to `Data`.
+
+```swift
+let data = CodingManager.encodeToJSON(data: messageModel)
+```
+
+### Decode JSON
+
+Decodes a `Data` instance back to the expected `Codable` model.
+
+```swift
+let model: CPRMessageModel = try CodingManager.decodeFromJSON(data: receivedData)
+```
+
+### Responsibilities
+
+- `encodeToJSON<T>(data:)`: Serializes a `Codable` instance to JSON `Data`.
+- `decodeFromJSON<T>(data:)`: Deserializes JSON `Data` to a `Codable` instance.
+- Logs success and failure messages to the `.socket` log category.
+
+> Important: Logging is dispatched to the main actor for thread safety.
+
+## CPRMessageModel
+
+A codable model for transmitting robot control data such as claw state and position/rotation values. Ideal for robots that only require this data to be operated, such as a fixed manipulator.
+
+### Initialization
+
+```swift
+let message = CPRMessageModel(clawControl: true, positionAndRotation: [0.0, 1.0, 2.0])
+```
+
+### Properties
+
+- `clawControl`: A `Bool` indicating whether the robot claw should be open (`true`) or closed (`false`).
+- `positionAndRotation`: An array of `Float` values representing spatial coordinates and rotation.
+
 ## Notes
 
 > Important: All actor methods interacting with the network must be called using `async/await` to ensure concurrency safety.
@@ -113,4 +128,3 @@ An actor that encapsulates a TCP connection between the server and a single clie
 > Warning: This module uses `NWConnection` and `NWListener`, which are not supported in Swift Playgrounds or the iOS simulator.
 
 > Tip: To test the actors in a SwiftUI app, inject them via `@State` or `@Environment` and interact through `Task {}` blocks.
-

@@ -19,22 +19,36 @@ import RealityKit
 extension InputSphereManager {
     /// Creates an entity representing the Input Sphere with a 3D spherical model and input interaction components.
     ///
-    /// This method initializes a new `Entity` configured with a metallic material of the specified color,
-    /// a spherical mesh of the given radius, and essential RealityKit components to enable interaction,
-    /// including collision detection and hover effects.
-    ///
     /// - Parameters:
     ///   - color: The color applied to the sphere’s material.
     ///   - radius: The radius of the spherical mesh.
+    ///   - modelEntity: An optional `Entity` to use
+    ///   instead of the default spherical mesh. If `nil`, a sphere is generated automatically.
     ///
     /// - Returns: A fully configured `Entity` representing the Input Sphere.
-    internal func inputSphereEntity(color: Color, radius: Float) -> Entity {
+    internal func inputSphereEntity(
+        color: Color,
+        radius: Float,
+        modelEntity: Entity? = nil
+    ) -> Entity {
         logSphereCreationParameters(color: color, radius: radius)
 
         let entity = Entity()
-        setupModelComponent(for: entity, color: color, radius: radius)
-        setupInteractionComponents(for: entity, radius: radius)
-        logSuccessfulSphereCreation(color: color, radius: radius)
+        let entityRadius: Float
+
+        if let customEntity = modelEntity {
+            // Use the passed-in ModelComponent
+            entity.addChild(customEntity)
+            entityRadius = customEntity.visualBounds(relativeTo: nil).boundingRadius
+            logModelEntityParameters(modelEntity: customEntity)
+        } else {
+            // Fall back to generating a default sphere
+            setupSphereModelComponent(for: entity, color: color, radius: radius)
+            entityRadius = radius
+        }
+
+        setupInteractionComponents(for: entity, radius: entityRadius)
+        logSuccessfulSphereCreation(color: color, radius: entityRadius)
 
         return entity
     }
@@ -45,7 +59,7 @@ extension InputSphereManager {
     ///   - entity: The entity to configure.
     ///   - color: The color for the sphere's material.
     ///   - radius: The radius of the sphere.
-    private func setupModelComponent(for entity: Entity, color: Color, radius: Float) {
+    private func setupSphereModelComponent(for entity: Entity, color: Color, radius: Float) {
         let simpleMaterial = SimpleMaterial(
             color: UIColor(color), isMetallic: true
         )
@@ -96,6 +110,17 @@ extension InputSphereManager {
             context: [
                 "color": String(describing: color),
                 "radius": radius
+            ]
+        )
+    }
+
+    /// Logs parameters of the custom model entity
+    private func logModelEntityParameters(modelEntity: Entity) {
+        AppLogger.shared.debug(
+            "Applied Model Entity to the Input Sphere",
+            category: .inputsphere,
+            context: [
+                "Entity Name": modelEntity.name
             ]
         )
     }

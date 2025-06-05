@@ -39,23 +39,33 @@ jobs:
         env:
           REPO_NAME: ${{ github.event.repository.name }}
         run: |
-          # locate the generated .doccarchive
           ARCHIVE_PATH=$(find "${{ github.workspace }}/DerivedData" -type d -name "*.doccarchive" | head -n 1)
           echo "Found DocC archive at: $ARCHIVE_PATH"
-    
+
           OUTPUT_PATH="${{ github.workspace }}/docs"
-    
+
           xcrun docc process-archive transform-for-static-hosting \
             "$ARCHIVE_PATH" \
             --output-path "$OUTPUT_PATH" \
             --hosting-base-path "$REPO_NAME"
-    
-      - name: Commit and Push to GitHub Pages
-        env:
-          BRANCH_NAME: ${{ github.ref_name }}
+
+      - name: Deploy to web-deploy branch
         run: |
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-          git add docs
-          git commit -m "Update DocC documentation for GitHub Pages"
-          git push origin "$BRANCH_NAME"
+
+          # Create a clean repo copy in a temp dir
+          mkdir temp
+          cd temp
+          git init
+          git remote add origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git fetch origin web-deploy
+          git checkout -b web-deploy || git checkout web-deploy
+
+          # Clean all contents
+          rm -rf *
+          cp -r ../docs/* .
+
+          git add .
+          git commit -m "Update DocC documentation"
+          git push origin web-deploy --force

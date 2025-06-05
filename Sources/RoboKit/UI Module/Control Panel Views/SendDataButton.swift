@@ -16,9 +16,9 @@
 import SwiftUI
 
 public struct SendDataButton: View {
-    @Environment(TCPClient.self) private var client: TCPClient
     @Environment(\.accessibilityReduceMotion) var isReduceMotionEnabled
     @Binding private var isSendingData: Bool
+    @Binding var selectedDataMode: DataMode
 
     private let onSendLiveData: () -> Void
     private let onSendSetData: () -> Void
@@ -26,11 +26,13 @@ public struct SendDataButton: View {
     public init(
         onSendLiveData: @escaping () -> Void,
         onSendSetData: @escaping () -> Void,
-        isSendingData: Binding<Bool>
+        isSendingData: Binding<Bool>,
+        selectedDataMode: Binding<DataMode>
     ) {
         self.onSendLiveData = onSendLiveData
         self.onSendSetData = onSendSetData
         self._isSendingData = isSendingData
+        _selectedDataMode = selectedDataMode
     }
 
     // Label now wraps an HStack: the original text+icon on the left, and a gray capsule on the right
@@ -63,7 +65,7 @@ public struct SendDataButton: View {
 
     private var sendAction: () -> Void {
         {
-            switch client.selectedDataMode {
+            switch selectedDataMode {
             case .live:
                 onSendLiveData()
                 isSendingData.toggle()
@@ -84,8 +86,8 @@ public struct SendDataButton: View {
         .hoverEffect()
 
         // Stop Sending Data after Data Mode switches off
-        .onChange(of: client.selectedDataMode) {
-            guard client.selectedDataMode != .live else { return }
+        .onChange(of: selectedDataMode) {
+            guard selectedDataMode != .live else { return }
             isSendingData = false
         }
     }

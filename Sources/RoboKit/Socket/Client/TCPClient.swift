@@ -37,8 +37,6 @@ public actor TCPClient {
     public var failedConnection: (() -> Void)?
     /// Custom logic for when the connection to the server is on `cancelled` state
     public var cancelledConnection: (() -> Void)?
-    /// Current data sending mode: either real-time (live) or predefined (set).
-    public var selectedDataMode: DataMode = .live
     @MainActor
     func log(_ message: String, level: LogLevel) {
         AppLogger.shared.log(message, level: level, category: .socket)

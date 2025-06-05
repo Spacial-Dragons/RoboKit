@@ -16,19 +16,19 @@
 import SwiftUI
 
 public struct DataModePicker: View {
-    @Environment(TCPClient.self) private var client: TCPClient
+    @Binding var selectedDataMode: DataMode
 
-    public init() {}
+    public init(selectedDataMode: Binding<DataMode>) {
+        _selectedDataMode = selectedDataMode
+    }
 
     public var body: some View {
-        @Bindable var client = client
-
         let options: [SegmentedControlItem] = DataMode.allCases.map {
             SegmentedControlItem(label: $0.rawValue)
         }
         let selectedIndex = Binding<Int>(
-            get: { DataMode.allCases.firstIndex(of: client.selectedDataMode) ?? 0 },
-            set: { client.selectedDataMode = DataMode.allCases[$0] }
+            get: { DataMode.allCases.firstIndex(of: selectedDataMode) ?? 0 },
+            set: { selectedDataMode = DataMode.allCases[$0] }
         )
 
         SegmentedControlPicker(

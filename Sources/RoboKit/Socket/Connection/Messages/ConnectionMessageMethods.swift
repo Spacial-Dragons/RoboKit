@@ -12,22 +12,21 @@
 // SPDX-License-Identifier: MIT
 //
 // ===----------------------------------------------------------------------=== //
-
 import Foundation
 
 extension Connection {
     /// Sends data from the server to the client
     /// - Parameters:
     ///  - data: The data that should be sent
-    func send(data: Data) {
+    func send(data: Data) async {
         self.nwConnection.send(content: data, completion: .contentProcessed { [weak self] error in
             guard let self = self else { return }
-            if let error = error {
-                self.connectionDidFail(error: error)
-                return
-            }
-            Task { @MainActor in
-                Connection.log("Connection \(self.id) sent data: \(data as NSData)", level: .debug)
+            Task {
+                if let error = error {
+                    await self.connectionDidFail(error: error)
+                    return
+                }
+                await Connection.log("Connection \(self.id) sent data: \(data as NSData)", level: .debug)
             }
         })
     }
@@ -35,11 +34,11 @@ extension Connection {
     public func setupReceive() {
         self.nwConnection.receive(minimumIncompleteLength: 1, maximumLength: 65536) { (data, _, isComplete, error) in
             guard let data = data else { return }
-            do {
-                let message: CPRMessageModel = try CodingManager.decodeFromJSON(data: data)
-                if type(of: message) == CPRMessageModel.self {
-                    Task { @MainActor in
-                        Connection.log(
+            Task {
+                do {
+                    let message: CPRMessageModel = try CodingManager.decodeFromJSON(data: data)
+                    if type(of: message) == CPRMessageModel.self {
+                        await Connection.log(
                             """
                             Connection \(self.id) received JSON message:
                             [Claw Control: \(message.clawControl),
@@ -48,19 +47,17 @@ extension Connection {
                             """,
                             level: .debug)
                     }
+                    await self.updateLatestMessage(message: message)
+                } catch {
+                    await Connection.log("Connection \(self.id) failed to decode message: \(error)", level: .error)
                 }
-
-            } catch {
-                Task { @MainActor in
-                    Connection.log("Connection \(self.id) failed to decode message: \(error)", level: .error)
+                if isComplete {
+                    await self.connectionDidEnd()
+                } else if let error = error {
+                    await self.connectionDidFail(error: error)
+                } else {
+                    await self.setupReceive()
                 }
-            }
-            if isComplete {
-                self.connectionDidEnd()
-            } else if let error = error {
-                self.connectionDidFail(error: error)
-            } else {
-                self.setupReceive()
             }
         }
     }

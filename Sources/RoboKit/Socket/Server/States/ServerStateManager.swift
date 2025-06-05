@@ -12,38 +12,25 @@
 // SPDX-License-Identifier: MIT
 //
 // ===----------------------------------------------------------------------=== //
-
 import Network
 
 extension TCPServer {
     /// The state handler for the server.
-    func stateDidChange(to newState: NWListener.State) {
+    func stateDidChange(to newState: NWListener.State) async {
         switch newState {
         case .setup:
-            Task { @MainActor in
-                TCPServer.log("Server state: setup", level: .debug)
-            }
+            await TCPServer.log("Server state: setup", level: .debug)
         case .waiting:
-            Task { @MainActor in
-                TCPServer.log("Server state: waiting", level: .debug)
-            }
+            await TCPServer.log("Server state: waiting", level: .debug)
         case .ready:
-            Task { @MainActor in
-                TCPServer.log("Server state: ready", level: .info)
-            }
+            await TCPServer.log("Server state: ready", level: .info)
         case .failed(let error):
-            Task { @MainActor in
-                TCPServer.log("Server failed with error: \(error)", level: .error)
-            }
-            self.stop()
+            await TCPServer.log("Server failed with error: \(error)", level: .error)
+            await self.stop()
         case .cancelled:
-            Task { @MainActor in
-                TCPServer.log("Server state: cancelled", level: .warning)
-            }
+            await TCPServer.log("Server state: cancelled", level: .warning)
         default:
-            Task { @MainActor in
-                TCPServer.log("Server state: unknown", level: .debug)
-            }
+            await TCPServer.log("Server state: unknown", level: .debug)
         }
     }
 }

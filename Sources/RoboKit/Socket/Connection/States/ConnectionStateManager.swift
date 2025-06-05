@@ -12,7 +12,6 @@
 // SPDX-License-Identifier: MIT
 //
 // ===----------------------------------------------------------------------=== //
-
 import Network
 
 extension Connection {
@@ -20,50 +19,38 @@ extension Connection {
     /// Function to handle the connections states.
     /// The state update handler administers the possible NWConnection statuses
     /// and calls helper methods accordingly
-    func stateDidChange(to state: NWConnection.State) {
+    func stateDidChange(to state: NWConnection.State) async {
         switch state {
         case .setup:
-            Task { @MainActor in
-                Connection.log("Connection \(self.id) state: setup", level: .debug)
-            }
+            await Connection.log("Connection \(self.id) state: setup", level: .debug)
             if let setupConnection = setupConnection {
                 setupConnection()
             }
         case .waiting(let error):
-            Task { @MainActor in
-                Connection.log("Connection \(self.id) state: waiting with error: \(error)", level: .warning)
-            }
+            await Connection.log("Connection \(self.id) state: waiting with error: \(error)", level: .warning)
             if let waitingConnection = waitingConnection {
                 waitingConnection()
             }
-            self.connectionDidFail(error: error)
+            await self.connectionDidFail(error: error)
         case .preparing:
-            Task { @MainActor in
-                Connection.log("Connection \(self.id) state: preparing", level: .debug)
-            }
+            await Connection.log("Connection \(self.id) state: preparing", level: .debug)
             if let preparingConnection = preparingConnection {
                 preparingConnection()
             }
         case .ready:
-            Task { @MainActor in
-                Connection.log("Connection \(self.id) state: ready", level: .info)
-            }
+            await Connection.log("Connection \(self.id) state: ready", level: .info)
             if let readyConnection = readyConnection {
                 readyConnection()
             }
         case .failed(let error):
-            self.connectionDidFail(error: error)
+            await self.connectionDidFail(error: error)
         case .cancelled:
-            Task { @MainActor in
-                Connection.log("Connection \(self.id) state: cancelled", level: .warning)
-            }
+            await Connection.log("Connection \(self.id) state: cancelled", level: .warning)
             if let cancelledConnection = cancelledConnection {
                 cancelledConnection()
             }
         default:
-            Task { @MainActor in
-                Connection.log("Connection \(self.id) state: unknown", level: .debug)
-            }
+            await Connection.log("Connection \(self.id) state: unknown", level: .debug)
         }
     }
     // swiftlint:enable cyclomatic_complexity

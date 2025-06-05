@@ -18,7 +18,7 @@ import Network
 
 /// The `Connection` class is responsible for representing each client connection to the server.
 /// It handles the logic for said connections and allows for RoboKit's server to receive
-/// multiple clients simultaniously.
+/// multiple clients simultaneously.
 public actor Connection {
     /// Static ID necessary for the differentiation of each connection's identification  in the server's
     /// `connectionsByID` dictionary.
@@ -26,26 +26,29 @@ public actor Connection {
     public let nwConnection: NWConnection
     /// The unique identification to a connection. Assigned based on the static `nextID` property
     let id: Int
-    var didStopCallback: ((Error?) -> Void)?
+    /// Callback for when the connection stops - marked as nonisolated so it can be set from outside the actor
+    nonisolated(unsafe) var didStopCallback: ((Error?) -> Void)?
     /// Custom logic for when the connection to the client is on `setup` state
-    public var setupConnection: (() -> Void)?
+    nonisolated(unsafe) public var setupConnection: (() -> Void)?
     /// Custom logic for when the connection to the client is on `waiting` state
-    public var waitingConnection: (() -> Void)?
+    nonisolated(unsafe) public var waitingConnection: (() -> Void)?
     /// Custom logic for when the connection to the client is on `preparing` state
-    public var preparingConnection: (() -> Void)?
+    nonisolated(unsafe) public var preparingConnection: (() -> Void)?
     /// Custom logic for when the connection to the client is on `ready` state
-    public var readyConnection: (() -> Void)?
+    nonisolated(unsafe) public var readyConnection: (() -> Void)?
     /// Custom logic for when the connection to the client is on `failed` state
-    public var failedConnection: (() -> Void)?
+    nonisolated(unsafe) public var failedConnection: (() -> Void)?
     /// Custom logic for when the connection to the client is on `cancelled` state
-    public var cancelledConnection: (() -> Void)?
+    nonisolated(unsafe) public var cancelledConnection: (() -> Void)?
     /// Latest message received by the connection
     public var latestMessage: CPRMessageModel?
-    /// Initializes the Connection instance, assigning it an Integer ID]
+
+    /// Initializes the Connection instance, assigning it an Integer ID
     @MainActor
     static func log(_ message: String, level: LogLevel) {
         AppLogger.shared.log(message, level: level, category: .socket)
     }
+
     init(nwConnection: NWConnection) async {
         self.nwConnection = nwConnection
         self.id = Connection.nextID
@@ -53,4 +56,40 @@ public actor Connection {
         await Connection.log("New connection created with ID: \(self.id)", level: .debug)
     }
 
+    /// Updates the latest message received
+    func updateLatestMessage(message: CPRMessageModel) {
+        self.latestMessage = message
+    }
+
+    /// Creates a secure message wrapper with authentication and checksum if configured.
+    /// - Parameters:
+    ///   - payload: The original message payload
+    ///   - security: Security configuration for authentication and checksum
+    /// - Returns: A SecureMessageWrapper with optional token and checksum
+    func createSecureMessage(payload: CPRMessageModel, security: SecurityOptions) -> SecureMessageWrapper {
+        var message = SecureMessageWrapper(payload: payload)
+
+        // Add authentication token if provider is configured
+        if let token = security.tokenProvider?() {
+            message = message.addToken(token)
+        }
+
+        // Add checksum if provider is configured
+        let messageData = CodingManager.encodeToJSON(data: payload)
+        if let checksum = security.checksumProvider?(messageData) {
+            message = message.addChecksum(checksum)
+        }
+
+        return message
+    }
+
+    /// Sends a secure message to the connected client with optional authentication and checksum
+    /// - Parameters:
+    ///   - payload: The CPRMessageModel payload to send
+    ///   - security: Security configuration for authentication and checksum
+    func sendSecureMessage(payload: CPRMessageModel, security: SecurityOptions) async {
+        let secureMessage = createSecureMessage(payload: payload, security: security)
+        let data = CodingManager.encodeToJSON(data: secureMessage)
+        await send(data: data)
+    }
 }

@@ -43,7 +43,7 @@ extension Connection {
                             Connection \(self.id) received JSON message:
                             [Claw Control: \(message.clawControl),
                              Position & Rotation: \(message.positionAndRotation),
-                            Object Width: \(message.objectWidth)]
+                            Object Width: \(message.width)]
                             """,
                             level: .debug)
                     }

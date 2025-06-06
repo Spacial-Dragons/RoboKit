@@ -27,8 +27,8 @@ extension InputSphereManager {
         }
 
         let pitchQuat = simd_quatf(angle: inputSphereEulerAngles[.pitch] ?? 0, axis: [1, 0, 0])
-        let yawQuat = simd_quatf(angle: (inputSphereEulerAngles[.yaw] ?? 0), axis: [0, 1, 0])
-        let rollQuat = simd_quatf(angle: inputSphereEulerAngles[.roll] ?? 0, axis: [0, 0, 1])
+        let yawQuat = simd_quatf(angle: (inputSphereEulerAngles[.yaw] ?? 0), axis: [0, 0, 1])
+        let rollQuat = simd_quatf(angle: inputSphereEulerAngles[.roll] ?? 0, axis: [0, 1, 0])
 
         inputSphere.transform.rotation = rollQuat * yawQuat * pitchQuat
     }

@@ -24,8 +24,8 @@ public struct ClawControlToggle: View {
 
     public var body: some View {
         Picker("Claw Control", selection: $clawShouldOpen) {
-            Text("Open").tag(true)
-            Text("Close").tag(false)
+            Text("Close").tag(true)
+            Text("Open").tag(false)
         }
         .pickerStyle(.segmented)
     }

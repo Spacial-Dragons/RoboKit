@@ -28,6 +28,8 @@ extension InputSphereManager {
     ///   - color: The color of the Input Sphere. Defaults to `.mint`.
     ///   - radius: The radius of the sphere. Defaults to `0.015`.
     ///   - showAxes: A Boolean value indicating whether to display Input Sphere's axes. Defaults to `true`.
+    ///   - modelEntity: An optional `Entity` to use
+    ///   instead of the default spherical mesh. If `nil`, a sphere is generated automatically.
     ///
     /// If the root point is `nil` or the Input Sphere has already been created,
     /// the method exits early and logs an error.
@@ -36,8 +38,9 @@ extension InputSphereManager {
         rootPoint: Entity?,
         color: Color = .mint,
         radius: Float = 0.015,
-        showAxes: Bool = true) {
-
+        modelEntity: Entity? = nil,
+        showAxes: Bool = true
+    ) {
         guard let rootPoint = rootPoint else {
             AppLogger.shared.error(
                 "Failed to create Input Sphere: Root Point is nil",
@@ -54,7 +57,7 @@ extension InputSphereManager {
             return
         }
 
-        let sphere = inputSphereEntity(color: color, radius: radius)
+        let sphere = inputSphereEntity(color: color, radius: radius, modelEntity: modelEntity)
         sphere.position = rootPoint.position + SIMD3<Float>(0, 0.3, 0)
         sphere.setOrientation(.init(), relativeTo: rootPoint)
         parentEntity.addChild(sphere)

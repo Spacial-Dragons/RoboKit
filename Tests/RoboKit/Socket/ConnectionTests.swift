@@ -13,10 +13,14 @@ import Testing
 @Suite("Connection Tests")
 struct ConnectionTests {
     let mockConnection: Connection
+    let testMessage: CPRMessageModel
+    let testData: Data
 
     init() async {
         let nwConnection = NWConnection(host: .ipv4(.loopback), port: 1234, using: .tcp)
         mockConnection = await Connection(nwConnection: nwConnection)
+        testMessage = CPRMessageModel(clawControl: true, positionAndRotation: [1.0, 2.0, 3.0, 4.0])
+        testData = Data("Test data".utf8)
     }
 
     @Test("Test setupConnection closure is called")
@@ -77,5 +81,41 @@ struct ConnectionTests {
         }
         await mockConnection.stateDidChange(to: .failed(NWError.posix(.ETIMEDOUT)))
         #expect(flag == true)
+    }
+
+    // MARK: - Security Configuration Tests
+
+    @Test("Test SecurityOptions token provider functionality")
+    func testSecurityOptionsTokenProvider() async {
+        // Test that token provider is called by checking the token is included in secure message
+        let expectedToken = "test-token-for-verification"
+        let security = SecurityOptions(
+            useTLS: true,
+            tokenProvider: { expectedToken }
+        )
+        // Create a secure message using the same logic as sendMessage
+        let secureMessage = await mockConnection.createSecureMessage(payload: testMessage, security: security)
+        // Verify the token was added
+        #expect(secureMessage.token == expectedToken)
+        #expect(secureMessage.payload.clawControl == testMessage.clawControl)
+        #expect(secureMessage.payload.positionAndRotation == testMessage.positionAndRotation)
+    }
+
+    @Test("Test SecurityOptions checksum provider functionality")
+    func testSecurityOptionsChecksumProvider() async {
+        // Test that checksum provider is called by checking the checksum is included
+        let security = SecurityOptions(
+            useTLS: true,
+            checksumProvider: { data in
+                "checksum-\(data.count)-bytes"
+            }
+        )
+        // Create a secure message using the same logic as sendMessage
+        let secureMessage = await mockConnection.createSecureMessage(payload: testMessage, security: security)
+        // Verify the checksum was added and follows expected format
+        #expect(secureMessage.checksum != nil)
+        #expect(secureMessage.checksum?.contains("checksum-") == true)
+        #expect(secureMessage.checksum?.contains("-bytes") == true)
+        #expect(secureMessage.payload.clawControl == testMessage.clawControl)
     }
 }

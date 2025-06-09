@@ -1,5 +1,5 @@
 //
-//  ClienTests.swift
+//  ClientConnectionTests.swift
 //  RoboKit
 //
 //  Created by Sofia Diniz Melo Santos on 15/05/25.
@@ -9,13 +9,18 @@ import Foundation
 import Network
 import Testing
 
-@Suite("TCPClient Tests")
-struct TCPClientTests {
+@Suite("TCPClient Connection Tests")
+struct TCPClientConnectionTests {
     let client: TCPClient
+    let testMessage: CPRMessageModel
+
     init() async {
         client = await TCPClient(host: "localhost", port: 1234)
+        testMessage = CPRMessageModel(clawControl: true, positionAndRotation: [1.0, 2.0, 3.0, 4.0])
     }
-    @Test("Test Client Initiliazation") func testInitializationSetsHostAndPort() async throws {
+
+    @Test("Test Client Initialization")
+    func testInitializationSetsHostAndPort() async throws {
         await #expect(client.host == "localhost")
         await #expect(client.port == 1234)
         await #expect(client.connection != nil)
@@ -40,6 +45,7 @@ struct TCPClientTests {
         await client.connectionWaiting()
         #expect(test == "Closure Called")
     }
+
     @Test("Test if the Preparing Connection closure is being called")
     func testPreparingConnectionCallbackIsCalled() async {
         var test: String?
@@ -49,7 +55,8 @@ struct TCPClientTests {
         await client.connectionPreparing()
         #expect(test == "Closure Called")
     }
-    @Test("Test if the Preparing Connection closure is being called")
+
+    @Test("Test if the Ready Connection closure is being called")
     func testReadyConnectionCallbackIsCalled() async {
         var test: String?
         await client.setReadyConnection {
@@ -58,6 +65,7 @@ struct TCPClientTests {
         await client.connectionReady(data: Data("test".utf8))
         #expect(test == "Closure Called")
     }
+
     @Test("Test if the Cancelled Connection closure is being called")
     func testCancelledConnectionCallbackIsCalled() async {
         var test: String?
@@ -67,16 +75,18 @@ struct TCPClientTests {
         await client.connectionCanceled()
         #expect(test == "Closure Called")
     }
+
     @Test("Test if the Failed Connection is cancelling the connection when it fails")
     func testConnectionFailedCancelsConnection() async {
         await client.startConnection(value: Data("Hello".utf8))
         await client.connectionFailed()
         await #expect(client.connection?.stateUpdateHandler == nil)
     }
+
     @Test("Test if the Ended Connection function is properly canceling the connection")
     func testConnectionEndedCancelsConnection() async {
         await client.sendRawData(Data("test".utf8))
-            await client.connectionEnded()
-            await #expect(client.connection?.stateUpdateHandler == nil)
+        await client.connectionEnded()
+        await #expect(client.connection?.stateUpdateHandler == nil)
     }
 }

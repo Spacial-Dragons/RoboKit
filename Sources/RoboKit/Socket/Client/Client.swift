@@ -70,7 +70,7 @@ public actor TCPClient {
     /// Creates a secure message wrapper with authentication and checksum if configured.
     /// - Parameter payload: The original message payload
     /// - Returns: A SecureMessageWrapper with optional token and checksum
-    internal func createSecureMessage(payload: CPRMessageModel) -> SecureMessageWrapper {
+    public func createSecureMessage(payload: CPRMessageModel) -> SecureMessageWrapper {
         var message = SecureMessageWrapper(payload: payload)
 
         // Add authentication token if provider is configured

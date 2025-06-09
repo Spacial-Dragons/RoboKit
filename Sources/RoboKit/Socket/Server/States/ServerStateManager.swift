@@ -16,7 +16,7 @@ import Network
 
 extension TCPServer {
     /// The state handler for the server.
-    func stateDidChange(to newState: NWListener.State) async {
+    public func stateDidChange(to newState: NWListener.State) async {
         switch newState {
         case .setup:
             await TCPServer.log("Server state: setup", level: .debug)

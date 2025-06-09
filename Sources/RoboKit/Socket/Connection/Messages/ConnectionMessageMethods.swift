@@ -18,7 +18,7 @@ extension Connection {
     /// Sends data from the server to the client
     /// - Parameters:
     ///  - data: The data that should be sent
-    func send(data: Data) async {
+    public func send(data: Data) async {
         self.nwConnection.send(content: data, completion: .contentProcessed { [weak self] error in
             guard let self = self else { return }
             Task {
@@ -35,7 +35,7 @@ extension Connection {
     /// - Parameters:
     ///   - message: The CPRMessageModel to send
     ///   - security: Security configuration to use
-    func sendMessage(_ message: CPRMessageModel, security: SecurityOptions) async {
+    public func sendMessage(_ message: CPRMessageModel, security: SecurityOptions) async {
         if security.useTLS && (security.tokenProvider != nil || security.checksumProvider != nil) {
             await Connection.log("Connection \(self.id) sending message with security features", level: .debug)
             await sendSecureMessage(payload: message, security: security)
@@ -66,7 +66,7 @@ extension Connection {
 
     /// Processes received data and attempts to decode secure or regular messages
     /// - Parameter data: The received data to process
-    private func processReceivedData(_ data: Data) async {
+    public func processReceivedData(_ data: Data) async {
         do {
             // Try to decode as secure message first
             let secureMessage: SecureMessageWrapper = try CodingManager.decodeFromJSON(data: data)

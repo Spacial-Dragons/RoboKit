@@ -41,7 +41,7 @@ extension TCPClient {
 
     /// Processes received data and attempts to decode secure messages
     /// - Parameter data: The received data to process
-    private func processReceivedData(_ data: Data) async {
+    public func processReceivedData(_ data: Data) async {
         do {
             // Try to decode as secure message first
             let secureMessage: SecureMessageWrapper = try CodingManager.decodeFromJSON(data: data)

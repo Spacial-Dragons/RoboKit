@@ -49,10 +49,12 @@ struct InputSphereRotationGetterTests {
         for testCase in testCases {
             sphere.transform.rotation = testCase.rotation
 
+            manager.updateInputSphereRotation(relativeToRootPoint: root)
+
             let expectedRotation = sphere.transformMatrix(relativeTo: root)
                 .rotationMatrix.convertToROSCoordinateSystem()
 
-            let result = manager.getInputSphereRotation(relativeToRootPoint: root)
+            let result = manager.getInputSphereRotation()
 
             #expect(result != nil, testCase.description)
             #expect(result!.isApproximatelyEqual(to: expectedRotation, tolerance: 1e-4),
@@ -64,7 +66,7 @@ struct InputSphereRotationGetterTests {
     @Test("Input Sphere rotation getter returns nil rotation if inputSphere is nil")
     func testRotationNilWhenNoInputSphere() {
         manager.inputSphere = nil
-        let result = manager.getInputSphereRotation(relativeToRootPoint: root)
+        let result = manager.getInputSphereRotation()
         #expect(result == nil)
     }
 }

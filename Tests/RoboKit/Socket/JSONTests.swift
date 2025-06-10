@@ -10,7 +10,7 @@ struct Message: Codable, Equatable {
 @Suite("JSON Tests")
 struct JSONTests {
     let message = Message(text: "Hello, RoboKit!", id: 2)
-    let CPRMessage = CPRMessageModel(clawControl: true, positionAndRotation: [0, 0, 0, 0])
+    let CPRMessage = CPRMessageModel(clawControl: true, positionAndRotation: [0, 0, 0, 0], objectWidth: 0)
     @Test("CPRMessage Object is encoded to JSON") func encodingCPRMessageObjectToJSONTest() async throws {
         let data = CodingManager.encodeToJSON(data: CPRMessage)
         let decoded = try CodingManager.decodeFromJSON(data: data) as CPRMessageModel
@@ -20,12 +20,14 @@ struct JSONTests {
         let json = Data("""
     {
         "clawControl": true,
-        "positionAndRotation": [0, 0, 0]
+        "positionAndRotation": [0, 0, 0],
+        "objectWidth": 0
     }
     """.utf8)
         let decoded = try CodingManager.decodeFromJSON(data: json) as CPRMessageModel
         #expect(decoded.clawControl == true)
         #expect(decoded.positionAndRotation == [0, 0, 0])
+        #expect(decoded.objectWidth == 0)
     }
     @Test("Object is encoded to JSON") func encodingObjectToJSONTest() async throws {
         let data = CodingManager.encodeToJSON(data: message)

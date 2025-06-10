@@ -1,0 +1,31 @@
+//
+// ===----------------------------------------------------------------------=== //
+//
+// This source file is part of the RoboKit open source project
+//
+//
+// Licensed under MIT
+//
+// See LICENSE for license information
+// See "Contributors" section on GitHub for the list of project authors
+//
+// SPDX-License-Identifier: MIT
+//
+// ===----------------------------------------------------------------------=== //
+
+public enum ObjectWidthUnit: String, CaseIterable {
+    case millimeters = "MM"
+    case centimeters = "CM"
+    case meters = "METERS"
+
+    var accessibilityDescription: String {
+        switch self {
+        case .millimeters:
+            return "millimeters"
+        case .centimeters:
+            return "centimeters"
+        case .meters:
+            return "meters"
+        }
+    }
+}

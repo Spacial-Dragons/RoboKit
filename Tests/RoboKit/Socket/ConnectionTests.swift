@@ -12,7 +12,7 @@ import Testing
 
 @Suite("Connection Tests")
 struct ConnectionTests {
-    let mockConnection: Connection
+    let mockConnection: Connection<CPRMessageModel>
     let testMessage: CPRMessageModel
     let testData: Data
 

@@ -21,7 +21,7 @@ struct TCPClientProcessReceivedDataTests {
 
     @Test("Test processReceivedData with secure message containing token and checksum")
     func testProcessReceivedDataWithSecureMessage() async {
-        let client = await TCPClient(
+        let client = await TCPClient<CPRMessageModel>(
             host: "localhost",
             port: 1300,
             security: SecurityOptions(
@@ -43,7 +43,7 @@ struct TCPClientProcessReceivedDataTests {
 
     @Test("Test processReceivedData with secure message without checksum")
     func testProcessReceivedDataWithSecureMessageNoChecksum() async {
-        let client = await TCPClient(
+        let client = await TCPClient<CPRMessageModel>(
             host: "localhost",
             port: 1302,
             security: SecurityOptions(
@@ -68,7 +68,7 @@ struct TCPClientProcessReceivedDataTests {
 
     @Test("Test processReceivedData with secure message with checksum verification")
     func testProcessReceivedDataWithChecksumVerification() async {
-        let client = await TCPClient(
+        let client = await TCPClient<CPRMessageModel>(
             host: "localhost",
             port: 1303,
             security: SecurityOptions(
@@ -97,7 +97,7 @@ struct TCPClientProcessReceivedDataTests {
 
     @Test("Test processReceivedData with regular CPRMessageModel")
     func testProcessReceivedDataWithRegularMessage() async {
-        let client = await TCPClient(host: "localhost", port: 1305)
+        let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1305)
 
         // Create a regular message
         let regularData = CodingManager.encodeToJSON(data: testMessage)
@@ -110,7 +110,7 @@ struct TCPClientProcessReceivedDataTests {
 
     @Test("Test processReceivedData with different regular message types")
     func testProcessReceivedDataWithDifferentMessageTypes() async {
-        let client = await TCPClient(host: "localhost", port: 1306)
+        let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1306)
 
         // Test with different message types
         let message1 = CPRMessageModel(clawControl: false, positionAndRotation: [0.0, 0.0, 0.0, 0.0])
@@ -130,7 +130,7 @@ struct TCPClientProcessReceivedDataTests {
 
     @Test("Test processReceivedData with invalid JSON data")
     func testProcessReceivedDataWithInvalidJSON() async {
-        let client = await TCPClient(host: "localhost", port: 1307)
+        let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1307)
 
         // Create invalid JSON data
         let invalidData = Data("invalid json data".utf8)
@@ -143,7 +143,7 @@ struct TCPClientProcessReceivedDataTests {
 
     @Test("Test processReceivedData with empty data")
     func testProcessReceivedDataWithEmptyData() async {
-        let client = await TCPClient(host: "localhost", port: 1308)
+        let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1308)
 
         // Create empty data
         let emptyData = Data()
@@ -156,7 +156,7 @@ struct TCPClientProcessReceivedDataTests {
 
     @Test("Test processReceivedData with malformed secure message")
     func testProcessReceivedDataWithMalformedSecureMessage() async {
-        let client = await TCPClient(host: "localhost", port: 1309)
+        let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1309)
 
         // Create malformed secure message (missing required fields)
         let malformedData = Data("""
@@ -171,7 +171,7 @@ struct TCPClientProcessReceivedDataTests {
 
     @Test("Test processReceivedData with corrupted data")
     func testProcessReceivedDataWithCorruptedData() async {
-        let client = await TCPClient(host: "localhost", port: 1310)
+        let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1310)
 
         // Create corrupted data
         let corruptedData = Data([0xFF, 0xFE, 0xFD, 0xFC, 0xFB])
@@ -184,7 +184,7 @@ struct TCPClientProcessReceivedDataTests {
 
     @Test("Test processReceivedData with partial JSON")
     func testProcessReceivedDataWithPartialJSON() async {
-        let client = await TCPClient(host: "localhost", port: 1311)
+        let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1311)
 
         // Create partial JSON data
         let partialData = Data("""
@@ -201,7 +201,7 @@ struct TCPClientProcessReceivedDataTests {
 
     @Test("Test processReceivedData with very large message")
     func testProcessReceivedDataWithLargeMessage() async {
-        let client = await TCPClient(host: "localhost", port: 1312)
+        let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1312)
 
         // Create a large message
         let largeMessage = CPRMessageModel(
@@ -218,7 +218,7 @@ struct TCPClientProcessReceivedDataTests {
 
     @Test("Test processReceivedData with null values in secure message")
     func testProcessReceivedDataWithNullValues() async {
-        let client = await TCPClient(host: "localhost", port: 1313)
+        let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1313)
 
         // Create secure message with null values
         let nullMessage = SecureMessageWrapper(
@@ -235,7 +235,7 @@ struct TCPClientProcessReceivedDataTests {
 
     @Test("Test processReceivedData with empty secure message")
     func testProcessReceivedDataWithEmptySecureMessage() async {
-        let client = await TCPClient(host: "localhost", port: 1314)
+        let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1314)
 
         // Create empty secure message
         let emptySecureMessage = SecureMessageWrapper(
@@ -255,7 +255,7 @@ struct TCPClientProcessReceivedDataTests {
     @Test("Test processReceivedData with different security configurations")
     func testProcessReceivedDataWithDifferentSecurityConfigs() async {
         // Test with TLS and security features
-        let secureClient = await TCPClient(
+        let secureClient = await TCPClient<CPRMessageModel>(
             host: "localhost",
             port: 1315,
             security: SecurityOptions(
@@ -272,7 +272,7 @@ struct TCPClientProcessReceivedDataTests {
         await secureClient.processReceivedData(secureData)
 
         // Test with TLS only
-        let tlsClient = await TCPClient(
+        let tlsClient = await TCPClient<CPRMessageModel>(
             host: "localhost",
             port: 1316,
             security: SecurityOptions(useTLS: true)
@@ -280,7 +280,7 @@ struct TCPClientProcessReceivedDataTests {
         await tlsClient.processReceivedData(secureData)
 
         // Test with non-TLS
-        let nonTLSClient = await TCPClient(
+        let nonTLSClient = await TCPClient<CPRMessageModel>(
             host: "localhost",
             port: 1317,
             security: SecurityOptions(useTLS: false)
@@ -294,7 +294,7 @@ struct TCPClientProcessReceivedDataTests {
 
     @Test("Test processReceivedData handles multiple message types in sequence")
     func testProcessReceivedDataMultipleMessageTypes() async {
-        let client = await TCPClient(host: "localhost", port: 1318)
+        let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1318)
 
         // Create different types of messages
         let secureMessage = SecureMessageWrapper(
@@ -314,7 +314,7 @@ struct TCPClientProcessReceivedDataTests {
 
     @Test("Test processReceivedData with concurrent processing")
     func testProcessReceivedDataConcurrentProcessing() async {
-        let client = await TCPClient(host: "localhost", port: 1319)
+        let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1319)
 
         // Create test data
         let secureData = CodingManager.encodeToJSON(data: SecureMessageWrapper(
@@ -338,7 +338,7 @@ struct TCPClientProcessReceivedDataTests {
 
     @Test("Test processReceivedData with checksum verification scenarios")
     func testProcessReceivedDataChecksumVerificationScenarios() async {
-        let client = await TCPClient(
+        let client = await TCPClient<CPRMessageModel>(
             host: "localhost",
             port: 1320,
             security: SecurityOptions(
@@ -367,3 +367,4 @@ struct TCPClientProcessReceivedDataTests {
         #expect(true)
     }
 }
+ 

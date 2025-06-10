@@ -11,7 +11,7 @@ import Testing
 
 @Suite("TCPClient Connection Tests")
 struct TCPClientConnectionTests {
-    let client: TCPClient
+    let client: TCPClient<CPRMessageModel>
     let testMessage: CPRMessageModel
 
     init() async {

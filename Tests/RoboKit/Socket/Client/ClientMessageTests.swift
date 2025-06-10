@@ -21,14 +21,14 @@ struct TCPClientMessageTests {
 
     @Test("Test receiveMessage basic functionality")
     func testReceiveMessageBasic() async {
-        let client = await TCPClient(host: "localhost", port: 1260)
+        let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1260)
         await client.receiveMessage()
         #expect(true)
     }
 
     @Test("Test receiveMessage with custom lengths")
     func testReceiveMessageCustomLengths() async {
-        let client = await TCPClient(host: "localhost", port: 1261)
+        let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1261)
 
         await client.receiveMessage(minLength: 10, maxLength: 1024)
         await client.receiveMessage(minLength: 1, maxLength: 10)
@@ -39,12 +39,12 @@ struct TCPClientMessageTests {
 
     @Test("Test receiveMessage handles completion and errors")
     func testReceiveMessageHandlesCompletionAndErrors() async {
-        let client = await TCPClient(host: "localhost", port: 1262)
+        let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1262)
 
         await client.receiveMessage()
         await client.connectionEnded()
 
-        let client2 = await TCPClient(host: "localhost", port: 1263)
+        let client2 = await TCPClient<CPRMessageModel>(host: "localhost", port: 1263)
         await client2.receiveMessage()
         await client2.connectionFailed()
 
@@ -56,11 +56,11 @@ struct TCPClientMessageTests {
     @Test("Test sendMessage with different security configurations")
     func testSendMessageWithDifferentSecurity() async {
         // Test with default security (TLS without additional features)
-        let client1 = await TCPClient(host: "localhost", port: 1264)
+        let client1 = await TCPClient<CPRMessageModel>(host: "localhost", port: 1264)
         await client1.sendMessage(testMessage)
 
         // Test with TLS and security features
-        let client2 = await TCPClient(
+        let client2 = await TCPClient<CPRMessageModel>(
             host: "localhost",
             port: 1265,
             security: SecurityOptions(
@@ -72,7 +72,7 @@ struct TCPClientMessageTests {
         await client2.sendMessage(testMessage)
 
         // Test with TLS only
-        let client3 = await TCPClient(
+        let client3 = await TCPClient<CPRMessageModel>(
             host: "localhost",
             port: 1266,
             security: SecurityOptions(useTLS: true)
@@ -80,7 +80,7 @@ struct TCPClientMessageTests {
         await client3.sendMessage(testMessage)
 
         // Test with non-TLS
-        let client4 = await TCPClient(
+        let client4 = await TCPClient<CPRMessageModel>(
             host: "localhost",
             port: 1267,
             security: SecurityOptions(useTLS: false)
@@ -92,7 +92,7 @@ struct TCPClientMessageTests {
 
     @Test("Test sendMessage with different message types")
     func testSendMessageDifferentTypes() async {
-        let client = await TCPClient(host: "localhost", port: 1268)
+        let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1268)
 
         let message1 = CPRMessageModel(clawControl: false, positionAndRotation: [0.0, 0.0, 0.0, 0.0])
         let message2 = CPRMessageModel(clawControl: true, positionAndRotation: [999.99, 888.88, 777.77, 666.66])
@@ -105,7 +105,7 @@ struct TCPClientMessageTests {
 
     @Test("Test sendMessage preserves message integrity")
     func testSendMessageIntegrity() async {
-        let client = await TCPClient(host: "localhost", port: 1269)
+        let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1269)
         let originalMessage = CPRMessageModel(clawControl: true, positionAndRotation: [1.0, 2.0, 3.0, 4.0])
 
         #expect(originalMessage.clawControl == true)
@@ -121,14 +121,14 @@ struct TCPClientMessageTests {
 
     @Test("Test sendSecureMessage basic functionality")
     func testSendSecureMessageBasic() async {
-        let client = await TCPClient(host: "localhost", port: 1270)
+        let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1270)
         await client.sendSecureMessage(payload: testMessage)
         #expect(true)
     }
 
     @Test("Test sendSecureMessage with security features")
     func testSendSecureMessageWithSecurity() async {
-        let client = await TCPClient(
+        let client = await TCPClient<CPRMessageModel>(
             host: "localhost",
             port: 1271,
             security: SecurityOptions(
@@ -143,7 +143,7 @@ struct TCPClientMessageTests {
 
     @Test("Test sendSecureMessage with different payloads")
     func testSendSecureMessageDifferentPayloads() async {
-        let client = await TCPClient(host: "localhost", port: 1272)
+        let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1272)
 
         let message1 = CPRMessageModel(clawControl: false, positionAndRotation: [0.0, 0.0, 0.0, 0.0])
         let message2 = CPRMessageModel(clawControl: true, positionAndRotation: [999.99, 888.88, 777.77, 666.66])
@@ -156,7 +156,7 @@ struct TCPClientMessageTests {
 
     @Test("Test sendSecureMessage preserves payload integrity")
     func testSendSecureMessageIntegrity() async {
-        let client = await TCPClient(host: "localhost", port: 1273)
+        let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1273)
         let originalMessage = CPRMessageModel(clawControl: true, positionAndRotation: [1.0, 2.0, 3.0, 4.0])
 
         #expect(originalMessage.clawControl == true)
@@ -172,7 +172,7 @@ struct TCPClientMessageTests {
 
     @Test("Test sendRawData basic functionality")
     func testSendRawDataBasic() async {
-        let client = await TCPClient(host: "localhost", port: 1274)
+        let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1274)
         let testData = Data("Hello, RoboKit!".utf8)
         await client.sendRawData(testData)
         #expect(true)
@@ -180,7 +180,7 @@ struct TCPClientMessageTests {
 
     @Test("Test sendRawData with different data types")
     func testSendRawDataDifferentTypes() async {
-        let client = await TCPClient(host: "localhost", port: 1275)
+        let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1275)
 
         // Test with string data
         let stringData = Data("String data".utf8)
@@ -201,7 +201,7 @@ struct TCPClientMessageTests {
 
     @Test("Test sendRawData handles edge cases")
     func testSendRawDataEdgeCases() async {
-        let client = await TCPClient(host: "localhost", port: 1276)
+        let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1276)
 
         // Test with empty data
         let emptyData = Data()
@@ -216,7 +216,7 @@ struct TCPClientMessageTests {
 
     @Test("Test sendRawData preserves data integrity")
     func testSendRawDataIntegrity() async {
-        let client = await TCPClient(host: "localhost", port: 1277)
+        let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1277)
         let originalData = Data("Original data".utf8)
 
         #expect(originalData == Data("Original data".utf8))
@@ -228,7 +228,7 @@ struct TCPClientMessageTests {
 
     @Test("Test sendRawData handles errors")
     func testSendRawDataErrors() async {
-        let client = await TCPClient(host: "localhost", port: 1278)
+        let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1278)
         let testData = Data("Error test".utf8)
 
         await client.sendRawData(testData)
@@ -241,7 +241,7 @@ struct TCPClientMessageTests {
 
     @Test("Test processReceivedData flow")
     func testProcessReceivedDataFlow() async {
-        let client = await TCPClient(host: "localhost", port: 1279)
+        let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1279)
 
         // Test secure message processing flow
         let secureMessage = await client.createSecureMessage(payload: testMessage)
@@ -249,12 +249,12 @@ struct TCPClientMessageTests {
         await client.receiveMessage()
 
         // Test regular message processing flow
-        let client2 = await TCPClient(host: "localhost", port: 1280)
+        let client2 = await TCPClient<CPRMessageModel>(host: "localhost", port: 1280)
         _ = CodingManager.encodeToJSON(data: testMessage)
         await client2.receiveMessage()
 
         // Test invalid data processing flow
-        let client3 = await TCPClient(host: "localhost", port: 1281)
+        let client3 = await TCPClient<CPRMessageModel>(host: "localhost", port: 1281)
         _ = Data("invalid json data".utf8)
         await client3.receiveMessage()
 
@@ -265,7 +265,7 @@ struct TCPClientMessageTests {
 
     @Test("Test message sending and receiving flow")
     func testMessageFlow() async {
-        let client = await TCPClient(host: "localhost", port: 1282)
+        let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1282)
         await client.sendMessage(testMessage)
         await client.receiveMessage()
         #expect(true)
@@ -273,7 +273,7 @@ struct TCPClientMessageTests {
 
     @Test("Test secure message flow")
     func testSecureMessageFlow() async {
-        let client = await TCPClient(host: "localhost", port: 1283)
+        let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1283)
         await client.sendSecureMessage(payload: testMessage)
         await client.receiveMessage()
         #expect(true)
@@ -281,7 +281,7 @@ struct TCPClientMessageTests {
 
     @Test("Test raw data flow")
     func testRawDataFlow() async {
-        let client = await TCPClient(host: "localhost", port: 1284)
+        let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1284)
         let testData = Data("Raw data flow test".utf8)
         await client.sendRawData(testData)
         await client.receiveMessage()
@@ -291,7 +291,7 @@ struct TCPClientMessageTests {
     @Test("Test all message methods with different security configurations")
     func testAllMessageMethodsWithSecurity() async {
         // Test all message methods with TLS security
-        let tlsClient = await TCPClient(
+        let tlsClient = await TCPClient<CPRMessageModel>(
             host: "localhost",
             port: 1285,
             security: SecurityOptions(useTLS: true)
@@ -303,7 +303,7 @@ struct TCPClientMessageTests {
         await tlsClient.receiveMessage()
 
         // Test all message methods with non-TLS security
-        let nonTLSClient = await TCPClient(
+        let nonTLSClient = await TCPClient<CPRMessageModel>(
             host: "localhost",
             port: 1286,
             security: SecurityOptions(useTLS: false)

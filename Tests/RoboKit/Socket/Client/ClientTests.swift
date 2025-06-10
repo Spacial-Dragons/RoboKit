@@ -11,7 +11,7 @@ import Testing
 
 @Suite("TCPClient Core Tests")
 struct TCPClientTests {
-    let client: TCPClient
+    let client: TCPClient<CPRMessageModel>
     let testMessage: CPRMessageModel
 
     init() async {
@@ -112,7 +112,7 @@ struct TCPClientTests {
     @Test("Test security configurations")
     func testSecurityConfigurations() async {
         // Test TLS client
-        let tlsClient = await TCPClient(
+        let tlsClient = await TCPClient<CPRMessageModel>(
             host: "localhost",
             port: 1290,
             security: SecurityOptions(useTLS: true)
@@ -121,7 +121,7 @@ struct TCPClientTests {
         await #expect(tlsClient.connection?.stateUpdateHandler != nil)
 
         // Test non-TLS client
-        let nonTLSClient = await TCPClient(
+        let nonTLSClient = await TCPClient<CPRMessageModel>(
             host: "localhost",
             port: 1291,
             security: SecurityOptions(useTLS: false)

@@ -11,8 +11,8 @@ import Network
 
 @Suite("TCPServer Tests")
 struct TCPServerTests {
-    let server: TCPServer
-    let connection: Connection
+    let server: TCPServer<CPRMessageModel>
+    let connection: Connection<CPRMessageModel>
     let nwConnection = NWConnection(host: .ipv4(.loopback), port: 1234, using: .tls)
     let testMessage: CPRMessageModel
 
@@ -139,7 +139,7 @@ struct TCPServerTests {
     @Test("Test createSecureMessage with token provider")
     func testCreateSecureMessageWithToken() async throws {
         // Create server with token provider
-        let serverWithToken = try await TCPServer(
+        let serverWithToken = try await TCPServer<CPRMessageModel>(
             port: 1235,
             security: SecurityOptions(
                 useTLS: true,
@@ -158,7 +158,7 @@ struct TCPServerTests {
     @Test("Test createSecureMessage with checksum provider")
     func testCreateSecureMessageWithChecksum() async throws {
         // Create server with checksum provider
-        let serverWithChecksum = try await TCPServer(
+        let serverWithChecksum = try await TCPServer<CPRMessageModel>(
             port: 1236,
             security: SecurityOptions(
                 useTLS: true,
@@ -178,7 +178,7 @@ struct TCPServerTests {
     @Test("Test createSecureMessage with both token and checksum")
     func testCreateSecureMessageWithTokenAndChecksum() async throws {
         // Create server with both providers
-        let serverWithBoth = try await TCPServer(
+        let serverWithBoth = try await TCPServer<CPRMessageModel>(
             port: 1237,
             security: SecurityOptions(
                 useTLS: true,
@@ -199,7 +199,7 @@ struct TCPServerTests {
     @Test("Test createSecureMessage with nil providers")
     func testCreateSecureMessageWithNilProviders() async throws {
         // Create server with nil providers
-        let serverWithNil = try await TCPServer(
+        let serverWithNil = try await TCPServer<CPRMessageModel>(
             port: 1238,
             security: SecurityOptions(
                 useTLS: true,

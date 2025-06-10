@@ -20,7 +20,7 @@ import Testing
 
 @Suite("Connection Tests - Send Data")
 struct ConnectionTestsSendData {
-    let mockConnection: Connection
+    let mockConnection: Connection<CPRMessageModel>
     let testMessage: CPRMessageModel
     let testData: Data
 
@@ -106,7 +106,7 @@ struct ConnectionTestsSendData {
        #expect(failedCallbackTriggered == true)
 
        // Test success path simulation
-       await Connection.log("Test log message from send completion", level: .debug)
+       await Connection<CPRMessageModel>.log("Test log message from send completion", level: .debug)
        #expect(true)
    }
 

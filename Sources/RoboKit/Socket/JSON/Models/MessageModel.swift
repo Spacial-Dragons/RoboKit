@@ -13,7 +13,7 @@
 //
 // ===----------------------------------------------------------------------=== //
 
-/// Model for the message that the`TCPClient` can send to the `Server`
+/// Message model containing claw control, position, and rotation data.
 public struct CPRMessageModel: Codable, Sendable, Equatable {
     public init(clawControl: Bool, positionAndRotation: [Float]) {
         self.clawControl = clawControl

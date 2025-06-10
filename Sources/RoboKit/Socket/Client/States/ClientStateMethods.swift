@@ -47,11 +47,8 @@ extension TCPClient {
     /// Determines the logic that should be implemented when the State Handler is in `ready`.
     /// This is where the main connection logic should be implemented
     /// - Parameter message: The CPRMessageModel to send once connection is ready (uses TLS security features)
-    public func connectionReady(message: CPRMessageModel) async {
-        await log("Client connection ready - sending initial CPRMessageModel", level: .info)
-        if let ready = readyConnection {
-            ready()
-        }
+    public func connectionReady(message: MessageType) async {
+        await log("Client connection ready - sending initial message", level: .info)
         await sendMessage(message)
     }
 

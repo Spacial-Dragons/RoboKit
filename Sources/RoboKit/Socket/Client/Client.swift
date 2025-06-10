@@ -17,9 +17,9 @@ import Foundation
 import Network
 import SwiftUI
 
-/// The TCP Client class holds the logic for the client of our TCP connection.
-/// Supports both TLS and non-TLS connections based on SecurityOptions configuration.
-public actor TCPClient {
+/// TCP Client that supports both TLS and non-TLS connections based on SecurityOptions configuration.
+/// Generic over the message type to support any Codable & Sendable message type.
+public actor TCPClient<MessageType: Codable & Sendable> {
     /// The connection to the server
     public var connection: NWConnection?
     /// Host of the server the client should connect to
@@ -70,7 +70,7 @@ public actor TCPClient {
     /// Creates a secure message wrapper with authentication and checksum if configured.
     /// - Parameter payload: The original message payload
     /// - Returns: A SecureMessageWrapper with optional token and checksum
-    public func createSecureMessage(payload: CPRMessageModel) -> SecureMessageWrapper {
+    public func createSecureMessage(payload: MessageType) -> SecureMessageWrapper<MessageType> {
         var message = SecureMessageWrapper(payload: payload)
 
         // Add authentication token if provider is configured

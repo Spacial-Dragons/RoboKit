@@ -18,14 +18,15 @@ import Network
 import SwiftUI
 
 /// TCP Server that supports both TLS and non-TLS connections based on SecurityOptions configuration.
-public actor TCPServer {
+/// Generic over the message type to support any Codable & Sendable message type.
+public actor TCPServer<MessageType: Codable & Sendable> {
     /// The server's connection listener.
     public let listener: NWListener
     /// Security configuration for TLS and authentication
     public let security: SecurityOptions
     /// This array and the existence of the `Connection` class allow for the connection of
     /// multiple clients to this server at once.
-    var connectionsByID: [Int: Connection] = [:]
+    var connectionsByID: [Int: Connection<MessageType>] = [:]
     /// Custom logic for when the connection to the client is on `setup` state
     public var setupConnection: (() -> Void)?
     /// Custom logic for when the connection to the client is on `waiting` state
@@ -65,7 +66,7 @@ public actor TCPServer {
     /// Creates a secure message wrapper with authentication and checksum if configured.
     /// - Parameter payload: The original message payload
     /// - Returns: A SecureMessageWrapper with optional token and checksum
-    public func createSecureMessage(payload: CPRMessageModel) -> SecureMessageWrapper {
+    public func createSecureMessage(payload: MessageType) -> SecureMessageWrapper<MessageType> {
         var message = SecureMessageWrapper(payload: payload)
 
         // Add authentication token if provider is configured

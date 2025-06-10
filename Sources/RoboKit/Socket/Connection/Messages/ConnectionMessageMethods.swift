@@ -31,11 +31,11 @@ extension Connection {
         })
     }
 
-    /// Sends a CPRMessageModel message using the appropriate security level
+    /// Sends a message using the appropriate security level
     /// - Parameters:
-    ///   - message: The CPRMessageModel to send
+    ///   - message: The message to send
     ///   - security: Security configuration to use
-    public func sendMessage(_ message: CPRMessageModel, security: SecurityOptions) async {
+    public func sendMessage(_ message: MessageType, security: SecurityOptions) async {
         if security.useTLS && (security.tokenProvider != nil || security.checksumProvider != nil) {
             await Connection.log("Connection \(self.id) sending message with security features", level: .debug)
             await sendSecureMessage(payload: message, security: security)
@@ -69,7 +69,7 @@ extension Connection {
     public func processReceivedData(_ data: Data) async {
         do {
             // Try to decode as secure message first
-            let secureMessage: SecureMessageWrapper = try CodingManager.decodeFromJSON(data: data)
+            let secureMessage: SecureMessageWrapper<MessageType> = try CodingManager.decodeFromJSON(data: data)
             await Connection.log(
                 """
                 Connection \(self.id) received secure message:
@@ -84,12 +84,11 @@ extension Connection {
         } catch {
             // Fallback to regular message decoding for backward compatibility
             do {
-                let message: CPRMessageModel = try CodingManager.decodeFromJSON(data: data)
+                let message: MessageType = try CodingManager.decodeFromJSON(data: data)
                 await Connection.log(
                     """
                     Connection \(self.id) received JSON message:
-                    [Claw Control: \(message.clawControl),
-                     Position & Rotation: \(message.positionAndRotation)]
+                    [Payload: \(message)]
                     """,
                     level: .debug
                 )

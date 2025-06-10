@@ -44,7 +44,7 @@ extension TCPClient {
     public func processReceivedData(_ data: Data) async {
         do {
             // Try to decode as secure message first
-            let secureMessage: SecureMessageWrapper = try CodingManager.decodeFromJSON(data: data)
+            let secureMessage: SecureMessageWrapper<MessageType> = try CodingManager.decodeFromJSON(data: data)
             await self.log(
                 """
                 Client received secure message:
@@ -67,7 +67,7 @@ extension TCPClient {
         } catch {
             // Fallback to regular message decoding
             do {
-                let message: CPRMessageModel = try CodingManager.decodeFromJSON(data: data)
+                let message: MessageType = try CodingManager.decodeFromJSON(data: data)
                 await self.log("Client received regular message: \(message)", level: .debug)
             } catch {
                 await self.log("Client failed to decode message: \(error)", level: .error)
@@ -75,31 +75,32 @@ extension TCPClient {
         }
     }
 
-    /// Sends a CPRMessageModel message from the client to the designated server. A connection must be established
+    /// Sends a message from the client to the designated server. A connection must be established
     /// and running before this is called. Automatically uses secure messaging if TLS is enabled.
     /// This is the recommended method for sending robot control messages.
-    /// - Parameter message: The CPRMessageModel to send
-    public func sendMessage(_ message: CPRMessageModel) async {
+    /// - Parameter message: The message to send
+    public func sendMessage(_ message: MessageType) async {
         if security.useTLS && (security.tokenProvider != nil || security.checksumProvider != nil) {
-            await log("Sending CPRMessageModel with TLS security features", level: .debug)
+            await log("Sending message with TLS security features", level: .debug)
             // Create secure message and send directly
             let secureMessage = createSecureMessage(payload: message)
             let data = CodingManager.encodeToJSON(data: secureMessage)
             await sendRawData(data)
         } else if security.useTLS {
-            await log("Sending CPRMessageModel over TLS without additional security features", level: .debug)
+            await log("Sending message over TLS without additional security features", level: .debug)
             let data = CodingManager.encodeToJSON(data: message)
             await sendRawData(data)
         } else {
-            await log("Sending CPRMessageModel as JSON over non-TLS connection", level: .debug)
+            await log("Sending message as JSON over non-TLS connection", level: .debug)
             let data = CodingManager.encodeToJSON(data: message)
             await sendRawData(data)
         }
     }
+
     /// Sends a secure message from the client to the designated server. A connection must be established
     /// and running before this is called. This method explicitly creates a secure wrapper.
-    /// - Parameter payload: The CPRMessageModel payload to send
-    public func sendSecureMessage(payload: CPRMessageModel) async {
+    /// - Parameter payload: The message payload to send
+    public func sendSecureMessage(payload: MessageType) async {
         await log("Explicitly sending secure message", level: .debug)
         let secureMessage = createSecureMessage(payload: payload)
         let data = CodingManager.encodeToJSON(data: secureMessage)

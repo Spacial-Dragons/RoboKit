@@ -9,11 +9,11 @@ import Foundation
 
 /// A secure wrapper for messages that adds authentication and integrity verification.
 ///
-/// `SecureMessageWrapper` wraps the original `CPRMessageModel` and adds optional
+/// `SecureMessageWrapper` wraps any `Codable` message and adds optional
 /// authentication tokens and checksums for enhanced security.
-public struct SecureMessageWrapper: Codable, Sendable {
+public struct SecureMessageWrapper<T: Codable & Sendable>: Codable, Sendable {
     /// The original message payload
-    public let payload: CPRMessageModel
+    public let payload: T
 
     /// Optional authentication token
     public let token: String?
@@ -30,7 +30,7 @@ public struct SecureMessageWrapper: Codable, Sendable {
     ///   - payload: The original message to wrap
     ///   - token: Optional authentication token
     ///   - checksum: Optional checksum for integrity verification
-    public init(payload: CPRMessageModel, token: String? = nil, checksum: String? = nil) {
+    public init(payload: T, token: String? = nil, checksum: String? = nil) {
         self.payload = payload
         self.token = token
         self.checksum = checksum
@@ -41,7 +41,7 @@ public struct SecureMessageWrapper: Codable, Sendable {
     ///
     /// - Parameter token: The authentication token to add
     /// - Returns: A new SecureMessageWrapper with the token added
-    public func addToken(_ token: String) -> SecureMessageWrapper {
+    public func addToken(_ token: String) -> SecureMessageWrapper<T> {
         return SecureMessageWrapper(payload: self.payload, token: token, checksum: self.checksum)
     }
 
@@ -49,7 +49,7 @@ public struct SecureMessageWrapper: Codable, Sendable {
     ///
     /// - Parameter checksum: The checksum to add
     /// - Returns: A new SecureMessageWrapper with the checksum added
-    public func addChecksum(_ checksum: String) -> SecureMessageWrapper {
+    public func addChecksum(_ checksum: String) -> SecureMessageWrapper<T> {
         return SecureMessageWrapper(payload: self.payload, token: self.token, checksum: checksum)
     }
 }

@@ -113,8 +113,12 @@ struct TCPClientProcessReceivedDataTests {
         let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1306)
 
         // Test with different message types
-        let message1 = CPRMessageModel(clawControl: false, positionAndRotation: [0.0, 0.0, 0.0, 0.0], objectWidth: 0.7)
-        let message2 = CPRMessageModel(clawControl: true, positionAndRotation: [999.99, 888.88, 777.77, 666.66], objectWidth: 0.7)
+        let message1 = CPRMessageModel(clawControl: false,
+                                       positionAndRotation: [0.0, 0.0, 0.0, 0.0],
+                                       objectWidth: 0.7)
+        let message2 = CPRMessageModel(clawControl: true,
+                                       positionAndRotation: [999.99, 888.88, 777.77, 666.66],
+                                       objectWidth: 0.7)
 
         let data1 = CodingManager.encodeToJSON(data: message1)
         let data2 = CodingManager.encodeToJSON(data: message2)
@@ -368,4 +372,3 @@ struct TCPClientProcessReceivedDataTests {
         #expect(true)
     }
 }
- 

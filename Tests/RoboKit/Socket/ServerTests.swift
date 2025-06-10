@@ -18,7 +18,9 @@ struct TCPServerTests {
 
     init() async throws {
         self.connection = await Connection(nwConnection: NWConnection(host: .ipv4(.loopback), port: 1234, using: .tcp))
-        self.testMessage = CPRMessageModel(clawControl: true, positionAndRotation: [1.0, 2.0, 3.0, 4.0], objectWidth: 0.7)
+        self.testMessage = CPRMessageModel(clawControl: true,
+                                           positionAndRotation: [1.0, 2.0, 3.0, 4.0],
+                                           objectWidth: 0.7)
         do {
             self.server = try await TCPServer(port: 1234)
         } catch {
@@ -220,8 +222,12 @@ struct TCPServerTests {
     @Test("Test createSecureMessage with different payloads")
     func testCreateSecureMessageDifferentPayloads() async {
         // Test with different message payloads
-        let message1 = CPRMessageModel(clawControl: false, positionAndRotation: [0.0, 0.0, 0.0, 0.0], objectWidth: 0.7)
-        let message2 = CPRMessageModel(clawControl: true, positionAndRotation: [999.99, 888.88, 777.77, 666.66], objectWidth: 0.7)
+        let message1 = CPRMessageModel(clawControl: false,
+                                       positionAndRotation: [0.0, 0.0, 0.0, 0.0],
+                                       objectWidth: 0.7)
+        let message2 = CPRMessageModel(clawControl: true,
+                                       positionAndRotation: [999.99, 888.88, 777.77, 666.66],
+                                       objectWidth: 0.7)
 
         let secureMessage1 = await server.createSecureMessage(payload: message1)
         let secureMessage2 = await server.createSecureMessage(payload: message2)
@@ -236,7 +242,9 @@ struct TCPServerTests {
     @Test("Test createSecureMessage preserves payload integrity")
     func testCreateSecureMessageIntegrity() async {
         // Test that the original payload is not modified
-        let originalMessage = CPRMessageModel(clawControl: true, positionAndRotation: [1.0, 2.0, 3.0, 4.0], objectWidth: 0.7)
+        let originalMessage = CPRMessageModel(clawControl: true,
+                                              positionAndRotation: [1.0, 2.0, 3.0, 4.0],
+                                              objectWidth: 0.7)
         let secureMessage = await server.createSecureMessage(payload: originalMessage)
 
         // Verify payload integrity

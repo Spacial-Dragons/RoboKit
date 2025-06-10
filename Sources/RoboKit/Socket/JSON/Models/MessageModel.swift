@@ -15,13 +15,13 @@
 
 /// Model for the message that the`TCPClient` can send to the `Server`
 public struct CPRMessageModel: Codable, Sendable, Equatable {
-    public init(clawControl: Bool, positionAndRotation: [Float], width: Float) {
+    public init(clawControl: Bool, positionAndRotation: [Float], objectWidth: Float) {
         self.clawControl = clawControl
         self.positionAndRotation = positionAndRotation
-        self.width = width
+        self.objectWidth = objectWidth
     }
 
     public let clawControl: Bool
     public let positionAndRotation: [Float]
-    public let width: Float
+    public let objectWidth: Float
 }

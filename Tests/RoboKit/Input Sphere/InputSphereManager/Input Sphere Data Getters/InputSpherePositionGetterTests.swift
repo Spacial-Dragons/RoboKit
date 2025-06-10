@@ -47,7 +47,8 @@ struct InputSpherePositionGetterTests {
 
         for testCase in testCases {
             sphere.position = testCase.inputPosition
-            let result = manager.getInputSpherePosition(relativeToRootPoint: root)
+            manager.updateInputSpherePosition(relativeToRootPoint: root)
+            let result = manager.getInputSpherePosition()
 
             #expect(result != nil, testCase.description)
             #expect(result == testCase.expectedROSPosition, "Failed for: \(testCase.description)")
@@ -57,7 +58,7 @@ struct InputSpherePositionGetterTests {
     @Test("Input Sphere position getter returns nil position if inputSphere is nil")
     func testPositionNilWhenNoInputSphere() {
         manager.inputSphere = nil
-        let result = manager.getInputSpherePosition(relativeToRootPoint: root)
+        let result = manager.getInputSpherePosition()
         #expect(result == nil)
     }
 }

@@ -15,11 +15,13 @@
 
 /// Message model containing claw control, position, and rotation data.
 public struct CPRMessageModel: Codable, Sendable, Equatable {
-    public init(clawControl: Bool, positionAndRotation: [Float]) {
+    public init(clawControl: Bool, positionAndRotation: [Float], objectWidth: Float) {
         self.clawControl = clawControl
         self.positionAndRotation = positionAndRotation
+        self.objectWidth = objectWidth
     }
 
     public let clawControl: Bool
     public let positionAndRotation: [Float]
+    public let objectWidth: Float
 }

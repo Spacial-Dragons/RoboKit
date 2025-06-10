@@ -27,7 +27,7 @@ extension InputSphereManager {
     ///   relative to the global context.
     ///
     /// If `inputSphere` is `nil`, this method performs no action.
-    public func updateInputSpherePosition(rootPoint: Entity) {
+    public func updateInputSpherePosition(relativeToRootPoint rootPoint: Entity) {
         if let inputSphere {
             self.inputSpherePositionRelativeToParent = inputSphere.position
             self.inputSpherePositionRelativeToRoot = inputSphere.position(relativeTo: rootPoint)

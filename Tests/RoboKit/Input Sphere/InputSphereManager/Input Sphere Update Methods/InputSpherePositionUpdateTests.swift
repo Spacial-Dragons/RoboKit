@@ -31,7 +31,7 @@ struct UpdateInputSpherePositionTests {
         root.position = [0, 0, 1]
 
         manager.inputSphere = sphere
-        manager.updateInputSpherePosition(rootPoint: root)
+        manager.updateInputSpherePosition(relativeToRootPoint: root)
 
         #expect(manager.inputSpherePositionRelativeToParent == SIMD3<Float>(1, 2, 3))
         #expect(manager.inputSpherePositionRelativeToRoot == sphere.position(relativeTo: root))

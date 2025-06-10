@@ -19,7 +19,7 @@ struct ConnectionTests {
     init() async {
         let nwConnection = NWConnection(host: .ipv4(.loopback), port: 1234, using: .tcp)
         mockConnection = await Connection(nwConnection: nwConnection)
-        testMessage = CPRMessageModel(clawControl: true, positionAndRotation: [1.0, 2.0, 3.0, 4.0])
+        testMessage = CPRMessageModel(clawControl: true, positionAndRotation: [1.0, 2.0, 3.0, 4.0], objectWidth: 0.7)
         testData = Data("Test data".utf8)
     }
 

@@ -19,7 +19,7 @@ import Network
 /// Global ID generator for connections to avoid static stored properties in generic types
 private actor ConnectionIDGenerator {
     private var nextID: Int = 0
-    
+
     func generateID() -> Int {
         let id = nextID
         nextID += 1

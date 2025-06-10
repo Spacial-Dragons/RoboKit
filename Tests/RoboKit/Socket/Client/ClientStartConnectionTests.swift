@@ -14,7 +14,7 @@ struct TCPClientStartConnectionTests {
     let testMessage: CPRMessageModel
 
     init() async {
-        testMessage = CPRMessageModel(clawControl: true, positionAndRotation: [1.0, 2.0, 3.0, 4.0])
+        testMessage = CPRMessageModel(clawControl: true, positionAndRotation: [1.0, 2.0, 3.0, 4.0], objectWidth: 0.7)
     }
 
     // MARK: - StartConnection with CPRMessageModel Tests
@@ -38,8 +38,8 @@ struct TCPClientStartConnectionTests {
 
     @Test("Test startConnection with CPRMessageModel handles different message types")
     func testStartConnectionWithDifferentMessages() async {
-        let message1 = CPRMessageModel(clawControl: false, positionAndRotation: [0.0, 0.0, 0.0, 0.0])
-        let message2 = CPRMessageModel(clawControl: true, positionAndRotation: [999.99, 888.88, 777.77, 666.66])
+        let message1 = CPRMessageModel(clawControl: false, positionAndRotation: [0.0, 0.0, 0.0, 0.0], objectWidth: 0.7)
+        let message2 = CPRMessageModel(clawControl: true, positionAndRotation: [999.99, 888.88, 777.77, 666.66], objectWidth: 0.7)
 
         let client1 = await TCPClient<CPRMessageModel>(host: "localhost", port: 1236)
         await client1.startConnection(with: message1)
@@ -53,7 +53,7 @@ struct TCPClientStartConnectionTests {
     @Test("Test startConnection with CPRMessageModel preserves message integrity")
     func testStartConnectionPreservesMessageIntegrity() async {
         let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1238)
-        let originalMessage = CPRMessageModel(clawControl: true, positionAndRotation: [1.0, 2.0, 3.0, 4.0])
+        let originalMessage = CPRMessageModel(clawControl: true, positionAndRotation: [1.0, 2.0, 3.0, 4.0], objectWidth: 0.7)
 
         #expect(originalMessage.clawControl == true)
         #expect(originalMessage.positionAndRotation == [1.0, 2.0, 3.0, 4.0])

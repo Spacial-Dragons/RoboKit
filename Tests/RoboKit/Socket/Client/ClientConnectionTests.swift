@@ -16,7 +16,7 @@ struct TCPClientConnectionTests {
 
     init() async {
         client = await TCPClient(host: "localhost", port: 1234)
-        testMessage = CPRMessageModel(clawControl: true, positionAndRotation: [1.0, 2.0, 3.0, 4.0])
+        testMessage = CPRMessageModel(clawControl: true, positionAndRotation: [1.0, 2.0, 3.0, 4.0], objectWidth: 0.7)
     }
 
     @Test("Test Client Initialization")

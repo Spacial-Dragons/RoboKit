@@ -14,7 +14,7 @@ struct TCPClientProcessReceivedDataTests {
     let testMessage: CPRMessageModel
 
     init() async {
-        testMessage = CPRMessageModel(clawControl: true, positionAndRotation: [1.0, 2.0, 3.0, 4.0])
+        testMessage = CPRMessageModel(clawControl: true, positionAndRotation: [1.0, 2.0, 3.0, 4.0], objectWidth: 0.7)
     }
 
     // MARK: - Secure Message Processing Tests
@@ -113,8 +113,8 @@ struct TCPClientProcessReceivedDataTests {
         let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1306)
 
         // Test with different message types
-        let message1 = CPRMessageModel(clawControl: false, positionAndRotation: [0.0, 0.0, 0.0, 0.0])
-        let message2 = CPRMessageModel(clawControl: true, positionAndRotation: [999.99, 888.88, 777.77, 666.66])
+        let message1 = CPRMessageModel(clawControl: false, positionAndRotation: [0.0, 0.0, 0.0, 0.0], objectWidth: 0.7)
+        let message2 = CPRMessageModel(clawControl: true, positionAndRotation: [999.99, 888.88, 777.77, 666.66], objectWidth: 0.7)
 
         let data1 = CodingManager.encodeToJSON(data: message1)
         let data2 = CodingManager.encodeToJSON(data: message2)
@@ -206,7 +206,8 @@ struct TCPClientProcessReceivedDataTests {
         // Create a large message
         let largeMessage = CPRMessageModel(
             clawControl: true,
-            positionAndRotation: Array(repeating: 1.0, count: 1000)
+            positionAndRotation: Array(repeating: 1.0, count: 1000),
+            objectWidth: 0.7
         )
         let largeData = CodingManager.encodeToJSON(data: largeMessage)
 

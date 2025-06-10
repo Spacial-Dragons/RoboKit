@@ -14,7 +14,7 @@ struct TCPClientMessageTests {
     let testMessage: CPRMessageModel
 
     init() async {
-        testMessage = CPRMessageModel(clawControl: true, positionAndRotation: [1.0, 2.0, 3.0, 4.0])
+        testMessage = CPRMessageModel(clawControl: true, positionAndRotation: [1.0, 2.0, 3.0, 4.0], objectWidth: 0.7)
     }
 
     // MARK: - ReceiveMessage Tests
@@ -94,8 +94,10 @@ struct TCPClientMessageTests {
     func testSendMessageDifferentTypes() async {
         let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1268)
 
-        let message1 = CPRMessageModel(clawControl: false, positionAndRotation: [0.0, 0.0, 0.0, 0.0])
-        let message2 = CPRMessageModel(clawControl: true, positionAndRotation: [999.99, 888.88, 777.77, 666.66])
+        let message1 = CPRMessageModel(clawControl: false, positionAndRotation: [0.0, 0.0, 0.0, 0.0], objectWidth: 0.7)
+        let message2 = CPRMessageModel(clawControl: true,
+                                       positionAndRotation: [999.99, 888.88, 777.77, 666.66],
+                                       objectWidth: 0.7)
 
         await client.sendMessage(message1)
         await client.sendMessage(message2)
@@ -106,7 +108,9 @@ struct TCPClientMessageTests {
     @Test("Test sendMessage preserves message integrity")
     func testSendMessageIntegrity() async {
         let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1269)
-        let originalMessage = CPRMessageModel(clawControl: true, positionAndRotation: [1.0, 2.0, 3.0, 4.0])
+        let originalMessage = CPRMessageModel(clawControl: true,
+                                              positionAndRotation: [1.0, 2.0, 3.0, 4.0],
+                                              objectWidth: 0.7)
 
         #expect(originalMessage.clawControl == true)
         #expect(originalMessage.positionAndRotation == [1.0, 2.0, 3.0, 4.0])
@@ -145,8 +149,8 @@ struct TCPClientMessageTests {
     func testSendSecureMessageDifferentPayloads() async {
         let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1272)
 
-        let message1 = CPRMessageModel(clawControl: false, positionAndRotation: [0.0, 0.0, 0.0, 0.0])
-        let message2 = CPRMessageModel(clawControl: true, positionAndRotation: [999.99, 888.88, 777.77, 666.66])
+        let message1 = CPRMessageModel(clawControl: false, positionAndRotation: [0.0, 0.0, 0.0, 0.0], objectWidth: 0.7)
+        let message2 = CPRMessageModel(clawControl: true, positionAndRotation: [999.99, 888.88, 777.77, 666.66], objectWidth: 0.7)
 
         await client.sendSecureMessage(payload: message1)
         await client.sendSecureMessage(payload: message2)
@@ -157,7 +161,7 @@ struct TCPClientMessageTests {
     @Test("Test sendSecureMessage preserves payload integrity")
     func testSendSecureMessageIntegrity() async {
         let client = await TCPClient<CPRMessageModel>(host: "localhost", port: 1273)
-        let originalMessage = CPRMessageModel(clawControl: true, positionAndRotation: [1.0, 2.0, 3.0, 4.0])
+        let originalMessage = CPRMessageModel(clawControl: true, positionAndRotation: [1.0, 2.0, 3.0, 4.0], objectWidth: 0.7)
 
         #expect(originalMessage.clawControl == true)
         #expect(originalMessage.positionAndRotation == [1.0, 2.0, 3.0, 4.0])

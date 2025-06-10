@@ -27,7 +27,7 @@ struct ConnectionTestsSendData {
     init() async {
         let nwConnection = NWConnection(host: .ipv4(.loopback), port: 1234, using: .tcp)
         mockConnection = await Connection(nwConnection: nwConnection)
-        testMessage = CPRMessageModel(clawControl: true, positionAndRotation: [1.0, 2.0, 3.0, 4.0])
+        testMessage = CPRMessageModel(clawControl: true, positionAndRotation: [1.0, 2.0, 3.0, 4.0], objectWidth: 0.7)
         testData = Data("Test data".utf8)
     }
 
@@ -171,7 +171,7 @@ struct ConnectionTestsSendData {
 
        // Test fallback from secure to regular
        await mockConnection.updateLatestMessage(
-        message: CPRMessageModel(clawControl: false, positionAndRotation: [0, 0, 0, 0])
+        message: CPRMessageModel(clawControl: false, positionAndRotation: [0, 0, 0, 0], objectWidth: 0.7)
        )
        await mockConnection.processReceivedData(CodingManager.encodeToJSON(data: testMessage))
        let latestMessage = await mockConnection.latestMessage
@@ -191,7 +191,9 @@ struct ConnectionTestsSendData {
        await mockConnection.processReceivedData(Data())
 
        // Test processReceivedData with large message
-       let largeMessage = CPRMessageModel(clawControl: true, positionAndRotation: Array(repeating: 999.99, count: 1000))
+       let largeMessage = CPRMessageModel(clawControl: true,
+                                          positionAndRotation: Array(repeating: 999.99, count: 1000),
+                                          objectWidth: 0.7)
        await mockConnection.processReceivedData(CodingManager.encodeToJSON(data: largeMessage))
        let latestMessage = await mockConnection.latestMessage
        #expect(latestMessage?.clawControl == true)

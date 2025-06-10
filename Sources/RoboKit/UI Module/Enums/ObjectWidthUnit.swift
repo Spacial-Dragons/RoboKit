@@ -13,11 +13,33 @@
 //
 // ===----------------------------------------------------------------------=== //
 
+/// An enumeration representing different units of measurement for object width.
+///
+/// This enum provides standardized width units that can be used throughout the RoboKit
+/// application for consistent measurement display and conversion. Each case includes
+/// both a raw string value for display and an accessibility description for screen readers.
+///
+/// ## Usage
+/// ```swift
+/// let unit = ObjectWidthUnit.millimeters
+/// print(unit.rawValue) // "MM"
+/// print(unit.accessibilityDescription) // "millimeters"
+/// ```
 public enum ObjectWidthUnit: String, CaseIterable {
+    /// Millimeters - represented as "MM"
     case millimeters = "MM"
+    
+    /// Centimeters - represented as "CM"
     case centimeters = "CM"
+    
+    /// Meters - represented as "METERS"
     case meters = "METERS"
 
+    /// A human-readable description of the unit for accessibility purposes.
+    ///
+    /// This property provides a full word description of each unit that can be
+    /// used by screen readers and other accessibility features to provide clear
+    /// information about the measurement unit.
     var accessibilityDescription: String {
         switch self {
         case .millimeters:

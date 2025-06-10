@@ -15,9 +15,24 @@
 
 import SwiftUI
 
+/// A SwiftUI view that provides an editable text field for object width values.
+///
+/// This view creates a text field that allows users to input and edit object width values.
+/// The text field uses a capsule style for consistent appearance with the RoboKit design system
+/// and includes number input validation.
+///
+/// ## Usage
+/// ```swift
+/// @State private var objectWidth: Float = 10.0
+/// ObjectWidthTextField(objectWidth: $objectWidth)
+/// ```
 public struct ObjectWidthTextField: View {
+    /// Binding to the object width value.
     @Binding private var objectWidth: Float
 
+    /// Initializes a new object width text field view.
+    ///
+    /// - Parameter objectWidth: Binding to the object width value to be edited.
     public init(objectWidth: Binding<Float>) {
         self._objectWidth = objectWidth
     }

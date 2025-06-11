@@ -1,7 +1,7 @@
 # UI Module
 
 @Metadata {
-    @PageImage(purpose: card, source: "UIModuleCard", alt: "UI Module Card")
+    @PageImage(purpose: card, source: "", alt: "UI Module Card")
 }
 
 The UI Module provides a comprehensive collection of SwiftUI components designed to create intuitive and accessible user interfaces for robotic control applications in visionOS. This module includes form controls, input sphere views, control panel elements, and accessory components that work seamlessly with other RoboKit modules.

@@ -22,10 +22,10 @@ import SwiftUI
 public struct SegmentedControlItem: Identifiable {
     /// A unique identifier for the segment item.
     public var id: UUID = UUID()
-    
+
     /// The text label displayed for this segment.
     public var label: String
-    
+
     /// Optional accessibility label for screen readers and accessibility features.
     public var accessibilityLabel: Text?
 
@@ -63,10 +63,10 @@ public struct SegmentedControlItem: Identifiable {
 public struct SegmentedControlPicker: View {
     /// The array of segment items to display in the picker.
     let items: [SegmentedControlItem]
-    
+
     /// Optional accessibility label for the entire picker component.
     let accessibilityLabel: Text?
-    
+
     /// Binding to the currently selected segment index.
     @Binding var selectedIndex: Int
 

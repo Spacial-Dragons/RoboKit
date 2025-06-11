@@ -30,7 +30,7 @@ import SwiftUI
 public struct FormPositionTextField: View {
     /// The form manager that provides and manages position data from the ROS system.
     @Environment(FormManager.self) private var formManager: FormManager
-    
+
     /// The axis for which to provide position editing capabilities.
     private let axis: Axis
 

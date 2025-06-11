@@ -36,16 +36,16 @@ import SwiftUI
 public struct SendDataButton: View {
     /// Environment variable to check if motion reduction is enabled for accessibility.
     @Environment(\.accessibilityReduceMotion) var isReduceMotionEnabled
-    
+
     /// Binding to track whether data is currently being sent.
     @Binding private var isSendingData: Bool
-    
+
     /// Binding to the currently selected data transmission mode.
     @Binding var selectedDataMode: DataMode
 
     /// Closure to execute when sending live data.
     private let onSendLiveData: () -> Void
-    
+
     /// Closure to execute when sending set data.
     private let onSendSetData: () -> Void
 

@@ -30,7 +30,7 @@ import SwiftUI
 public struct FormRotationTextField: View {
     /// The form manager that provides and manages rotation data from the ROS system.
     @Environment(FormManager.self) private var formManager: FormManager
-    
+
     /// The Euler angle for which to provide rotation editing capabilities.
     private let eulerAngle: EulerAngle
 

@@ -28,10 +28,10 @@
 public enum ObjectWidthUnit: String, CaseIterable {
     /// Millimeters - represented as "MM"
     case millimeters = "MM"
-    
+
     /// Centimeters - represented as "CM"
     case centimeters = "CM"
-    
+
     /// Meters - represented as "METERS"
     case meters = "METERS"
 

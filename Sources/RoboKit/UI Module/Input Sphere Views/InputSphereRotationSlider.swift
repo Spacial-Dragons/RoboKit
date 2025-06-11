@@ -37,22 +37,22 @@ import RealityFoundation
 public struct InputSphereRotationSlider: View {
     /// The input sphere manager that provides and manages rotation data from the input sphere system.
     @Environment(InputSphereManager.self) private var inputSphereManager: InputSphereManager
-    
+
     /// The root entity point relative to which rotations are calculated.
     let rootPoint: Entity
-    
+
     /// The Euler angle for which to provide rotation control.
     let eulerAngle: EulerAngle
-    
+
     /// The maximum rotation value in degrees.
     let maxValue: Float
-    
+
     /// The minimum rotation value in degrees.
     let minValue: Float
-    
+
     /// The step increment for the slider in degrees.
     let step: Float
-    
+
     /// Whether to display minimum and maximum value labels.
     let showMinMax: Bool
 

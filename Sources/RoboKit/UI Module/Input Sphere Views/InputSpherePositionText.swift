@@ -31,10 +31,10 @@ import SwiftUI
 public struct InputSpherePositionText: View {
     /// The input sphere manager that provides position data from the input sphere system.
     @Environment(InputSphereManager.self) private var inputSphereManager: InputSphereManager
-    
+
     /// The axis for which to display position information.
     private let axis: Axis
-    
+
     /// Whether to show the full description (e.g., "Position X") instead of just the axis label.
     private let showFullDescription: Bool
 

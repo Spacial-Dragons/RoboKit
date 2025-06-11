@@ -30,7 +30,7 @@ import SwiftUI
 public struct FormPositionText: View {
     /// The form manager that provides position data from the ROS system.
     @Environment(FormManager.self) private var formManager: FormManager
-    
+
     /// The axis for which to display position information.
     private let axis: Axis
 

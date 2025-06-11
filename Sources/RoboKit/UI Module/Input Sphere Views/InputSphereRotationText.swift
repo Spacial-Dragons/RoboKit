@@ -30,7 +30,7 @@ import SwiftUI
 public struct InputSphereRotationText: View {
     /// The input sphere manager that provides rotation data from the input sphere system.
     @Environment(InputSphereManager.self) private var inputSphereManager: InputSphereManager
-    
+
     /// The Euler angle for which to display rotation information.
     private let eulerAngle: EulerAngle
 

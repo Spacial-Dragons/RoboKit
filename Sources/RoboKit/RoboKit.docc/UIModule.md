@@ -16,6 +16,8 @@ A collection of text field components for entering position and rotation values 
 
 ### FormPositionTextField
 
+![FormPositionTextField](FormPositionTextField)
+
 A text field for entering position values along a specific axis in the ROS coordinate system.
 
 ```swift
@@ -24,7 +26,12 @@ FormPositionTextField(axis: .longitudinal)  // Y-axis
 FormPositionTextField(axis: .vertical)  // Z-axis
 ```
 
+> Note: `FormPositionTextField` and `FormRotationTextField` bind directly to ROS coordinate system data for immediate updates.
+
+
 ### FormRotationTextField
+
+![FormRotationTextField](FormRotationTextField)
 
 A text field for entering rotation values using Euler angles.
 
@@ -35,6 +42,8 @@ FormRotationTextField(eulerAngle: .yaw)    // Rotation Z
 ```
 
 ### FormPositionText
+
+![FormPositionText](FormPositionText)
 
 A read-only text view that displays position values along a specific axis.
 
@@ -50,6 +59,8 @@ Components for displaying and controlling the Input Sphere's position and orient
 
 ### InputSpherePositionText
 
+![InputSpherePositionText](InputSpherePositionText)
+
 Displays the current position of the Input Sphere along a specific axis.
 
 ```swift
@@ -58,7 +69,11 @@ InputSpherePositionText(axis: .longitudinal)
 InputSpherePositionText(axis: .vertical)
 ```
 
+> Important: The `InputSpherePositionText` component automatically converts position data to ROS coordinates for display.
+
 ### InputSphereRotationSlider
+
+![InputSphereRotationSlider](InputSphereRotationSlider)
 
 Interactive sliders for adjusting the Input Sphere's orientation using Euler angles.
 
@@ -75,6 +90,8 @@ InputSphereRotationSlider(
 
 ### InputSphereRotationText
 
+![InputSphereRotationText](InputSphereRotationText)
+
 Displays the current rotation values of the Input Sphere in degrees.
 
 ```swift
@@ -89,6 +106,8 @@ Components for managing data transmission and control modes.
 
 ### DataModePicker
 
+![DataModePicker](DataModePicker)
+
 A segmented control for selecting between live and set data transmission modes.
 
 ```swift
@@ -98,6 +117,8 @@ DataModePicker(selectedDataMode: $selectedDataMode)
 ```
 
 ### SendDataButton
+
+![SendDataButton](SendDataButton)
 
 An animated button for sending data with visual feedback and accessibility support.
 
@@ -112,11 +133,15 @@ SendDataButton(
 )
 ```
 
+> Warning: The `SendDataButton` automatically stops sending data when switching from live mode to set mode.
+
 ## Accessory Views
 
 Utility components for common UI patterns and controls.
 
 ### ClawControlToggle
+
+![ClawControlToggle](ClawControlToggle)
 
 A segmented control for toggling between open and closed claw states.
 
@@ -128,6 +153,8 @@ ClawControlToggle(clawShouldOpen: $clawShouldOpen)
 
 ### ObjectWidthTextField
 
+![ObjectWidthTextField](ObjectWidthTextField)
+
 A text field for entering object width values with number formatting.
 
 ```swift
@@ -138,6 +165,8 @@ ObjectWidthTextField(objectWidth: $objectWidth)
 
 ### ObjectWidthUnitPicker
 
+![ObjectWidthUnitPicker](ObjectWidthUnitPicker)
+
 A segmented control for selecting measurement units (millimeters, centimeters, meters).
 
 ```swift
@@ -146,9 +175,13 @@ A segmented control for selecting measurement units (millimeters, centimeters, m
 ObjectWidthUnitPicker(objectWidthUnit: $objectWidthUnit)
 ```
 
+> Tip: Use `ObjectWidthUnitPicker` with `ObjectWidthTextField` for complete object width input with unit selection.
+
 ## Picker Components
 
 ### SegmentedControlPicker
+
+![SegmentedControlPicker](SegmentedControlPicker)
 
 A customizable segmented control component with accessibility support.
 
@@ -165,17 +198,6 @@ SegmentedControlPicker(
     selectedIndex: $selectedIndex,
     accessibilityLabel: Text("Selection Control")
 )
-```
-
-## Styling
-
-### CapsuleTextFieldStyle
-
-A custom text field style that provides a capsule-shaped background with hover effects.
-
-```swift
-TextField("Enter value", value: $value, format: .number)
-    .textFieldStyle(CapsuleTextFieldStyle())
 ```
 
 ## Integration with Other Modules
@@ -195,15 +217,3 @@ All UI components include comprehensive accessibility support:
 - VoiceOver compatibility
 - Reduced motion support for animations
 - Semantic grouping of related controls
-
-## Notes
-
-
-> Important: The `InputSpherePositionText` component automatically converts position data to ROS coordinates for display.
-
-> Note: `FormPositionTextField` and `FormRotationTextField` bind directly to ROS coordinate system data for immediate updates.
-
-> Warning: The `SendDataButton` automatically stops sending data when switching from live mode to set mode.
-
-> Tip: Use `ObjectWidthUnitPicker` with `ObjectWidthTextField` for complete object width input with unit selection.
-

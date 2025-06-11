@@ -52,26 +52,9 @@ extension Connection {
         self.nwConnection.receive(minimumIncompleteLength: 1, maximumLength: 65536) { (data, _, isComplete, error) in
             guard let data = data else { return }
             Task {
-<<<<<<< HEAD
-                do {
-                    let message: CPRMessageModel = try CodingManager.decodeFromJSON(data: data)
-                    if type(of: message) == CPRMessageModel.self {
-                        await Connection.log(
-                            """
-                            Connection \(self.id) received JSON message:
-                            [Claw Control: \(message.clawControl),
-                             Position & Rotation: \(message.positionAndRotation),
-                            Object Width: \(message.width)]
-                            """,
-                            level: .debug)
-                    }
-                    await self.updateLatestMessage(message: message)
-                } catch {
-                    await Connection.log("Connection \(self.id) failed to decode message: \(error)", level: .error)
-                }
-=======
+
                 await self.processReceivedData(data)
->>>>>>> main
+
                 if isComplete {
                     await self.connectionDidEnd()
                 } else if let error = error {

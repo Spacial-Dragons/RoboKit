@@ -13,7 +13,6 @@
 //
 // ===----------------------------------------------------------------------=== //
 
-<<<<<<< HEAD
 /// An enumeration representing different units of measurement for object width.
 ///
 /// This enum provides standardized width units that can be used throughout the RoboKit
@@ -41,13 +40,6 @@ public enum ObjectWidthUnit: String, CaseIterable {
     /// This property provides a full word description of each unit that can be
     /// used by screen readers and other accessibility features to provide clear
     /// information about the measurement unit.
-=======
-public enum ObjectWidthUnit: String, CaseIterable {
-    case millimeters = "MM"
-    case centimeters = "CM"
-    case meters = "METERS"
-
->>>>>>> main
     var accessibilityDescription: String {
         switch self {
         case .millimeters:

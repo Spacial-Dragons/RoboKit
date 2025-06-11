@@ -17,25 +17,17 @@ import Foundation
 import Network
 import SwiftUI
 
-<<<<<<< HEAD
-/// The TCP Client class holds the logic for the client of our TCP connection.
-public actor TCPClient {
-=======
 /// TCP Client that supports both TLS and non-TLS connections based on SecurityOptions configuration.
 /// Generic over the message type to support any Codable & Sendable message type.
 public actor TCPClient<MessageType: Codable & Sendable> {
->>>>>>> main
     /// The connection to the server
     public var connection: NWConnection?
     /// Host of the server the client should connect to
     public var host: NWEndpoint.Host
     /// Port of the server the client should connect to
     public var port: NWEndpoint.Port
-<<<<<<< HEAD
-=======
     /// Security configuration for TLS and authentication
     public var security: SecurityOptions
->>>>>>> main
     /// Custom logic for when the connection to the server is on `setup` state
     public var setupConnection: (() -> Void)?
     /// Custom logic for when the connection to the server is on `waiting` state
@@ -48,22 +40,11 @@ public actor TCPClient<MessageType: Codable & Sendable> {
     public var failedConnection: (() -> Void)?
     /// Custom logic for when the connection to the server is on `cancelled` state
     public var cancelledConnection: (() -> Void)?
-<<<<<<< HEAD
-=======
 
->>>>>>> main
     @MainActor
     func log(_ message: String, level: LogLevel) {
         AppLogger.shared.log(message, level: level, category: .socket)
     }
-<<<<<<< HEAD
-    /// Initializes the client and the connection instance to the server. Warning: Connection is not yet running here.
-    public init(host: NWEndpoint.Host, port: NWEndpoint.Port) async {
-        self.host = host
-        self.port = port
-        self.connection = NWConnection(host: host, port: port, using: .tcp)
-        await log("TCPClient initialized with host: \(host) and port: \(port)", level: .info)
-=======
 
     /// Initializes the client and the connection instance to the server. Warning: Connection is not yet running here.
     /// - Parameters:
@@ -104,6 +85,5 @@ public actor TCPClient<MessageType: Codable & Sendable> {
         }
 
         return message
->>>>>>> main
     }
 }

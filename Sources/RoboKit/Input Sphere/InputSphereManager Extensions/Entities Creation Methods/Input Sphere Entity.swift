@@ -96,7 +96,6 @@ extension InputSphereManager {
         // Value description for the entity
         entity.accessibilityValue = "An input component to interact with and manipulate a robot"
 
-
         // Trait to describe the entity's behavior or role
         entity.accessibilityTraits = [.allowsDirectInteraction]
 

@@ -15,7 +15,6 @@
 
 import SwiftUI
 
-<<<<<<< HEAD
 /// A SwiftUI view that provides a toggle control for claw operations.
 ///
 /// This view creates a segmented control that allows users to switch between "Close"
@@ -35,11 +34,6 @@ public struct ClawControlToggle: View {
     ///
     /// - Parameter clawShouldOpen: Binding to control the claw state where true represents
     ///                             closed and false represents open.
-=======
-public struct ClawControlToggle: View {
-    @Binding private var clawShouldOpen: Bool
-
->>>>>>> main
     public init(clawShouldOpen: Binding<Bool>) {
         self._clawShouldOpen = clawShouldOpen
     }

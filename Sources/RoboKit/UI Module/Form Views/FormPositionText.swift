@@ -15,6 +15,7 @@
 
 import SwiftUI
 
+<<<<<<< HEAD
 /// A SwiftUI view that displays position information for a specific axis in a form context.
 ///
 /// This view shows the current position value for a given axis (X, Y, or Z) relative to the
@@ -38,14 +39,23 @@ public struct FormPositionText: View {
     ///
     /// - Parameter axis: The axis (lateral/X, longitudinal/Y, or vertical/Z) for which
     ///                   to display position information.
+=======
+public struct FormPositionText: View {
+    @Environment(FormManager.self) private var formManager: FormManager
+    private let axis: Axis
+
+>>>>>>> main
     public init(axis: Axis) {
         self.axis = axis
     }
 
+<<<<<<< HEAD
     /// Retrieves the position value for the specified axis from the form manager.
     ///
     /// This computed property accesses the position data from the ROS coordinate system
     /// and returns the appropriate component based on the selected axis.
+=======
+>>>>>>> main
     private var positionValue: Float? {
         let position = formManager.formPositionRelativeToRootROS
 
@@ -56,10 +66,13 @@ public struct FormPositionText: View {
         }
     }
 
+<<<<<<< HEAD
     /// Returns the display label for the current axis.
     ///
     /// This property provides a human-readable label (X, Y, or Z) that corresponds
     /// to the axis being displayed.
+=======
+>>>>>>> main
     private var axisLabel: String {
         switch axis {
         case .lateral: return "X"

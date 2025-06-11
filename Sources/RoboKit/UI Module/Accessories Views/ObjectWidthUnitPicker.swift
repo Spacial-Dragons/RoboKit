@@ -15,6 +15,7 @@
 
 import SwiftUI
 
+<<<<<<< HEAD
 /// A SwiftUI view that provides a picker for selecting object width units.
 ///
 /// This view creates a segmented control that allows users to select from different
@@ -34,6 +35,12 @@ public struct ObjectWidthUnitPicker: View {
     /// Initializes a new object width unit picker view.
     ///
     /// - Parameter objectWidthUnit: Binding to the selected object width unit.
+=======
+public struct ObjectWidthUnitPicker: View {
+
+    @Binding private var objectWidthUnit: ObjectWidthUnit
+
+>>>>>>> main
     public init(objectWidthUnit: Binding<ObjectWidthUnit>) {
         self._objectWidthUnit = objectWidthUnit
     }

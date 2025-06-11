@@ -26,40 +26,101 @@ extension TCPClient {
         self.connection?.receive(minimumIncompleteLength: min, maximumLength: max) { data, _, isComplete, error in
             Task {
                 if let data = data, !data.isEmpty {
-                    await self.log(
-                        "Client received data: \(String(data: data, encoding: .utf8) ?? "error")",
-                        level: .debug
-                    )
+                    await self.processReceivedData(data)
                 }
                 if isComplete {
                     await self.connectionEnded()
                 } else if let error = error {
-                    Task { @MainActor in
-                        self.log("Error receiving message: \(error)", level: .error)
-                    }
+                    await self.log("Error receiving message: \(error)", level: .error)
                 } else {
                     await self.receiveMessage()
                 }
             }
         }
     }
-    /// Sends message from the client to the designated server. A connection must be established
-    /// and running before this is called
-    /// - Parameters:
-    ///    - data: the data that should be sent to the server
-    public func sendMessage(data: Data) async {
-        Task { @MainActor in
-            log("Client attempting to send data", level: .debug)
+
+    /// Processes received data and attempts to decode secure messages
+    /// - Parameter data: The received data to process
+    public func processReceivedData(_ data: Data) async {
+        do {
+            // Try to decode as secure message first
+            let secureMessage: SecureMessageWrapper<MessageType> = try CodingManager.decodeFromJSON(data: data)
+            await self.log(
+                """
+                Client received secure message:
+                [Token: \(secureMessage.token?.prefix(10) ?? "none")...,
+                 Checksum: \(secureMessage.checksum?.prefix(10) ?? "none")...,
+                 Payload: \(secureMessage.payload)]
+                """,
+                level: .debug
+            )
+
+            // Verify checksum if configured
+            if let checksum = secureMessage.checksum,
+               let checksumProvider = security.checksumProvider {
+                let payloadData = CodingManager.encodeToJSON(data: secureMessage.payload)
+                let expectedChecksum = checksumProvider(payloadData)
+                if checksum != expectedChecksum {
+                    await self.log("Checksum verification failed", level: .warning)
+                }
+            }
+        } catch {
+            // Fallback to regular message decoding
+            do {
+                let message: MessageType = try CodingManager.decodeFromJSON(data: data)
+                await self.log("Client received regular message: \(message)", level: .debug)
+            } catch {
+                await self.log("Client failed to decode message: \(error)", level: .error)
+            }
         }
+    }
+
+    /// Sends a message from the client to the designated server. A connection must be established
+    /// and running before this is called. Automatically uses secure messaging if TLS is enabled.
+    /// This is the recommended method for sending robot control messages.
+    /// - Parameter message: The message to send
+    public func sendMessage(_ message: MessageType) async {
+        if security.useTLS && (security.tokenProvider != nil || security.checksumProvider != nil) {
+            await log("Sending message with TLS security features", level: .debug)
+            // Create secure message and send directly
+            let secureMessage = createSecureMessage(payload: message)
+            let data = CodingManager.encodeToJSON(data: secureMessage)
+            await sendRawData(data)
+        } else if security.useTLS {
+            await log("Sending message over TLS without additional security features", level: .debug)
+            let data = CodingManager.encodeToJSON(data: message)
+            await sendRawData(data)
+        } else {
+            await log("Sending message as JSON over non-TLS connection", level: .debug)
+            let data = CodingManager.encodeToJSON(data: message)
+            await sendRawData(data)
+        }
+    }
+
+    /// Sends a secure message from the client to the designated server. A connection must be established
+    /// and running before this is called. This method explicitly creates a secure wrapper.
+    /// - Parameter payload: The message payload to send
+    public func sendSecureMessage(payload: MessageType) async {
+        await log("Explicitly sending secure message", level: .debug)
+        let secureMessage = createSecureMessage(payload: payload)
+        let data = CodingManager.encodeToJSON(data: secureMessage)
+        await sendRawData(data)
+    }
+
+    /// Sends raw data from the client to the designated server. A connection must be established
+    /// and running before this is called. This is the base method that actually performs the network send.
+    /// - Parameter data: The raw data to send
+    public func sendRawData(_ data: Data) async {
+        await log("Client sending raw data (\(data.count) bytes)", level: .debug)
         self.connection?.send(content: data, completion: .contentProcessed({ [weak self] error in
             guard let self = self else { return }
             Task {
-                if error != nil {
-                    await self.log("Client failed to send data", level: .error)
+                if let error = error {
+                    await self.log("Client failed to send raw data: \(error)", level: .error)
                     await self.connectionFailed()
                     return
                 }
-                await self.log("Client sent data: \(String(data: data, encoding: .utf8) ?? "error")", level: .debug)
+                await self.log("Client successfully sent \(data.count) bytes", level: .debug)
             }
         }))
     }

@@ -22,13 +22,13 @@ import SwiftUI
 public struct SegmentedControlItem: Identifiable {
     /// A unique identifier for the segment item.
     public var id: UUID = UUID()
-
+    
     /// The text label displayed for this segment.
     public var label: String
-
+    
     /// Optional accessibility label for screen readers and accessibility features.
     public var accessibilityLabel: Text?
-
+    
     /// Initializes a new segmented control item.
     ///
     /// - Parameters:

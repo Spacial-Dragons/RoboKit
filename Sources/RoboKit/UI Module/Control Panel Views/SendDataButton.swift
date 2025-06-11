@@ -15,6 +15,7 @@
 
 import SwiftUI
 
+<<<<<<< HEAD
 /// A SwiftUI view that provides a button for sending data with different modes and visual feedback.
 ///
 /// This view creates an interactive button that can send data in either "live" or "set" modes.
@@ -56,6 +57,16 @@ public struct SendDataButton: View {
     ///   - onSendSetData: Closure to execute when sending set data.
     ///   - isSendingData: Binding to track the sending state.
     ///   - selectedDataMode: Binding to the selected data transmission mode.
+=======
+public struct SendDataButton: View {
+    @Environment(\.accessibilityReduceMotion) var isReduceMotionEnabled
+    @Binding private var isSendingData: Bool
+    @Binding var selectedDataMode: DataMode
+
+    private let onSendLiveData: () -> Void
+    private let onSendSetData: () -> Void
+
+>>>>>>> main
     public init(
         onSendLiveData: @escaping () -> Void,
         onSendSetData: @escaping () -> Void,
@@ -68,11 +79,15 @@ public struct SendDataButton: View {
         _selectedDataMode = selectedDataMode
     }
 
+<<<<<<< HEAD
     /// Creates the button label with dynamic content and animations.
     ///
     /// This computed property creates a horizontal stack containing the main button content
     /// (text and icon) on the left and an optional "Stop" indicator on the right when data
     /// is being sent. It includes animations and accessibility considerations.
+=======
+    // Label now wraps an HStack: the original text+icon on the left, and a gray capsule on the right
+>>>>>>> main
     private var buttonLabel: some View {
         let buttonLabel = isSendingData ? "Sending Data" : "Send Data"
 
@@ -100,11 +115,14 @@ public struct SendDataButton: View {
         .animation(isReduceMotionEnabled ? nil : .spring(), value: isSendingData)
     }
 
+<<<<<<< HEAD
     /// Determines the action to execute based on the selected data mode.
     ///
     /// This computed property returns a closure that handles the button tap action.
     /// For live mode, it toggles the sending state; for set mode, it sends data once
     /// and resets the sending state.
+=======
+>>>>>>> main
     private var sendAction: () -> Void {
         {
             switch selectedDataMode {
@@ -127,7 +145,11 @@ public struct SendDataButton: View {
         .contentShape(.hoverEffect, .capsule)
         .hoverEffect()
 
+<<<<<<< HEAD
         // Automatically stop sending data when switching away from live mode
+=======
+        // Stop Sending Data after Data Mode switches off
+>>>>>>> main
         .onChange(of: selectedDataMode) {
             guard selectedDataMode != .live else { return }
             isSendingData = false

@@ -28,6 +28,7 @@ extension FormManager {
     /// - Note: This method performs coordinate system conversion using `convertToRealityKitCoordinateSystem()`.
     /// - SeeAlso: `formPositionRelativeToRootROS` for the source ROS coordinates.
     /// - SeeAlso: `formPositionRelativeToRoot` for the target RealityKit coordinates.
+
     public func updateFormPosition() {
         formPositionRelativeToRoot = formPositionRelativeToRootROS.convertToRealityKitCoordinateSystem()
     }

@@ -15,6 +15,7 @@
 
 import SwiftUI
 
+<<<<<<< HEAD
 /// A SwiftUI view that provides an editable text field for position values in a form context.
 ///
 /// This view creates a text field that allows users to input and edit position values
@@ -38,15 +39,25 @@ public struct FormPositionTextField: View {
     ///
     /// - Parameter axis: The axis (lateral/X, longitudinal/Y, or vertical/Z) for which
     ///                   to provide position editing capabilities.
+=======
+public struct FormPositionTextField: View {
+    @Environment(FormManager.self) private var formManager: FormManager
+    private let axis: Axis
+
+>>>>>>> main
     public init(axis: Axis) {
         self.axis = axis
     }
 
+<<<<<<< HEAD
     /// Creates a binding to the position value for the specified axis in the ROS system.
     ///
     /// This computed property provides a two-way binding that allows reading and writing
     /// to the position data in the ROS coordinate system. When the user edits the text field,
     /// the corresponding position component is automatically updated in the form manager.
+=======
+    // ROS system
+>>>>>>> main
     private var positionValue: Binding<Float> {
         Binding(
             get: {
@@ -72,10 +83,14 @@ public struct FormPositionTextField: View {
         )
     }
 
+<<<<<<< HEAD
     /// Returns the display label for the current axis.
     ///
     /// This property provides a human-readable label (X, Y, or Z) that corresponds
     /// to the axis being edited, prefixed with "Position" for clarity.
+=======
+    // ROS Labels
+>>>>>>> main
     private var axisLabel: String {
         switch axis {
         case .lateral: return "X"

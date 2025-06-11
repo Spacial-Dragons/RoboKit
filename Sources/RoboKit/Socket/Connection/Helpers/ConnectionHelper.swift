@@ -45,7 +45,4 @@ extension Connection {
         }
         await Connection.log("Connection \(self.id) stopped", level: .info)
     }
-    func updateLatestMessage(message: CPRMessageModel) {
-        self.latestMessage = message
-    }
 }

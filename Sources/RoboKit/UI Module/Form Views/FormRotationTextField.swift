@@ -15,6 +15,7 @@
 
 import SwiftUI
 
+<<<<<<< HEAD
 /// A SwiftUI view that provides an editable text field for rotation values in a form context.
 ///
 /// This view creates a text field that allows users to input and edit rotation values
@@ -38,15 +39,25 @@ public struct FormRotationTextField: View {
     ///
     /// - Parameter eulerAngle: The Euler angle (pitch/X, yaw/Y, or roll/Z) for which
     ///                         to provide rotation editing capabilities.
+=======
+public struct FormRotationTextField: View {
+    @Environment(FormManager.self) private var formManager: FormManager
+    private let eulerAngle: EulerAngle
+
+>>>>>>> main
     public init(eulerAngle: EulerAngle) {
         self.eulerAngle = eulerAngle
     }
 
+<<<<<<< HEAD
     /// Creates a binding to the rotation value for the specified Euler angle.
     ///
     /// This computed property provides a two-way binding that allows reading and writing
     /// to the Euler angles data. When the user edits the text field, the corresponding
     /// rotation component is automatically updated in the form manager.
+=======
+    /// Retrieves the appropriate binding for the selected Euler angle from the manager.
+>>>>>>> main
     private var angleValue: Binding<Float> {
         Binding(
             get: { formManager.formEulerAngles[eulerAngle] ?? 0 },
@@ -54,10 +65,13 @@ public struct FormRotationTextField: View {
         )
     }
 
+<<<<<<< HEAD
     /// Returns the display label for the current Euler angle.
     ///
     /// This property provides a human-readable label that corresponds to the Euler angle
     /// being edited, using the format "Rotation X", "Rotation Y", or "Rotation Z".
+=======
+>>>>>>> main
     private var axisLabel: String {
         switch eulerAngle {
         case .pitch: return "Rotation X"

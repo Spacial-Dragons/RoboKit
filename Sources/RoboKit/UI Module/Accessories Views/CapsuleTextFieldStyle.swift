@@ -15,6 +15,7 @@
 
 import SwiftUI
 
+<<<<<<< HEAD
 /// A custom text field style that provides a capsule-shaped appearance with hover effects.
 ///
 /// This text field style creates a rounded, capsule-shaped text field with a material
@@ -34,6 +35,9 @@ struct CapsuleTextFieldStyle: TextFieldStyle {
     ///
     /// - Parameter configuration: The text field configuration containing the text field content.
     /// - Returns: A view with the applied capsule text field styling.
+=======
+struct CapsuleTextFieldStyle: TextFieldStyle {
+>>>>>>> main
     // swiftlint:disable:next identifier_name
     func _body(configuration: TextField<_Label>) -> some View {
         configuration

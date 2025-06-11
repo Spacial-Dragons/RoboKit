@@ -15,6 +15,7 @@
 
 import SwiftUI
 
+<<<<<<< HEAD
 /// A SwiftUI view that provides a picker for selecting data transmission modes.
 ///
 /// This view creates a segmented control that allows users to select between different
@@ -33,6 +34,11 @@ public struct DataModePicker: View {
     /// Initializes a new data mode picker view.
     ///
     /// - Parameter selectedDataMode: Binding to the selected data transmission mode.
+=======
+public struct DataModePicker: View {
+    @Binding var selectedDataMode: DataMode
+
+>>>>>>> main
     public init(selectedDataMode: Binding<DataMode>) {
         _selectedDataMode = selectedDataMode
     }

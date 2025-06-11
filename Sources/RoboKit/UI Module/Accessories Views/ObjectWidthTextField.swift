@@ -15,6 +15,7 @@
 
 import SwiftUI
 
+<<<<<<< HEAD
 /// A SwiftUI view that provides an editable text field for object width values.
 ///
 /// This view creates a text field that allows users to input and edit object width values.
@@ -33,6 +34,11 @@ public struct ObjectWidthTextField: View {
     /// Initializes a new object width text field view.
     ///
     /// - Parameter objectWidth: Binding to the object width value to be edited.
+=======
+public struct ObjectWidthTextField: View {
+    @Binding private var objectWidth: Float
+
+>>>>>>> main
     public init(objectWidth: Binding<Float>) {
         self._objectWidth = objectWidth
     }

@@ -91,10 +91,11 @@ extension InputSphereManager {
         entity.isAccessibilityElement = true
 
         // Localization key for the label
-        entity.accessibilityLabelKey = "Input Sphere"
+        entity.accessibilityLabelKey = "Input Component"
 
         // Value description for the entity
-        entity.accessibilityValue = "A Sphere to interact with"
+        entity.accessibilityValue = "An input component to interact with and manipulate a robot"
+
 
         // Trait to describe the entity's behavior or role
         entity.accessibilityTraits = [.allowsDirectInteraction]

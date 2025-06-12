@@ -52,7 +52,9 @@ extension Connection {
         self.nwConnection.receive(minimumIncompleteLength: 1, maximumLength: 65536) { (data, _, isComplete, error) in
             guard let data = data else { return }
             Task {
+
                 await self.processReceivedData(data)
+
                 if isComplete {
                     await self.connectionDidEnd()
                 } else if let error = error {

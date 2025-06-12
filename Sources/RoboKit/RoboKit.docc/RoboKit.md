@@ -20,6 +20,8 @@ RoboKit also supports robust socket communication via the ``TCPClient`` and ``TC
 
 For interaction, the ``InputSphereManager`` provides an intuitive interface to manipulate robot parameters using 3D sliders and controls. You can position and rotate a control sphere using ``InputSpherePositionView`` and ``InputSphereRotationSlider``.
 
+The **UI Module** provides a comprehensive collection of SwiftUI components for creating intuitive robotic control interfaces. It includes form controls, input sphere views, control panel elements, and accessory components that work seamlessly with other RoboKit modules.
+
 RoboKit makes it easier to build immersive, real-time robotic control interfaces in visionOS.
 
  [View Demo Project](https://github.com/Spacial-Dragons/RoboKit-Demo) — A showcase app demonstrating the different modules available in RoboKit.
@@ -31,6 +33,7 @@ RoboKit makes it easier to build immersive, real-time robotic control interfaces
     - <doc:ImageTrackerModule>
     - <doc:SocketModule>
     - <doc:InputSphere>
+    - <doc:UIModule>
 }
 
 ## Topics
@@ -40,6 +43,7 @@ RoboKit makes it easier to build immersive, real-time robotic control interfaces
 - ``ImageTracker``
 - ``TCPClient``
 - ``InputSphereManager``
+- ``FormManager``
 
 ### Image Tracker
 
@@ -59,3 +63,18 @@ RoboKit makes it easier to build immersive, real-time robotic control interfaces
 - ``InputSpherePositionView``
 - ``InputSphereRotationSlider``
 - ``InputSphereAxis``
+
+### UI Module
+
+- ``FormManager``
+- ``FormPositionTextField``
+- ``FormRotationTextField``
+- ``InputSpherePositionText``
+- ``InputSphereRotationSlider``
+- ``InputSphereRotationText``
+- ``DataModePicker``
+- ``SendDataButton``
+- ``ClawControlToggle``
+- ``ObjectWidthTextField``
+- ``ObjectWidthUnitPicker``
+- ``SegmentedControlPicker``

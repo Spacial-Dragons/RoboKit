@@ -18,9 +18,9 @@ import Foundation
 extension TCPClient {
     /// Receives messages sent from the server to the client
     /// - Parameters:
-    ///   - minLength: The minimum length in bytes to receive from the connection, until the
+    ///   - min: The minimum length in bytes to receive from the connection, until the
     ///   content is complete. If unassigned, it will be set to 1
-    ///   - maxLength: The maximum length to receive from the connection at once.
+    ///   - max: The maximum length to receive from the connection at once.
     ///   If unassigned, it will be set to 65536 bytes
     public func receiveMessage(minLength min: Int = 1, maxLength max: Int = 65536) async {
         self.connection?.receive(minimumIncompleteLength: min, maximumLength: max) { data, _, isComplete, error in

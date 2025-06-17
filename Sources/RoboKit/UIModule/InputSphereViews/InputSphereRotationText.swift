@@ -15,26 +15,26 @@
 
 import SwiftUI
 
-/// A SwiftUI view that displays rotation information for a specific Euler angle in the input sphere context.
+/// A SwiftUI view that displays rotation information for a specific Euler angle in the input entity context.
 ///
 /// This view shows the current rotation value for a given Euler angle (pitch/X, yaw/Y, or roll/Z)
-/// in the input sphere. It displays the axis label and the formatted rotation value in degrees
+/// in the input entity. It displays the axis label and the formatted rotation value in degrees
 /// in a horizontal stack layout.
 ///
 /// ## Usage
 /// ```swift
-/// InputSphereRotationText(eulerAngle: .pitch) // Displays X-axis rotation
-/// InputSphereRotationText(eulerAngle: .yaw) // Displays Y-axis rotation
-/// InputSphereRotationText(eulerAngle: .roll) // Displays Z-axis rotation
+/// InputEntityRotationText(eulerAngle: .pitch) // Displays X-axis rotation
+/// InputEntityRotationText(eulerAngle: .yaw) // Displays Y-axis rotation
+/// InputEntityRotationText(eulerAngle: .roll) // Displays Z-axis rotation
 /// ```
 public struct InputEntityRotationText: View {
-    /// The input sphere manager that provides rotation data from the input sphere system.
+    /// The input entity manager that provides rotation data from the input entity system.
     @Environment(InputEntityManager.self) private var inputEntityManager: InputEntityManager
 
     /// The Euler angle for which to display rotation information.
     private let eulerAngle: EulerAngle
 
-    /// Initializes a new input sphere rotation text view.
+    /// Initializes a new input entity rotation text view.
     ///
     /// - Parameter eulerAngle: The Euler angle (pitch/X, yaw/Y, or roll/Z) for which
     ///                         to display rotation information.
@@ -42,9 +42,9 @@ public struct InputEntityRotationText: View {
         self.eulerAngle = eulerAngle
     }
 
-    /// Retrieves the rotation value for the specified Euler angle from the input sphere manager.
+    /// Retrieves the rotation value for the specified Euler angle from the input entity manager.
     ///
-    /// This computed property accesses the rotation data from the input sphere system,
+    /// This computed property accesses the rotation data from the input entity system,
     /// converts it from radians to degrees, and returns the formatted value for display.
     private var angleValue: Float? {
         inputEntityManager.inputEntityEulerAngles[eulerAngle]?.toDegrees ?? 0

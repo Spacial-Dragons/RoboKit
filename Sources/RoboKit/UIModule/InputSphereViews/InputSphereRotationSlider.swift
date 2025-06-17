@@ -16,16 +16,16 @@
 import SwiftUI
 import RealityFoundation
 
-/// A SwiftUI view that provides a slider control for rotation values in the input sphere context.
+/// A SwiftUI view that provides a slider control for rotation values in the input entity context.
 ///
 /// This view creates an interactive slider that allows users to adjust rotation values
-/// for a specific Euler angle (pitch/X, yaw/Y, or roll/Z) in the input sphere. The slider
-/// is bound to the input sphere manager and updates the rotation data in real-time, with
+/// for a specific Euler angle (pitch/X, yaw/Y, or roll/Z) in the input entity. The slider
+/// is bound to the input entity manager and updates the rotation data in real-time, with
 /// automatic conversion between radians and degrees.
 ///
 /// ## Usage
 /// ```swift
-/// InputSphereRotationSlider(
+/// InputEntityRotationSlider(
 ///     rootPoint: entity,
 ///     eulerAngle: .pitch,
 ///     maxValue: 180,
@@ -34,9 +34,9 @@ import RealityFoundation
 ///     showMinMax: true
 /// )
 /// ```
-public struct InputSphereRotationSlider: View {
-    /// The input sphere manager that provides and manages rotation data from the input sphere system.
-    @Environment(InputSphereManager.self) private var inputSphereManager: InputSphereManager
+public struct InputEntityRotationSlider: View {
+    /// The input entity manager that provides and manages rotation data from the input entity system.
+    @Environment(InputEntityManager.self) private var inputEntityManager: InputEntityManager
 
     /// The root entity point relative to which rotations are calculated.
     let rootPoint: Entity
@@ -56,7 +56,7 @@ public struct InputSphereRotationSlider: View {
     /// Whether to display minimum and maximum value labels.
     let showMinMax: Bool
 
-    /// Initializes a new input sphere rotation slider view.
+    /// Initializes a new input entity rotation slider view.
     ///
     /// - Parameters:
     ///   - rootPoint: The root entity point relative to which rotations are calculated.
@@ -84,15 +84,15 @@ public struct InputSphereRotationSlider: View {
     ///
     /// This computed property provides a two-way binding that allows reading and writing
     /// to the rotation data. When the user adjusts the slider, the corresponding rotation
-    /// component is automatically updated in the input sphere manager, and the input sphere
+    /// component is automatically updated in the input entity manager, and the input entity
     /// is rotated and updated relative to the root point.
     private var angleValue: Binding<Float> {
         Binding(
-            get: { inputSphereManager.inputSphereEulerAngles[eulerAngle] ?? 0 },
+            get: { inputEntityManager.inputEntityEulerAngles[eulerAngle] ?? 0 },
             set: {
-                inputSphereManager.inputSphereEulerAngles[eulerAngle] = $0
-                inputSphereManager.rotateInputSphere()
-                inputSphereManager.updateInputSphereRotation(relativeToRootPoint: rootPoint)
+                inputEntityManager.inputEntityEulerAngles[eulerAngle] = $0
+                inputEntityManager.rotateInputEntity()
+                inputEntityManager.updateInputEntityRotation(relativeToRootPoint: rootPoint)
             }
         )
     }

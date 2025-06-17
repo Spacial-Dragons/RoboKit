@@ -53,7 +53,7 @@ extension InputEntityManager {
         return entity
     }
 
-    /// Sets up the model component for the Input Entity entity.
+    /// Sets up the fallback model component for the Input Entity entity.
     ///
     /// - Parameters:
     ///   - entity: The entity to configure.
@@ -151,7 +151,7 @@ extension InputEntityManager {
         )
     }
 
-    /// Logs the successful creation of the Input Sphere entity.
+    /// Logs the successful creation of the Input Entity entity.
     private func logSuccessfulInputEntityCreation(color: Color, radius: Float) {
         AppLogger.shared.info(
             "Input Entity entity created successfully",

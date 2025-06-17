@@ -57,13 +57,13 @@ extension InputEntityManager {
             return
         }
 
-        let sphere = inputSphereEntity(color: color, radius: radius, modelEntity: modelEntity)
+        let sphere = inputEntityEntity(color: color, radius: radius, modelEntity: modelEntity)
         sphere.position = rootPoint.position + SIMD3<Float>(0, 0.3, 0)
         sphere.setOrientation(.init(), relativeTo: rootPoint)
         parentEntity.addChild(sphere)
 
         inputEntity = sphere
-        updateInputSpherePosition(relativeToRootPoint: rootPoint)
+        updateInputEntityPosition(relativeToRootPoint: rootPoint)
 
         AppLogger.shared.info(
             "Input Sphere created successfully",
@@ -76,7 +76,7 @@ extension InputEntityManager {
         )
 
         if showAxes {
-            addInputSphereAxes()
+            addInputEntityAxes()
             AppLogger.shared.debug(
                 "Input Sphere axes added",
                 category: .inputEntity

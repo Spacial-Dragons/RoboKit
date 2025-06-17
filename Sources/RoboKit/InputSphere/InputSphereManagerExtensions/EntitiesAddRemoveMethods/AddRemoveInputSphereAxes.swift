@@ -51,7 +51,7 @@ extension InputEntityManager {
                 material: axis.material,
                 axis: axis
             )
-            inputEntityAxis[axis] = axisEntity
+            inputEntityAxes[axis] = axisEntity
             inputEntity.addChild(axisEntity)
 
             // Log each axis addition at debug level
@@ -96,12 +96,12 @@ extension InputEntityManager {
             "Removing Input Entity axes",
             category: .inputEntity,
             context: [
-                "currentAxesCount": inputEntityAxis.count,
-                "axesTypes": inputEntityAxis.keys.map { $0.rawValue }
+                "currentAxesCount": inputEntityAxes.count,
+                "axesTypes": inputEntityAxes.keys.map { $0.rawValue }
             ]
         )
 
-        for (axis, axisEntity) in inputEntityAxis {
+        for (axis, axisEntity) in inputEntityAxes {
             // Log each axis removal at debug level
             AppLogger.shared.debug(
                 "Removing axis from Input Entity",

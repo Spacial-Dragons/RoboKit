@@ -15,22 +15,22 @@
 
 import SwiftUI
 
-/// A SwiftUI view that displays position information for a specific axis in the input sphere context.
+/// A SwiftUI view that displays position information for a specific axis in the input entity context.
 ///
 /// This view shows the current position value for a given axis (X, Y, or Z) relative to the
-/// root coordinate system in the input sphere. It displays the axis label and the formatted
+/// root coordinate system in the input entity. It displays the axis label and the formatted
 /// position value in a horizontal stack layout with proper accessibility support.
 ///
 /// ## Usage
 /// ```swift
-/// InputSpherePositionText(axis: .lateral) // Displays X-axis position
-/// InputSpherePositionText(axis: .longitudinal) // Displays Y-axis position
-/// InputSpherePositionText(axis: .vertical) // Displays Z-axis position
-/// InputSpherePositionText(axis: .lateral, showFullDescription: true) // Shows "Position X"
+/// InputEntityPositionText(axis: .lateral) // Displays X-axis position
+/// InputEntityPositionText(axis: .longitudinal) // Displays Y-axis position
+/// InputEntityPositionText(axis: .vertical) // Displays Z-axis position
+/// InputEntityPositionText(axis: .lateral, showFullDescription: true) // Shows "Position X"
 /// ```
-public struct InputSpherePositionText: View {
-    /// The input sphere manager that provides position data from the input sphere system.
-    @Environment(InputSphereManager.self) private var inputSphereManager: InputSphereManager
+public struct InputEntityPositionText: View {
+    /// The input entity manager that provides position data from the input entity system.
+    @Environment(InputEntityManager.self) private var inputEntityManager: InputEntityManager
 
     /// The axis for which to display position information.
     private let axis: Axis
@@ -38,7 +38,7 @@ public struct InputSpherePositionText: View {
     /// Whether to show the full description (e.g., "Position X") instead of just the axis label.
     private let showFullDescription: Bool
 
-    /// Initializes a new input sphere position text view.
+    /// Initializes a new input entity position text view.
     ///
     /// - Parameters:
     ///   - axis: The axis (lateral/X, longitudinal/Y, or vertical/Z) for which
@@ -49,12 +49,12 @@ public struct InputSpherePositionText: View {
         self.showFullDescription = showFullDescription
     }
 
-    /// Retrieves the position value for the specified axis from the input sphere manager.
+    /// Retrieves the position value for the specified axis from the input entity manager.
     ///
-    /// This computed property accesses the position data from the input sphere coordinate system,
+    /// This computed property accesses the position data from the input entity coordinate system,
     /// converts it to ROS coordinates, and returns the appropriate component based on the selected axis.
     private var positionValue: Float? {
-        guard let position = inputSphereManager.inputSpherePositionRelativeToRoot
+        guard let position = inputEntityManager.inputEntityPositionRelativeToRoot
         else { return nil }
         let positionInROS = position.convertToROSCoordinateSystem()
 

@@ -15,8 +15,8 @@
 
 import RealityKit
 
-extension InputSphereManager {
-    /// Adds a visual arrow to represent an axis of the Input Sphere.
+extension InputEntityManager {
+    /// Adds a visual arrow to represent an axis of the Input Entity.
     ///
     /// This method creates an arrow-shaped `Entity` using the corresponding axis's height, radius, and material,
     /// positions it appropriately above the origin of the target axis entity, and attaches it as a child.
@@ -30,7 +30,7 @@ extension InputSphereManager {
         // Log the start of arrow creation at debug level
         AppLogger.shared.debug(
             "Creating axis arrow",
-            category: .inputsphere,
+            category: .inputEntity,
             context: [
                 "axisEntityName": axisEntity.name,
                 "axisEntityPosition": axisEntity.position,
@@ -46,7 +46,7 @@ extension InputSphereManager {
         // Log arrow creation and positioning at debug level
         AppLogger.shared.debug(
             "Axis arrow created and positioned",
-            category: .inputsphere,
+            category: .inputEntity,
             context: [
                 "arrowPosition": arrowEntity.position,
                 "arrowHeight": height,
@@ -59,7 +59,7 @@ extension InputSphereManager {
         // Log successful arrow addition at info level
         AppLogger.shared.info(
             "Axis arrow added successfully",
-            category: .inputsphere,
+            category: .inputEntity,
             context: [
                 "axisEntityName": axisEntity.name,
                 "arrowPosition": arrowEntity.position,

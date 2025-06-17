@@ -101,7 +101,7 @@ extension simd_float3x3 {
     ///
     /// - Returns: A new `simd_float3x3` matrix representing the rotation in ROS coordinate system.
     @MainActor public func convertToROSCoordinateSystem() -> simd_float3x3 {
-        let rotationConversionMatrix = InputSphereManager.rotationConversionMatrix
+        let rotationConversionMatrix = InputEntityManager.rotationConversionMatrix
         return rotationConversionMatrix * self * rotationConversionMatrix.transpose
     }
 }

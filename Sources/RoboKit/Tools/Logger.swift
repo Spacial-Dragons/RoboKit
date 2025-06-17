@@ -57,10 +57,10 @@ enum LogCategory: String {
     case socket
     /// Logs related to device calibration processes
     case calibration
-    /// Logs related to Input Sphere
-    case inputsphere
+    /// Logs related to Input Entity
+    case inputEntity
     /// Logs related to UI components and user interactions
-    case uimodule
+    case UIModule
     /// Logs related to application lifecycle events
     case lifecycle
     /// Logs related to tracking and monitoring operations

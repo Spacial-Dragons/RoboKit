@@ -16,24 +16,24 @@
 import RealityKit
 import SwiftUI
 
-extension InputSphereManager {
+extension InputEntityManager {
 
-    /// Returns the position of the Input Sphere relative to the provided root point,
+    /// Returns the position of the Input Entity relative to the provided root point,
     /// transformed into the ROS coordinate system.
     ///
-    /// This method retrieves the current position of the Input Sphere relative to the given `rootPoint` entity and
+    /// This method retrieves the current position of the Input Entity relative to the given `rootPoint` entity and
     /// converts it to match the ROS (Robot Operating System) coordinate conventions.
     ///
     /// - Returns: A `SIMD3<Float>` representing the position in ROS coordinates,
-    /// or `nil` if the Input Sphere does not exist.
-    public func getInputSpherePosition() -> SIMD3<Float>? {
-        let position = inputSpherePositionRelativeToRoot?.convertToROSCoordinateSystem()
+    /// or `nil` if the Input Entity does not exist.
+    public func getInputEntityPosition() -> SIMD3<Float>? {
+        let position = inputEntityPositionRelativeToRoot?.convertToROSCoordinateSystem()
 
         if let position {
             // Log position retrieval at debug level
             AppLogger.shared.debug(
-                "Input Sphere position retrieved",
-                category: .inputsphere,
+                "Input Entity position retrieved",
+                category: .inputEntity,
                 context: [
                     "position": position,
                     "coordinateSystem": "ROS"
@@ -44,22 +44,22 @@ extension InputSphereManager {
         return position
     }
 
-    /// Returns the rotation matrix of the Input Sphere relative to the provided root point,
+    /// Returns the rotation matrix of the Input Entity relative to the provided root point,
     /// transformed into the ROS coordinate system.
     ///
-    /// This method retrieves the current orientation of the Input Sphere as a rotation matrix relative to the
+    /// This method retrieves the current orientation of the Input Entity as a rotation matrix relative to the
     /// specified `rootPoint` entity and applies a conversion to match ROS coordinate conventions.
     ///
     /// - Returns: A `simd_float3x3` representing the rotation matrix in ROS coordinates,
-    /// or `nil` if the Input Sphere does not exist.
-    public func getInputSphereRotation() -> simd_float3x3? {
-        let rotation = inputSphereRotationRelativeToRoot?.convertToROSCoordinateSystem()
+    /// or `nil` if the Input Entity does not exist.
+    public func getInputEntityRotation() -> simd_float3x3? {
+        let rotation = inputEntityRotationRelativeToRoot?.convertToROSCoordinateSystem()
 
         if let rotation {
             // Log rotation retrieval at debug level
             AppLogger.shared.debug(
-                "Input Sphere rotation retrieved",
-                category: .inputsphere,
+                "Input Entity rotation retrieved",
+                category: .inputEntity,
                 context: [
                     "rotationMatrix": [
                         "row0": [rotation[0][0], rotation[0][1], rotation[0][2]],

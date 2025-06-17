@@ -15,7 +15,7 @@
 
 import RealityKit
 
-extension InputSphereManager {
+extension InputEntityManager {
     /// Creates a model entity representing an arrow for an axis.
     ///
     /// This method generates a cone-shaped mesh to visually represent the arrowhead of an axis.
@@ -31,7 +31,7 @@ extension InputSphereManager {
         // Log arrow creation parameters at debug level
         AppLogger.shared.debug(
             "Creating axis arrow entity",
-            category: .inputsphere,
+            category: .inputEntity,
             context: [
                 "arrowHeight": height,
                 "arrowRadius": radius,
@@ -45,7 +45,7 @@ extension InputSphereManager {
         // Log successful arrow creation at debug level
         AppLogger.shared.debug(
             "Axis arrow entity created",
-            category: .inputsphere,
+            category: .inputEntity,
             context: [
                 "arrowDimensions": [
                     "height": height * 0.2,

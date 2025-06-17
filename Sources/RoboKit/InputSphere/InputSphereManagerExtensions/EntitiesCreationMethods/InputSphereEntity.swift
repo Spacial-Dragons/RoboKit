@@ -16,8 +16,8 @@
 import SwiftUI
 import RealityKit
 
-extension InputSphereManager {
-    /// Creates an entity representing the Input Sphere with a 3D spherical model and input interaction components.
+extension InputEntityManager {
+    /// Creates an entity representing the Input Entity with a 3D spherical model and input interaction components.
     ///
     /// - Parameters:
     ///   - color: The color applied to the sphere’s material.
@@ -25,13 +25,13 @@ extension InputSphereManager {
     ///   - modelEntity: An optional `Entity` to use
     ///   instead of the default spherical mesh. If `nil`, a sphere is generated automatically.
     ///
-    /// - Returns: A fully configured `Entity` representing the Input Sphere.
-    internal func inputSphereEntity(
+    /// - Returns: A fully configured `Entity` representing the Input Entity.
+    internal func inputEntityEntity(
         color: Color,
         radius: Float,
         modelEntity: Entity? = nil
     ) -> Entity {
-        logSphereCreationParameters(color: color, radius: radius)
+        logInputEntityCreationParameters(color: color, radius: radius)
 
         let entity = Entity()
         let entityRadius: Float
@@ -48,12 +48,12 @@ extension InputSphereManager {
         }
 
         setupInteractionComponents(for: entity, radius: entityRadius)
-        logSuccessfulSphereCreation(color: color, radius: entityRadius)
+        logSuccessfulInputEntityCreation(color: color, radius: entityRadius)
 
         return entity
     }
 
-    /// Sets up the model component for the Input Sphere entity.
+    /// Sets up the model component for the Input Entity entity.
     ///
     /// - Parameters:
     ///   - entity: The entity to configure.
@@ -73,7 +73,7 @@ extension InputSphereManager {
         logModelComponentSetup(radius: radius, materialType: type(of: simpleMaterial))
     }
 
-    /// Sets up the interaction components for the Input Sphere entity.
+    /// Sets up the interaction components for the Input Entity entity.
     ///
     /// - Parameters:
     ///   - entity: The entity to configure.
@@ -102,11 +102,11 @@ extension InputSphereManager {
         logInteractionComponentsSetup(radius: radius)
     }
 
-    /// Logs the initial parameters for sphere creation.
-    private func logSphereCreationParameters(color: Color, radius: Float) {
+    /// Logs the initial parameters for input entity creation.
+    private func logInputEntityCreationParameters(color: Color, radius: Float) {
         AppLogger.shared.debug(
-            "Creating Input Sphere entity",
-            category: .inputsphere,
+            "Creating Input Entity entity",
+            category: .inputEntity,
             context: [
                 "color": String(describing: color),
                 "radius": radius
@@ -117,8 +117,8 @@ extension InputSphereManager {
     /// Logs parameters of the custom model entity
     private func logModelEntityParameters(modelEntity: Entity) {
         AppLogger.shared.debug(
-            "Applied Model Entity to the Input Sphere",
-            category: .inputsphere,
+            "Applied Model Entity to the Input Entity",
+            category: .inputEntity,
             context: [
                 "Entity Name": modelEntity.name
             ]
@@ -128,8 +128,8 @@ extension InputSphereManager {
     /// Logs the model component setup details.
     private func logModelComponentSetup(radius: Float, materialType: Any.Type) {
         AppLogger.shared.debug(
-            "Input Sphere model component configured",
-            category: .inputsphere,
+            "Input Entity model component configured",
+            category: .inputEntity,
             context: [
                 "meshRadius": radius,
                 "materialType": String(describing: materialType)
@@ -140,8 +140,8 @@ extension InputSphereManager {
     /// Logs the interaction components setup details.
     private func logInteractionComponentsSetup(radius: Float) {
         AppLogger.shared.debug(
-            "Input Sphere interaction components configured",
-            category: .inputsphere,
+            "Input Entity interaction components configured",
+            category: .inputEntity,
             context: [
                 "hasCollisionComponent": true,
                 "hasInputTargetComponent": true,
@@ -152,10 +152,10 @@ extension InputSphereManager {
     }
 
     /// Logs the successful creation of the Input Sphere entity.
-    private func logSuccessfulSphereCreation(color: Color, radius: Float) {
+    private func logSuccessfulInputEntityCreation(color: Color, radius: Float) {
         AppLogger.shared.info(
-            "Input Sphere entity created successfully",
-            category: .inputsphere,
+            "Input Entity entity created successfully",
+            category: .inputEntity,
             context: [
                 "finalRadius": radius,
                 "color": String(describing: color),

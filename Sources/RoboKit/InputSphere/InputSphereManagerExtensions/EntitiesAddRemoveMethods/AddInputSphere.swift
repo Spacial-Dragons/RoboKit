@@ -16,24 +16,24 @@
 import SwiftUI
 import RealityKit
 
-extension InputSphereManager {
-    /// Adds the Input Sphere entity to the specified parent entity.
+extension InputEntityManager {
+    /// Adds the Input Entity entity to the specified parent entity.
     ///
-    /// The Input Sphere represents the target position and orientation of a robot's end effector.
-    /// This method positions the Input Sphere above the provided root point and optionally displays its axes.
+    /// The Input Entity represents the target position and orientation of a robot's end effector.
+    /// This method positions the Input Entity above the provided root point and optionally displays its axes.
     ///
     /// - Parameters:
-    ///   - parentEntity: The entity to which the Input Sphere will be added as a child.
+    ///   - parentEntity: The entity to which the Input Entity will be added as a child.
     ///   - rootPoint: The origin of robot's frame of reference.
-    ///   - color: The color of the Input Sphere. Defaults to `.mint`.
+    ///   - color: The color of the Input Entity. Defaults to `.mint`.
     ///   - radius: The radius of the sphere. Defaults to `0.015`.
-    ///   - showAxes: A Boolean value indicating whether to display Input Sphere's axes. Defaults to `true`.
+    ///   - showAxes: A Boolean value indicating whether to display Input Entity's axes. Defaults to `true`.
     ///   - modelEntity: An optional `Entity` to use
     ///   instead of the default spherical mesh. If `nil`, a sphere is generated automatically.
     ///
-    /// If the root point is `nil` or the Input Sphere has already been created,
+    /// If the root point is `nil` or the Input Entity has already been created,
     /// the method exits early and logs an error.
-    public func addInputSphere(
+    public func addInputEntity(
         parentEntity: Entity,
         rootPoint: Entity?,
         color: Color = .mint,
@@ -43,16 +43,16 @@ extension InputSphereManager {
     ) {
         guard let rootPoint = rootPoint else {
             AppLogger.shared.error(
-                "Failed to create Input Sphere: Root Point is nil",
-                category: .inputsphere
+                "Failed to create Input Entity: Root Point is nil",
+                category: .inputEntity
             )
             return
         }
 
-        guard inputSphere == nil else {
+        guard inputEntity == nil else {
             AppLogger.shared.error(
-                "Failed to create Input Sphere: Input Sphere already exists",
-                category: .inputsphere
+                "Failed to create Input Entity: Input Entity already exists",
+                category: .inputEntity
             )
             return
         }
@@ -62,12 +62,12 @@ extension InputSphereManager {
         sphere.setOrientation(.init(), relativeTo: rootPoint)
         parentEntity.addChild(sphere)
 
-        inputSphere = sphere
+        inputEntity = sphere
         updateInputSpherePosition(relativeToRootPoint: rootPoint)
 
         AppLogger.shared.info(
             "Input Sphere created successfully",
-            category: .inputsphere,
+            category: .inputEntity,
             context: [
                 "position": sphere.position,
                 "radius": radius,
@@ -79,7 +79,7 @@ extension InputSphereManager {
             addInputSphereAxes()
             AppLogger.shared.debug(
                 "Input Sphere axes added",
-                category: .inputsphere
+                category: .inputEntity
             )
         }
     }

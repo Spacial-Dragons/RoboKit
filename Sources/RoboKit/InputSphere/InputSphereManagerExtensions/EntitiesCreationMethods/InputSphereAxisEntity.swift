@@ -15,8 +15,8 @@
 
 import RealityKit
 
-extension InputSphereManager {
-    /// Creates a model entity representing one of the Input Sphere's axes.
+extension InputEntityManager {
+    /// Creates a model entity representing one of the Input Entity's axes.
     ///
     /// This method constructs a cylindrical mesh aligned along the specified axis and applies
     /// a corresponding orientation and position offset to visually align it within the 3D space.
@@ -30,16 +30,16 @@ extension InputSphereManager {
     ///   - axis: The axis being represented—either `.lateral`, `.vertical`, or `.longitudinal`.
     ///
     /// - Returns: A `ModelEntity` representing the visualized axis, including an arrowhead.
-    internal func inputSphereAxisEntity(
+    internal func inputEntityAxisEntity(
         height: Float,
         radius: Float,
         material: Material,
-        axis: InputSphereAxis) -> ModelEntity {
+        axis: InputEntityAxis) -> ModelEntity {
 
         // Log axis creation parameters at debug level
         AppLogger.shared.debug(
-            "Creating Input Sphere axis entity",
-            category: .inputsphere,
+            "Creating Input Entity axis entity",
+            category: .inputEntity,
             context: [
                 "axis": axis.rawValue,
                 "height": height,
@@ -65,8 +65,8 @@ extension InputSphereManager {
 
         // Log axis entity configuration at debug level
         AppLogger.shared.debug(
-            "Input Sphere axis entity configured",
-            category: .inputsphere,
+            "Input Entity axis entity configured",
+            category: .inputEntity,
             context: [
                 "axis": axis.rawValue,
                 "orientation": axisEntity.orientation,
@@ -79,8 +79,8 @@ extension InputSphereManager {
 
         // Log successful axis entity creation at info level
         AppLogger.shared.info(
-            "Input Sphere axis entity created successfully",
-            category: .inputsphere,
+            "Input Entity axis entity created successfully",
+            category: .inputEntity,
             context: [
                 "axis": axis.rawValue,
                 "finalPosition": axisEntity.position,

@@ -59,10 +59,10 @@ RoboKit makes it easier to build immersive, real-time robotic control interfaces
 
 ### Input Sphere
 
-- ``InputSphereManager``
-- ``InputSpherePositionView``
-- ``InputSphereRotationSlider``
-- ``InputSphereAxis``
+- ``InputEntityManager``
+- ``InputEntityPositionView``
+- ``InputEntityRotationSlider``
+- ``InputEntityAxis``
 
 ### UI Module
 

@@ -27,9 +27,9 @@ import SwiftUI
 /// InputSphereRotationText(eulerAngle: .yaw) // Displays Y-axis rotation
 /// InputSphereRotationText(eulerAngle: .roll) // Displays Z-axis rotation
 /// ```
-public struct InputSphereRotationText: View {
+public struct InputEntityRotationText: View {
     /// The input sphere manager that provides rotation data from the input sphere system.
-    @Environment(InputSphereManager.self) private var inputSphereManager: InputSphereManager
+    @Environment(InputEntityManager.self) private var inputEntityManager: InputEntityManager
 
     /// The Euler angle for which to display rotation information.
     private let eulerAngle: EulerAngle
@@ -47,7 +47,7 @@ public struct InputSphereRotationText: View {
     /// This computed property accesses the rotation data from the input sphere system,
     /// converts it from radians to degrees, and returns the formatted value for display.
     private var angleValue: Float? {
-        inputSphereManager.inputSphereEulerAngles[eulerAngle]?.toDegrees ?? 0
+        inputEntityManager.inputEntityEulerAngles[eulerAngle]?.toDegrees ?? 0
     }
 
     /// Returns the display label for the current Euler angle.

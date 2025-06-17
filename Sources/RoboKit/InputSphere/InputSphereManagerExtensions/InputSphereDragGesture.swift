@@ -16,10 +16,10 @@
 import SwiftUI
 import RealityKit
 
-extension InputSphereManager {
-    /// Handles updates to the Input Sphere's position during a drag gesture.
+extension InputEntityManager {
+    /// Handles updates to the Input Entity's position during a drag gesture.
     ///
-    /// This method recalculates the position of the Input Sphere based on the drag gesture's
+    /// This method recalculates the position of the Input Entity based on the drag gesture's
     /// current 3D location relative to the specified parent entity. After updating the position,
     /// it also updates the stored position values relative to the root point.
     ///
@@ -27,21 +27,21 @@ extension InputSphereManager {
     ///   - value: A drag gesture value targeted to an entity, providing 3D location updates.
     ///   - parentEntity: The entity relative to which the new position should be computed.
     ///   - rootPoint: The reference entity used to update internal position tracking.
-    internal func handleInputSphereDragGesture(
+    internal func handleInputEntityDragGesture(
         _ value: EntityTargetValue<DragGesture.Value>,
         parentEntity: Entity,
         rootPoint: Entity) {
 
         let oldPosition = value.entity.position
         value.entity.position = value.convert(value.location3D, from: .local, to: parentEntity)
-        updateInputSpherePosition(relativeToRootPoint: rootPoint)
-        updateInputSphereRotation(relativeToRootPoint: rootPoint)
+        updateInputEntityPosition(relativeToRootPoint: rootPoint)
+        updateInputEntityRotation(relativeToRootPoint: rootPoint)
 
         // Log significant position changes during drag
         if oldPosition != value.entity.position {
             // Log detailed drag updates at debug level
             AppLogger.shared.debug(
-                "Input Sphere dragged",
+                "Input Entity dragged",
                 category: .tracking,
                 context: [
                     "oldPosition": oldPosition,
@@ -54,39 +54,39 @@ extension InputSphereManager {
 }
 
 extension View {
-    /// Adds a drag gesture recognizer to the view that enables manipulation of the Input Sphere in 3D space.
+    /// Adds a drag gesture recognizer to the view that enables manipulation of the Input Entity in 3D space.
     ///
-    /// This modifier attaches a drag gesture to the view, allowing users to reposition the Input Sphere entity
+    /// This modifier attaches a drag gesture to the view, allowing users to reposition the Input Entity entity
     /// interactively. The position is updated relative to the specified `parentEntity`, and internal state is
-    /// updated using the provided `InputSphereManager` instance.
+    /// updated using the provided `InputEntityManager` instance.
     ///
     /// - Parameters:
-    ///   - parentEntity: The parent entity relative to which the Input Sphere's position will be calculated.
-    ///   - rootPoint: The reference root point entity used to update the Input Sphere's position data.
-    ///   - inputSphereManager: The `InputSphereManager` instance responsible for managing Input Sphere state.
+    ///   - parentEntity: The parent entity relative to which the Input Entity's position will be calculated.
+    ///   - rootPoint: The reference root point entity used to update the Input Entity's position data.
+    ///   - inputEntityManager: The `InputEntityManager` instance responsible for managing Input Entity state.
     /// - Returns: A view modified with the gesture recognizer if prerequisites are met, otherwise the original view.
-    public func inputSphereDragGesture(
+    public func inputEntityDragGesture(
         parentEntity: Entity,
         rootPoint: Entity?,
-        inputSphereManager: InputSphereManager
+        inputEntityManager: InputEntityManager
     ) -> some View {
-        if let inputSphere = inputSphereManager.inputSphere, let rootPoint = rootPoint {
+        if let inputEntity = inputEntityManager.inputEntity, let rootPoint = rootPoint {
             // Log gesture setup at debug level
             AppLogger.shared.debug(
-                "Input Sphere drag gesture enabled",
-                category: .inputsphere,
+                "Input Entity drag gesture enabled",
+                category: .inputEntity,
                 context: [
-                    "hasInputSphere": true,
+                    "hasInputEntity": true,
                     "hasRootPoint": true
                 ]
             )
 
             // Log successful gesture setup at info level
             AppLogger.shared.info(
-                "Input Sphere drag gesture initialized",
-                category: .inputsphere,
+                "Input Entity drag gesture initialized",
+                category: .inputEntity,
                 context: [
-                    "inputSpherePosition": inputSphere.position,
+                    "inputEntityPosition": inputEntity.position,
                     "parentEntityName": parentEntity.name,
                     "rootPointPosition": rootPoint.position
                 ]
@@ -95,9 +95,9 @@ extension View {
             return AnyView(
                 self.gesture(
                     DragGesture()
-                        .targetedToEntity(inputSphere)
+                        .targetedToEntity(inputEntity)
                         .onChanged { value in
-                            inputSphereManager.handleInputSphereDragGesture(
+                            inputEntityManager.handleInputEntityDragGesture(
                                 value,
                                 parentEntity: parentEntity,
                                 rootPoint: rootPoint
@@ -108,10 +108,10 @@ extension View {
         } else {
             // Log gesture setup failure at warning level
             AppLogger.shared.warning(
-                "Input Sphere drag gesture not enabled",
-                category: .inputsphere,
+                "Input Entity drag gesture not enabled",
+                category: .inputEntity,
                 context: [
-                    "hasInputSphere": inputSphereManager.inputSphere != nil,
+                    "hasInputEntity": inputEntityManager.inputEntity != nil,
                     "hasRootPoint": rootPoint != nil
                 ]
             )

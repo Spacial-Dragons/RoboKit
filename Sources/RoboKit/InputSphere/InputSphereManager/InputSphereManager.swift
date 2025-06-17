@@ -16,38 +16,38 @@
 import SwiftUI
 import RealityKit
 
-/// A class responsible for managing the Input Sphere, which represents the desired position
+/// A class responsible for managing the Input Entity, which represents the desired position
 /// and orientation of a robot's end effector in a 3D environment.
 ///
-/// `InputSphereManager` provides properties and state for rendering, updating, and transforming
-/// the Input Sphere within a RealityKit scene.
+/// `InputEntityManager` provides properties and state for rendering, updating, and transforming
+/// the Input Entity within a RealityKit scene.
 ///
-/// Use this class to track and update the position and rotation of the Input Sphere
+/// Use this class to track and update the position and rotation of the Input Entity
 /// relative to key reference points in the scene.
 @MainActor
 @Observable
-public final class InputSphereManager {
+public final class InputEntityManager {
 
-    /// Creates a new instance of `InputSphereManager`.
+    /// Creates a new instance of `InputEntityManager`.
     public init() {}
 
-    /// The RealityKit entity representing the Input Sphere.
+    /// The RealityKit entity representing the Input Entity.
     ///
     /// This entity visually indicates the target pose (position and rotation) for a robot’s end effector.
-    public var inputSphere: Entity?
+    public var inputEntity: Entity?
 
-    /// The current position of the Input Sphere relative to the parent entity in the scene.
-    public var inputSpherePositionRelativeToParent: SIMD3<Float>?
+    /// The current position of the Input Entity relative to the parent entity in the scene.
+    public var inputEntityPositionRelativeToParent: SIMD3<Float>?
 
-    /// The current position of the Input Sphere relative to a designated root point.
-    public var inputSpherePositionRelativeToRoot: SIMD3<Float>?
+    /// The current position of the Input Entity relative to a designated root point.
+    public var inputEntityPositionRelativeToRoot: SIMD3<Float>?
 
-    public var inputSphereRotationRelativeToRoot: simd_float3x3?
+    public var inputEntityRotationRelativeToRoot: simd_float3x3?
 
-    /// A dictionary of Euler angles (roll, yaw, pitch) defining the Input Sphere’s rotation.
+    /// A dictionary of Euler angles (roll, yaw, pitch) defining the Input Entity's rotation.
     ///
-    /// Updating these values automatically applies a new rotation to the `inputSphere`.
-    public var inputSphereEulerAngles: [EulerAngle: Float] = [
+    /// Updating these values automatically applies a new rotation to the `inputEntity`.
+    public var inputEntityEulerAngles: [EulerAngle: Float] = [
         .roll: 0,
         .yaw: 0,
         .pitch: 0
@@ -73,6 +73,6 @@ public final class InputSphereManager {
         SIMD3<Float>( 0, 1, 0)
     )
 
-    /// A dictionary mapping each `InputSphereAxis` to its corresponding visual entity in the scene.
-    public var inputSphereAxes: [InputSphereAxis: Entity] = [:]
+    /// A dictionary mapping each `InputEntityAxis` to its corresponding visual entity in the scene.
+    public var inputEntityAxes: [InputEntityAxis: Entity] = [:]
 }

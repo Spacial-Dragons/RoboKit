@@ -15,12 +15,12 @@
 
 import RealityKit
 
-/// An enumeration that defines the three principal axes of the Input Sphere,
+/// An enumeration that defines the three principal axes of the Input Entity,
 /// oriented according to the ROS coordinate system.
 ///
-/// Use `InputSphereAxis` to specify a spatial direction for the input sphere's reference components.
+/// Use `InputEntityAxis` to specify a spatial direction for the input entity's reference components.
 /// Each case provides its associated axis orientation and a distinct visual material for display in 3D space.
-public enum InputSphereAxis: String {
+public enum InputEntityAxis: String {
 
     /// The longitudinal axis, aligned with the y-axis in the ROS coordinate system.
     /// This axis is commonly associated with roll. It includes a predefined orientation and green material.
@@ -46,7 +46,7 @@ public enum InputSphereAxis: String {
         }
     }
 
-    /// The material associated with the axis, used for visual distinction in the input sphere's appearance.
+    /// The material associated with the axis, used for visual distinction in the input entity's appearance.
     ///
     /// - Returns: A `SimpleMaterial` with a unique color per axis—red for lateral, blue for vertical,
     /// and green for longitudinal.

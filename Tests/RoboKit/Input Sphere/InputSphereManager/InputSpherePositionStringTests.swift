@@ -17,14 +17,14 @@ import RealityKit
 import Testing
 @testable import RoboKit
 
-@Suite("InputSphereManager - Input Sphere Position String")
+@Suite("InputEntityManager - Input Entity Position String")
 @MainActor
-struct InputSpherePositionStringTests {
+struct InputEntityPositionStringTests {
 
-    var manager = InputSphereManager()
+    var manager = InputEntityManager()
     let root = Entity()
 
-    @Test("inputSpherePositionString() formats correctly for various positions")
+    @Test("inputEntityPositionString() formats correctly for various positions")
     func testMultiplePositionCases() {
         let testCases: [(input: SIMD3<Float>, expected: String)] = [
             (SIMD3<Float>(1.0, 2.0, 3.0), " x: 1.000 m \t y: -3.000 m \t z: 2.000 m"),
@@ -34,16 +34,16 @@ struct InputSpherePositionStringTests {
         ]
 
         for (input, expected) in testCases {
-            manager.inputSpherePositionRelativeToRoot = input
-            let result = manager.inputSpherePositionString(relativeToRootPoint: root)
+            manager.inputEntityPositionRelativeToRoot = input
+            let result = manager.inputEntityPositionString(relativeToRootPoint: root)
             #expect(result == expected)
         }
     }
 
-    @Test("inputSpherePositionString() returns nil when position is not set")
+    @Test("inputEntityPositionString() returns nil when position is not set")
     func testPositionStringNil() {
-        manager.inputSpherePositionRelativeToRoot = nil
-        let result = manager.inputSpherePositionString(relativeToRootPoint: root)
+        manager.inputEntityPositionRelativeToRoot = nil
+        let result = manager.inputEntityPositionString(relativeToRootPoint: root)
         #expect(result == nil)
     }
 }

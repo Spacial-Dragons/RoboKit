@@ -17,23 +17,23 @@ import Testing
 import RealityKit
 @testable import RoboKit
 
-@Suite("InputSphereManager - Input Sphere Update Methods")
+@Suite("InputEntityManager - Input Entity Update Methods")
 @MainActor
-struct UpdateInputSpherePositionTests {
+struct UpdateInputEntityPositionTests {
 
-    var manager = InputSphereManager()
+    var manager = InputEntityManager()
     var root = Entity()
-    var sphere = Entity()
+    var inputEntity = Entity()
 
-    @Test("Input Sphere position updates correctly")
+    @Test("Input Entity position updates correctly")
     func testPositionUpdated() {
-        sphere.position = [1, 2, 3]
+        inputEntity.position = [1, 2, 3]
         root.position = [0, 0, 1]
 
-        manager.inputSphere = sphere
-        manager.updateInputSpherePosition(relativeToRootPoint: root)
+        manager.inputEntity = inputEntity
+        manager.updateInputEntityPosition(relativeToRootPoint: root)
 
-        #expect(manager.inputSpherePositionRelativeToParent == SIMD3<Float>(1, 2, 3))
-        #expect(manager.inputSpherePositionRelativeToRoot == sphere.position(relativeTo: root))
+        #expect(manager.inputEntityPositionRelativeToParent == SIMD3<Float>(1, 2, 3))
+        #expect(manager.inputEntityPositionRelativeToRoot == inputEntity.position(relativeTo: root))
     }
 }

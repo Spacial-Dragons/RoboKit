@@ -18,15 +18,15 @@ import Testing
 import simd
 @testable import RoboKit
 
-@Suite("InputSphereManager - Input Sphere Update Methods")
+@Suite("InputEntityManager - Input Entity Update Methods")
 @MainActor
-struct UpdateInputSphereRotationTests {
+struct UpdateInputEntityRotationTests {
 
-    var manager = InputSphereManager()
-    var sphere = Entity()
+    var manager = InputEntityManager()
+    var inputEntity = Entity()
     let root = Entity()
 
-    @Test("Input Sphere rotation updates correctly")
+    @Test("Input Entity rotation updates correctly")
     func testUpdateRotationWithVariousEulerAngles() {
         let testCases: [(EulerAngles: [EulerAngle: Float], expectedRotation: simd_quatf)] = [
             (
@@ -44,24 +44,24 @@ struct UpdateInputSphereRotationTests {
         ]
 
         for (angles, expected) in testCases {
-            manager.inputSphere = sphere
-            sphere.transform.rotation = simd_quatf()
-            manager.inputSphereEulerAngles = angles
+            manager.inputEntity = inputEntity
+            inputEntity.transform.rotation = simd_quatf()
+            manager.inputEntityEulerAngles = angles
 
-            manager.rotateInputSphere()
+            manager.rotateInputEntity()
 
-            let dotProduct = simd_dot(sphere.transform.rotation, expected)
+            let dotProduct = simd_dot(inputEntity.transform.rotation, expected)
             #expect(abs(dotProduct - 1) < 0.0001)
         }
     }
 
-    @Test("No rotation update if Input Sphere is nil")
-    func testNoUpdateWhenInputSphereIsNil() {
-        manager.inputSphere = nil
-        let initialRotation = sphere.transform.rotation
+    @Test("No rotation update if Input Entity is nil")
+    func testNoUpdateWhenInputEntityIsNil() {
+        manager.inputEntity = nil
+        let initialRotation = inputEntity.transform.rotation
 
-        manager.updateInputSphereRotation(relativeToRootPoint: root)
+        manager.updateInputEntityRotation(relativeToRootPoint: root)
 
-        #expect(sphere.transform.rotation == initialRotation)
+        #expect(inputEntity.transform.rotation == initialRotation)
     }
 }

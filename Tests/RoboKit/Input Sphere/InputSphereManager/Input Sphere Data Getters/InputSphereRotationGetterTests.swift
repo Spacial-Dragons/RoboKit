@@ -18,13 +18,13 @@ import simd
 import Testing
 @testable import RoboKit
 
-@Suite("InputSphereManager - Input Sphere Data Getters")
+@Suite("InputEntityManager - Input Entity Data Getters")
 @MainActor
-struct InputSphereRotationGetterTests {
+struct InputEntityRotationGetterTests {
 
-    var manager = InputSphereManager()
+    var manager = InputEntityManager()
     var root = Entity()
-    var sphere = Entity()
+    var inputEntity = Entity()
 
     struct RotationTestCase {
         let description: Comment
@@ -42,19 +42,19 @@ struct InputSphereRotationGetterTests {
               rotation: simd_quatf())
     ]
 
-    @Test("Input Sphere rotation getter returns correct rotation matrix relative to root in ROS coordinate system")
+    @Test("Input Entity rotation getter returns correct rotation matrix relative to root in ROS coordinate system")
     func testGetRotationCases() {
-        manager.inputSphere = sphere
+        manager.inputEntity = inputEntity
 
         for testCase in testCases {
-            sphere.transform.rotation = testCase.rotation
+            inputEntity.transform.rotation = testCase.rotation
 
-            manager.updateInputSphereRotation(relativeToRootPoint: root)
+            manager.updateInputEntityRotation(relativeToRootPoint: root)
 
-            let expectedRotation = sphere.transformMatrix(relativeTo: root)
+            let expectedRotation = inputEntity.transformMatrix(relativeTo: root)
                 .rotationMatrix.convertToROSCoordinateSystem()
 
-            let result = manager.getInputSphereRotation()
+            let result = manager.getInputEntityRotation()
 
             #expect(result != nil, testCase.description)
             #expect(result!.isApproximatelyEqual(to: expectedRotation, tolerance: 1e-4),
@@ -63,10 +63,10 @@ struct InputSphereRotationGetterTests {
         }
     }
 
-    @Test("Input Sphere rotation getter returns nil rotation if inputSphere is nil")
-    func testRotationNilWhenNoInputSphere() {
-        manager.inputSphere = nil
-        let result = manager.getInputSphereRotation()
+    @Test("Input Entity rotation getter returns nil rotation if inputEntity is nil")
+    func testRotationNilWhenNoInputEntity() {
+        manager.inputEntity = nil
+        let result = manager.getInputEntityRotation()
         #expect(result == nil)
     }
 }

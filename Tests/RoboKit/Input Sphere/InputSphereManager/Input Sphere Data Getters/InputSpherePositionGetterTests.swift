@@ -18,13 +18,13 @@ import simd
 import Testing
 @testable import RoboKit
 
-@Suite("InputSphereManager - Input Sphere Data Getters")
+@Suite("InputEntityManager - Input Entity Data Getters")
 @MainActor
-struct InputSpherePositionGetterTests {
+struct InputEntityPositionGetterTests {
 
-    var manager = InputSphereManager()
+    var manager = InputEntityManager()
     var root = Entity()
-    var sphere = Entity()
+    var inputEntity = Entity()
 
     struct TestCase {
         let inputPosition: SIMD3<Float>
@@ -40,25 +40,25 @@ struct InputSpherePositionGetterTests {
         .init(inputPosition: [0, 0, 1], expectedROSPosition: [0, -1, 0], description: "Z axis only")
     ]
 
-    @Test("Input Sphere position getter returns correct position relative to root in ROS coordinate system")
+    @Test("Input Entity position getter returns correct position relative to root in ROS coordinate system")
     func testGetPositionCases() {
-        manager.inputSphere = sphere
+        manager.inputEntity = inputEntity
         root.position = [0, 0, 0]
 
         for testCase in testCases {
-            sphere.position = testCase.inputPosition
-            manager.updateInputSpherePosition(relativeToRootPoint: root)
-            let result = manager.getInputSpherePosition()
+            inputEntity.position = testCase.inputPosition
+            manager.updateInputEntityPosition(relativeToRootPoint: root)
+            let result = manager.getInputEntityPosition()
 
             #expect(result != nil, testCase.description)
             #expect(result == testCase.expectedROSPosition, "Failed for: \(testCase.description)")
         }
     }
 
-    @Test("Input Sphere position getter returns nil position if inputSphere is nil")
-    func testPositionNilWhenNoInputSphere() {
-        manager.inputSphere = nil
-        let result = manager.getInputSpherePosition()
+    @Test("Input Entity position getter returns nil position if inputEntity is nil")
+    func testPositionNilWhenNoInputEntity() {
+        manager.inputEntity = nil
+        let result = manager.getInputEntityPosition()
         #expect(result == nil)
     }
 }

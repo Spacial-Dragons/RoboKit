@@ -1,0 +1,74 @@
+//
+// ===----------------------------------------------------------------------=== //
+//
+// This source file is part of the RoboKit open source project
+//
+//
+// Licensed under MIT
+//
+// See LICENSE for license information
+// See "Contributors" section on GitHub for the list of project authors
+//
+// SPDX-License-Identifier: MIT
+//
+// ===----------------------------------------------------------------------=== //
+
+import RealityKit
+
+extension InputEntityManager {
+    /// Adds a visual arrow to represent an axis of the Input Entity.
+    ///
+    /// This method creates an arrow-shaped `Entity` using the corresponding axis's height, radius, and material,
+    /// positions it appropriately above the origin of the target axis entity, and attaches it as a child.
+    ///
+    /// - Parameters:
+    ///   - axisEntity: The parent entity representing an axis to which the arrow will be added.
+    ///   - height: The height of the corresponding axis.
+    ///   - radius: The radius of the corresponding axis.
+    ///   - material: The material of the corresponding axis.
+    internal func addAxisArrow(to axisEntity: Entity, height: Float, radius: Float, material: Material) {
+        // Log the start of arrow creation at debug level
+        AppLogger.shared.debug(
+            "Creating axis arrow",
+            category: .inputEntity,
+            context: [
+                "axisEntityName": axisEntity.name,
+                "axisEntityPosition": axisEntity.position,
+                "arrowHeight": height,
+                "arrowRadius": radius,
+                "materialType": String(describing: type(of: material))
+            ]
+        )
+
+        let arrowEntity = axisArrowEntity(height: height, radius: radius, material: material)
+        arrowEntity.position = SIMD3<Float>(0, height / 2, 0)
+
+        // Log arrow creation and positioning at debug level
+        AppLogger.shared.debug(
+            "Axis arrow created and positioned",
+            category: .inputEntity,
+            context: [
+                "arrowPosition": arrowEntity.position,
+                "arrowHeight": height,
+                "arrowRadius": radius
+            ]
+        )
+
+        axisEntity.addChild(arrowEntity)
+
+        // Log successful arrow addition at info level
+        AppLogger.shared.info(
+            "Axis arrow added successfully",
+            category: .inputEntity,
+            context: [
+                "axisEntityName": axisEntity.name,
+                "arrowPosition": arrowEntity.position,
+                "parentAxisPosition": axisEntity.position,
+                "arrowDimensions": [
+                    "height": height,
+                    "radius": radius
+                ]
+            ]
+        )
+    }
+}

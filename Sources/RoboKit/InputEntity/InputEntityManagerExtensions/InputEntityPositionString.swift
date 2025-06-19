@@ -1,0 +1,64 @@
+//
+// ===----------------------------------------------------------------------=== //
+//
+// This source file is part of the RoboKit open source project
+//
+//
+// Licensed under MIT
+//
+// See LICENSE for license information
+// See "Contributors" section on GitHub for the list of project authors
+//
+// SPDX-License-Identifier: MIT
+//
+// ===----------------------------------------------------------------------=== //
+
+import RealityKit
+
+extension InputEntityManager {
+    /// Returns a formatted string representing the Input Entity’s position relative to the given root point.
+    ///
+    /// This method converts the current position of the Input Entity from the RealityKit coordinate system
+    /// to the ROS coordinate system, then formats the result into a human-readable string.
+    ///
+    /// - Parameter rootPoint: The reference entity used to determine the Input Entity’s relative position.
+    /// - Returns: A string describing the position in meters along the x, y, and z axes in the ROS coordinate system,
+    ///   or `nil` if the Input Entity’s position relative to the root point is not available.
+    internal func inputEntityPositionString(relativeToRootPoint rootPoint: Entity) -> String? {
+        guard let position = inputEntityPositionRelativeToRoot else {
+            AppLogger.shared.debug(
+                "Failed to format Input Entity position string: position is nil",
+                category: .inputEntity
+            )
+            return nil
+        }
+
+        // Log position conversion at debug level
+        AppLogger.shared.debug(
+            "Converting Input Entity position to ROS coordinates",
+            category: .inputEntity,
+            context: [
+                "originalPosition": position,
+                "relativeToRootPoint": rootPoint.position
+            ]
+        )
+
+        let positionInROS = position.convertToROSCoordinateSystem()
+
+        let positionString = String(format:
+            " x: %.3f m \t y: %.3f m \t z: %.3f m",
+            positionInROS.x, positionInROS.y, positionInROS.z)
+
+        // Log formatted position string at debug level
+        AppLogger.shared.debug(
+            "Input Entity position string formatted",
+            category: .inputEntity,
+            context: [
+                "formattedString": positionString,
+                "rosPosition": positionInROS
+            ]
+        )
+
+        return (positionString)
+    }
+}

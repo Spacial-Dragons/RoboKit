@@ -18,9 +18,9 @@ You can detect and track images using the ``ImageTracker`` module, which allows 
 
 RoboKit also supports robust socket communication via the ``TCPClient`` and ``TCPServer`` classes. Data is encoded and decoded using ``CodingManager`` and structured with ``CPRMessageModel`` to ensure clear and consistent message passing.
 
-For interaction, the ``InputSphereManager`` provides an intuitive interface to manipulate robot parameters using 3D sliders and controls. You can position and rotate a control sphere using ``InputSpherePositionView`` and ``InputSphereRotationSlider``.
+For interaction, the ``InputEntityManager`` provides an intuitive interface to manipulate robot parameters using 3D sliders and controls. You can position and rotate a control entity using ``InputEntityPositionView`` and ``InputEntityRotationSlider``.
 
-The **UI Module** provides a comprehensive collection of SwiftUI components for creating intuitive robotic control interfaces. It includes form controls, input sphere views, control panel elements, and accessory components that work seamlessly with other RoboKit modules.
+The **UI Module** provides a comprehensive collection of SwiftUI components for creating intuitive robotic control interfaces. It includes form controls, input entity views, control panel elements, and accessory components that work seamlessly with other RoboKit modules.
 
 RoboKit makes it easier to build immersive, real-time robotic control interfaces in visionOS.
 
@@ -32,7 +32,7 @@ RoboKit makes it easier to build immersive, real-time robotic control interfaces
 @Links(visualStyle: detailedGrid) {
     - <doc:ImageTrackerModule>
     - <doc:SocketModule>
-    - <doc:InputSphere>
+    - <doc:InputEntity>
     - <doc:UIModule>
 }
 
@@ -42,7 +42,7 @@ RoboKit makes it easier to build immersive, real-time robotic control interfaces
 
 - ``ImageTracker``
 - ``TCPClient``
-- ``InputSphereManager``
+- ``InputEntityManager``
 - ``FormManager``
 
 ### Image Tracker
@@ -57,21 +57,21 @@ RoboKit makes it easier to build immersive, real-time robotic control interfaces
 - ``CPRMessageModel``
 - ``CodingManager``
 
-### Input Sphere
+### Input Entity
 
-- ``InputSphereManager``
-- ``InputSpherePositionView``
-- ``InputSphereRotationSlider``
-- ``InputSphereAxis``
+- ``InputEntityManager``
+- ``InputEntityPositionView``
+- ``InputEntityRotationSlider``
+- ``InputEntityAxis``
 
 ### UI Module
 
 - ``FormManager``
 - ``FormPositionTextField``
 - ``FormRotationTextField``
-- ``InputSpherePositionText``
-- ``InputSphereRotationSlider``
-- ``InputSphereRotationText``
+- ``InputEntityPositionText``
+- ``InputEntityRotationSlider``
+- ``InputEntityRotationText``
 - ``DataModePicker``
 - ``SendDataButton``
 - ``ClawControlToggle``

@@ -4,11 +4,11 @@
     @PageImage(purpose: card, source: "UIModuleCard", alt: "UI Module Card")
 }
 
-The UI Module provides a comprehensive collection of SwiftUI components designed to create intuitive and accessible user interfaces for robotic control applications in visionOS. This module includes form controls, input sphere views, control panel elements, and accessory components that work seamlessly with other RoboKit modules.
+The UI Module provides a comprehensive collection of SwiftUI components designed to create intuitive and accessible user interfaces for robotic control applications in visionOS. This module includes form controls, input entity views, control panel elements, and accessory components that work seamlessly with other RoboKit modules.
 
 ## Overview
 
-The UI Module offers pre-built SwiftUI views that simplify the creation of robotic control interfaces. These components are designed to work with the ``InputSphereManager``, ``FormManager``, and socket communication modules to provide a complete user experience for robot control applications.
+The UI Module offers pre-built SwiftUI views that simplify the creation of robotic control interfaces. These components are designed to work with the ``InputEntityManager``, ``FormManager``, and socket communication modules to provide a complete user experience for robot control applications.
 
 ## Form Views
 
@@ -53,32 +53,32 @@ FormPositionText(axis: .longitudinal)
 FormPositionText(axis: .vertical)
 ```
 
-## Input Sphere Views
+## Input Entity Views
 
-Components for displaying and controlling the Input Sphere's position and orientation.
+Components for displaying and controlling the Input Entity's position and orientation.
 
-### InputSpherePositionText
+### InputEntityPositionText
 
-![InputSpherePositionText](InputSpherePositionText)
+![InputEntityPositionText](InputEntityPositionText)
 
-Displays the current position of the Input Sphere along a specific axis.
+Displays the current position of the Input Entity along a specific axis.
 
 ```swift
-InputSpherePositionText(axis: .lateral, showFullDescription: true)
-InputSpherePositionText(axis: .longitudinal)
-InputSpherePositionText(axis: .vertical)
+InputEntityPositionText(axis: .lateral, showFullDescription: true)
+InputEntityPositionText(axis: .longitudinal)
+InputEntityPositionText(axis: .vertical)
 ```
 
-> Important: The `InputSpherePositionText` component automatically converts position data to ROS coordinates for display.
+> Important: The `InputEntityPositionText` component automatically converts position data to ROS coordinates for display.
 
-### InputSphereRotationSlider
+### InputEntityRotationSlider
 
-![InputSphereRotationSlider](InputSphereRotationSlider)
+![InputEntityRotationSlider](InputEntityRotationSlider)
 
-Interactive sliders for adjusting the Input Sphere's orientation using Euler angles.
+Interactive sliders for adjusting the Input Entity's orientation using Euler angles.
 
 ```swift
-InputSphereRotationSlider(
+InputEntityRotationSlider(
     rootPoint: rootEntity,
     eulerAngle: .roll,
     maxValue: 180,
@@ -88,16 +88,16 @@ InputSphereRotationSlider(
 )
 ```
 
-### InputSphereRotationText
+### InputEntityRotationText
 
-![InputSphereRotationText](InputSphereRotationText)
+![InputEntityRotationText](InputEntityRotationText)
 
-Displays the current rotation values of the Input Sphere in degrees.
+Displays the current rotation values of the Input Entity in degrees.
 
 ```swift
-InputSphereRotationText(eulerAngle: .roll)
-InputSphereRotationText(eulerAngle: .pitch)
-InputSphereRotationText(eulerAngle: .yaw)
+InputEntityRotationText(eulerAngle: .roll)
+InputEntityRotationText(eulerAngle: .pitch)
+InputEntityRotationText(eulerAngle: .yaw)
 ```
 
 ## Control Panel Views
@@ -205,7 +205,7 @@ SegmentedControlPicker(
 The UI Module components are designed to work seamlessly with other RoboKit modules:
 
 - **Form Views** integrate with ``FormManager`` for position and rotation data
-- **Input Sphere Views** work with ``InputSphereManager`` for 3D control
+- **Input Entity Views** work with ``InputEntityManager`` for 3D control
 - **Control Panel Views** support ``DataMode`` and socket communication
 - **Accessory Views** provide common controls for robot parameters
 

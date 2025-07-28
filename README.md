@@ -8,6 +8,13 @@
 ## Overview
 **RoboKit** is a framework designed to facilitate the integration between visionOS applications and robotics software.
 
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/0cdf4f16-3331-4e78-8fdd-97f2c484b277" alt="GIF">
+  <h6 align="center">
+    Example implementation using RoboKit for real-time control of the KUKA robot.
+  </h6>
+</p>
+
 ## Requirements
 - visionOS 2.0+
 - Xcode
@@ -36,3 +43,9 @@ Contributions to RoboKit are welcomed and encouraged! Please see the
 [Contributing to RoboKit guide](CONTRIBUTING.md).
 
 Before submitting the pull request, please make sure you have *tested your changes* and that they follow the RoboKit project [guidelines for contributing code](CONTRIBUTING.md#Commit-Guidelines).
+
+## Special Thanks
+
+Special thanks to the researchers from [PRISMA Lab](https://github.com/prisma-lab) at the [University of Naples Federico II](https://github.com/SO-unina) for their support and collaboration:
+
+Riccardo Aliotta, Francesco Cufino, and Fabio Ruggiero.
